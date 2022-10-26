@@ -68,31 +68,6 @@ def create_monster_family():
         session.commit()
 
 
-def create_monster_detail():
-    monster_1 = MonsterDetail(
-        new_name='Drake Slime', old_name='DrakSlime',
-        description='Moves and jumps with its tail and wings', family_id=1,
-        skills=[1, 2, 3]
-    )
-    monster_2 = MonsterDetail(
-        new_name='Healslime', old_name='Healer',
-        description='Uses its powerful tentacles to move about', family_id=1,
-        skills=[2, 3, 4]
-    )
-    monster_3 = MonsterDetail(
-        new_name='Cyber slime', old_name='SlimeBorg',
-        description='Oil flows through its body instead of blood', family_id=1,
-        skills=[4, 2, 1]
-    )
-
-    with Session(engine) as session:
-        session.add(monster_1)
-        session.add(monster_2)
-        session.add(monster_3)
-
-        session.commit()
-
-
 def create_skill():
     skill_1 = Skill(
         category_type='Attack', family_type='Frizz', new_name='Frizz',
@@ -122,7 +97,35 @@ def create_skill():
         session.add(skill_2)
         session.add(skill_3)
         session.add(skill_4)
+        # session.refresh(skill_4)
 
+        session.commit()
+
+    skills = [skill_1, skill_2, skill_3, skill_4]
+    return skills
+
+
+def create_monster_detail(skills):
+    monster_1 = MonsterDetail(
+        new_name='Drake Slime', old_name='DrakSlime',
+        description='Moves and jumps with its tail and wings', family_id=1,
+        skills=skills[:3]
+    )
+    monster_2 = MonsterDetail(
+        new_name='Healslime', old_name='Healer',
+        description='Uses its powerful tentacles to move about', family_id=1,
+        skills=skills[1:]
+    )
+    monster_3 = MonsterDetail(
+        new_name='Cyber slime', old_name='SlimeBorg',
+        description='Oil flows through its body instead of blood', family_id=1,
+        skills=[skills[3], skills[1], skills[0]]
+    )
+
+    with Session(engine) as session:
+        session.add(monster_1)
+        session.add(monster_2)
+        session.add(monster_3)
         session.commit()
 
 
@@ -130,8 +133,8 @@ def main():
     create_db_and_tables()
     create_items()
     create_monster_family()
-    create_skill()
-    create_monster_detail()
+    skills = create_skill()
+    create_monster_detail(skills)
 
 
 if __name__== "__main__":
