@@ -1,9 +1,9 @@
 from typing import List, Optional
-from sqlmodel import Field, Relationship, SQLModel, create_engine
+from sqlmodel import Field, Relationship, SQLModel
 
 
 class MonsterSkillLink(SQLModel, table=True):
-    monster_id: Optional[int] = Field(  # Does this need to be Optional? it will never be None
+    monster_id: Optional[int] = Field(
         foreign_key='monsterdetail.id', primary_key=True
     )
     skill_id: Optional[int] = Field(
@@ -11,22 +11,22 @@ class MonsterSkillLink(SQLModel, table=True):
     )
 
 
-class MonsterBreedingLink(SQLModel, table=True):
-    child_id: Optional[int] = Field(
-        foreign_key='monsterdetail.id', primary_key=True
-    )
-    pedigree: Optional[int] = Field(
-        foreign_key='monsterdetail.id', primary_key=True
-    )
-    parent_2: Optional[int] = Field(
-        foreign_key='monsterdetail.id', primary_key=True
-    )
-    pedigree_family: Optional[int] = Field(
-        foreign_key='monsterfamily.id', primary_key=True
-    )
-    family_2: Optional[int] = Field(
-        foreign_key='monsterfamily.id', primary_key=True
-    )
+# class MonsterBreedingLink(SQLModel, table=True):
+#     child_id: Optional[int] = Field(
+#         foreign_key='monsterdetail.id', primary_key=True
+#     )
+#     pedigree: Optional[int] = Field(
+#         foreign_key='monsterdetail.id', primary_key=True
+#     )
+#     parent_2: Optional[int] = Field(
+#         foreign_key='monsterdetail.id', primary_key=True
+#     )
+#     pedigree_family: Optional[int] = Field(
+#         foreign_key='monsterfamily.id', primary_key=True
+#     )
+#     family_2: Optional[int] = Field(
+#         foreign_key='monsterfamily.id', primary_key=True
+#     )
 
 
 class MonsterDetail(SQLModel, table=True):
@@ -43,31 +43,31 @@ class MonsterDetail(SQLModel, table=True):
         back_populates='monsters', link_model=MonsterSkillLink
     )
 
-    monster_child: List['breeding_result'] = Relationship(
-        link_model=MonsterBreedingLink
-    )
-    monster_pedigree: List['pedigree_parent'] = Relationship(
-        link_model=MonsterBreedingLink
-    )
-    monster_parent2: List['parent_2'] = Relationship(
-        link_model=MonsterBreedingLink
-    )
+    # monster_child: List['MonsterDetail'] = Relationship(
+    #     link_model=MonsterBreedingLink
+    # )
+    # monster_pedigree: List['MonsterDetail'] = Relationship(
+    #     link_model=MonsterBreedingLink
+    # )
+    # monster_parent2: List['MonsterDetail'] = Relationship(
+    #     link_model=MonsterBreedingLink
+    # )
 
 
 class MonsterFamily(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     family_eng: str
-    family_jpn: str
 
-    pedigree_family: List['pedigree_family'] = Relationship(
-        link_model=MonsterBreedingLink
-    )
-    family_2: List['family_2'] = Relationship(
-        link_model=MonsterBreedingLink
-    )
+    # pedigree_family: List['pedigree_family'] = Relationship(
+    #     link_model=MonsterBreedingLink
+    # )
+    # family_2: List['family_2'] = Relationship(
+    #     link_model=MonsterBreedingLink
+    # )
 
 
 class Skill(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
     category_type: str
     family_type: str
     new_name: str
@@ -75,16 +75,16 @@ class Skill(SQLModel, table=True):
     description: str
     mp_cost: int
     required_level: int
-    required_hp: int
-    required_mp: int
-    required_attack: int
-    required_defense: int
-    required_speed: int
-    required_intelligence: int
+    required_hp: Optional[int]
+    required_mp: Optional[int]
+    required_attack: Optional[int]
+    required_defense: Optional[int]
+    required_speed: Optional[int]
+    required_intelligence: Optional[int]
 
-    upgrade: Optional[int] = Field(
-        foreign_key='skill.id', default=None,
-    )
+    # upgrade: Optional[int] = Field(
+    #     foreign_key='skill.id', default=None,
+    # )
     # combine: Easier to make intermediate table? only a couple of skills have
     # two or more combinations
 
@@ -94,6 +94,7 @@ class Skill(SQLModel, table=True):
 
 
 class Item(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
     item_name: str
     item_category: str
     item_description: str
