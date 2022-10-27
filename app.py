@@ -1,6 +1,6 @@
 from database import create_db_and_tables, engine
 from sqlmodel import Session
-from model import Item, MonsterFamily, MonsterDetail, Skill, MonsterSkillLink
+from model import Item, MonsterFamily, MonsterDetail, Skill, MonsterSkillLink, MonsterBreedingLink
 
 
 def create_items():
@@ -67,6 +67,9 @@ def create_monster_family():
 
         session.commit()
 
+    return [family_1, family_2, family_3, family_4, family_5,
+            family_6, family_7, family_8, family_9, family_10]
+
 
 def create_skill():
     skill_1 = Skill(
@@ -97,7 +100,6 @@ def create_skill():
         session.add(skill_2)
         session.add(skill_3)
         session.add(skill_4)
-        # session.refresh(skill_4)
 
         session.commit()
 
@@ -128,13 +130,42 @@ def create_monster_detail(skills):
         session.add(monster_3)
         session.commit()
 
+    return [monster_1, monster_2, monster_3]
+
+
+def create_breeds(families, monsters):
+    with Session(engine) as session:
+        for family, monster in zip(
+            families,
+            reversed(monsters)
+        ):
+            breed_1 = MonsterBreedingLink(
+                child=monster,
+                pedigree=monster)
+            breed_2 = MonsterBreedingLink(
+                child=monster,
+                pedigree=monster,
+                parent2=monster,
+                pedigree_family=family)
+            breed_3 = MonsterBreedingLink(
+                child=monster,
+                pedigree=monster,
+                parent2=monster,
+                pedigree_family=family,
+                family2=family)
+            session.add(breed_1)
+            session.add(breed_2)
+            session.add(breed_3)
+            session.commit()
+
 
 def main():
     create_db_and_tables()
     create_items()
-    create_monster_family()
+    families = create_monster_family()
     skills = create_skill()
-    create_monster_detail(skills)
+    monsters = create_monster_detail(skills)
+    create_breeds(families, monsters)
 
 
 if __name__== "__main__":

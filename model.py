@@ -11,22 +11,32 @@ class MonsterSkillLink(SQLModel, table=True):
     )
 
 
-# class MonsterBreedingLink(SQLModel, table=True):
-#     child_id: Optional[int] = Field(
-#         foreign_key='monsterdetail.id', primary_key=True
-#     )
-#     pedigree: Optional[int] = Field(
-#         foreign_key='monsterdetail.id', primary_key=True
-#     )
-#     parent_2: Optional[int] = Field(
-#         foreign_key='monsterdetail.id', primary_key=True
-#     )
-#     pedigree_family: Optional[int] = Field(
-#         foreign_key='monsterfamily.id', primary_key=True
-#     )
-#     family_2: Optional[int] = Field(
-#         foreign_key='monsterfamily.id', primary_key=True
-#     )
+class MonsterBreedingLink(SQLModel, table=True):
+    """
+    This helped:
+    https://github.com/tiangolo/sqlmodel/issues/10#issuecomment-1002835506
+    """
+    id: Optional[int] = Field(default=None, primary_key=True)
+    child_id: Optional[int] = Field(default=None, foreign_key="monsterdetail.id")
+    child: "MonsterDetail" = Relationship(
+        sa_relationship_kwargs={"primaryjoin": "MonsterBreedingLink.child_id==MonsterDetail.id", "lazy": "joined"}
+    )
+    pedigree_id: Optional[int] = Field(default=None, foreign_key="monsterdetail.id")
+    pedigree: "MonsterDetail" = Relationship(
+        sa_relationship_kwargs={"primaryjoin": "MonsterBreedingLink.pedigree_id==MonsterDetail.id", "lazy": "joined"}
+    )
+    parent2_id: Optional[int] = Field(default=None, foreign_key="monsterdetail.id")
+    parent2: "MonsterDetail" = Relationship(
+        sa_relationship_kwargs={"primaryjoin": "MonsterBreedingLink.parent2_id==MonsterDetail.id", "lazy": "joined"}
+    )
+    pedigree_family_id: Optional[int] = Field(default=None, foreign_key="monsterfamily.id")
+    pedigree_family: "MonsterFamily" = Relationship(
+        sa_relationship_kwargs={"primaryjoin": "MonsterBreedingLink.pedigree_family_id==MonsterFamily.id", "lazy": "joined"}
+    )
+    family2_id: Optional[int] = Field(default=None, foreign_key="monsterfamily.id")
+    family2: "MonsterFamily" = Relationship(
+        sa_relationship_kwargs={"primaryjoin": "MonsterBreedingLink.family2_id==MonsterFamily.id", "lazy": "joined"}
+    )
 
 
 class MonsterDetail(SQLModel, table=True):
@@ -38,32 +48,44 @@ class MonsterDetail(SQLModel, table=True):
     # one-to-many relation. monster in only one family category.
     # many monsters in a family category
     family_id: int = Field(foreign_key='monsterfamily.id')
-
     skills: List['Skill'] = Relationship(
         back_populates='monsters', link_model=MonsterSkillLink
     )
 
-    # monster_child: List['MonsterDetail'] = Relationship(
-    #     link_model=MonsterBreedingLink
-    # )
-    # monster_pedigree: List['MonsterDetail'] = Relationship(
-    #     link_model=MonsterBreedingLink
-    # )
-    # monster_parent2: List['MonsterDetail'] = Relationship(
-    #     link_model=MonsterBreedingLink
-    # )
+    """
+    children: List['MonsterFamily'] = Relationship(
+        back_populates="families",
+        link_model=MonsterBreedingLink
+    )
+    pedigrees: List['MonsterFamily'] = Relationship(
+        back_populates="pedigree_families",
+        link_model=MonsterBreedingLink
+    )
+    monster_parents: List['MonsterFamily'] = Relationship(
+        back_populates="secondary_families",
+        link_model=MonsterBreedingLink
+    )
+    """
 
 
 class MonsterFamily(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     family_eng: str
 
-    # pedigree_family: List['pedigree_family'] = Relationship(
-    #     link_model=MonsterBreedingLink
-    # )
-    # family_2: List['family_2'] = Relationship(
-    #     link_model=MonsterBreedingLink
-    # )
+    """
+    families: List[MonsterDetail] = Relationship(
+        back_populates="children",
+        link_model=MonsterBreedingLink
+    )
+    pedigree_families: List[MonsterDetail] = Relationship(
+        back_populates="pedigrees",
+        link_model=MonsterBreedingLink
+    )
+    secondary_families: List[MonsterDetail] = Relationship(
+        back_populates="monster_parents",
+        link_model=MonsterBreedingLink
+    )
+    """
 
 
 class Skill(SQLModel, table=True):
@@ -87,6 +109,7 @@ class Skill(SQLModel, table=True):
     # )
     # combine: Easier to make intermediate table? only a couple of skills have
     # two or more combinations
+    # TODO: can try this: https://github.com/tiangolo/sqlmodel/issues/89
 
     monsters: List[MonsterDetail] = Relationship(
         back_populates='skills', link_model=MonsterSkillLink
