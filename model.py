@@ -97,22 +97,32 @@ class Skill(SQLModel, table=True):
     description: str
     mp_cost: int
     required_level: int
-    required_hp: Optional[int]
-    required_mp: Optional[int]
-    required_attack: Optional[int]
-    required_defense: Optional[int]
-    required_speed: Optional[int]
-    required_intelligence: Optional[int]
+    required_hp: Optional[int] = None
+    required_mp: Optional[int] = None
+    required_attack: Optional[int] = None
+    required_defense: Optional[int] = None
+    required_speed: Optional[int] = None
+    required_intelligence: Optional[int] = None
 
-    # upgrade: Optional[int] = Field(
-    #     foreign_key='skill.id', default=None,
-    # )
-    # combine: Easier to make intermediate table? only a couple of skills have
-    # two or more combinations
-    # TODO: can try this: https://github.com/tiangolo/sqlmodel/issues/89
+    upgrade: Optional[int] = Field(  # works for now
+        foreign_key='skill.id', default=None,
+    )
 
     monsters: List[MonsterDetail] = Relationship(
         back_populates='skills', link_model=MonsterSkillLink
+    )
+
+
+class SkillCombine(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    combo_skill_id: Optional[int] = Field(default=None, foreign_key='skill.id')
+    combo_skill: Skill = Relationship(
+        sa_relationship_kwargs={'primaryjoin': 'SkillCombine.combo_skill_id==Skill.id', "lazy": 'joined'}
+    )
+
+    needed_skill_id: Optional[int] = Field(default=None, foreign_key='skill.id')
+    needed_skill: Skill = Relationship(
+        sa_relationship_kwargs={'primaryjoin': 'SkillCombine.needed_skill_id==Skill.id', "lazy": 'joined'}
     )
 
 
