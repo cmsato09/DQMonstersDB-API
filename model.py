@@ -131,7 +131,6 @@ class Item(SQLModel, table=True):
     item_name: str
     item_category: str
     item_description: str
-    price: int
-    sell_price: int
+    price: Optional[int] = Field(default=None)
+    sell_price: Optional[int] = Field(default=None)
     sell_location: str
-
