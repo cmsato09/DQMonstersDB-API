@@ -1,0 +1,48 @@
+﻿ID,item_name,item_category,item_description,price,sell_price,sell_location
+1,Herb,recovery,Restores around 30 HP,10,6,Bazaar shop 1
+2,Lovewater,recovery,Restores around 70 HP,80,60,Bazaar shop 1
+3,Antidote,recovery,Cures poison of one ally,10,8,Bazaar shop 1
+4,Repellent,dungeon use,Reduces monster encounters,200,150,Bazaar shop 1
+5,BeefJerky,meat,Give to monster to tame during battle or reduce your own monster's WLD (wildness) by 5,20,15,Bazaar shop 1
+6,Porkchop,meat,Give to monster to tame during battle or reduce your own monster's WLD (wildness) by 10,80,60,Bazaar shop 1
+7,Warpwing,dungeon use,Warp back to the castle immediately,100,75,Bazaar shop 1
+8,BeastTail,dungeon use,Points way to the mystic hole to the next floor,400,300,Bazaar shop 1
+9,Potion,recovery,Restores about 20 MP,200,150,Bazaar shop 2
+10,WorldDew,recovery,Completely restores HP of all allies,500,375,Bazaar shop 2
+11,SageStone,recovery,Restore around 65 HP per use. Has a chance to break after use.,1000,750,Bazaar shop 2
+12,Worldleaf,recovery,Revives one ally,1000,750,Bazaar shop 2
+13,MapHerb,dungeon use,Shows entire floor map,70,53,Bazaar shop 2
+14,BookMark,dungeon use,Able to save your progress in the dungeon field,100,75,Bazaar shop 2
+15,Rib,meat,Give to monster to tame during battle or reduce your own monster's WLD (wildness) by 20,300,225,Bazaar shop 2
+16,MistStaff,staff,Stop enemies magic abilities. Has a chance to break after use.,700,70,Bazaar shop 2
+17,Sirloin,meat,Give to monster to tame during battle or reduce your own monster's WLD (wildness) by 100,1000,750,Bazaar shop 3
+18,ShinyHarp,dungeon use,Immediately battle monsters when used,3000,2225,Bazaar shop 3
+19,WindStaff,staff,Damage all enemies with whirlwind. Has a chance to break after use.,1500,150,Bazaar shop 3
+20,LavaStaff,staff,Damage all enemies with magma. Has a chance to break after use.,2000,200,Bazaar shop 3
+21,BoltStaff,staff,Damage all enemies with lightning bolt. Has a chance to break after use.,3000,300,Bazaar shop 3
+22,SnowStaff,staff,Damage all enemies with ice. Has a chance to break after use.,4000,400,Bazaar shop 3
+23,FireStaff,staff,Damage all enemies with fire. Has a chance to break after use. ,5000,500,Bazaar shop 3
+24,QuestBK,book,Makes monster brave. Use multiple times to change personality,5000,3750,Bazaar shop 4
+25,HorrorBK,book,Makes monster cowardly. Use multiple times to change personality,5000,3750,Bazaar shop 4
+26,BeNiceBK,book,Makes monster gentle. Use multiple times to change personality,5000,3750,Bazaar shop 4
+27,CheaterBK,book,Makes monster cold. Use multiple times to change personality,5000,3750,Bazaar shop 4
+28,SmartBK,book,Makes monster think hard. Use multiple times to change personality,5000,3750,Bazaar shop 4
+29,ComedyBK,book,Makes monster goofy. Use multiple times to change personality,5000,3750,Bazaar shop 4
+30,Herb,recovery,Restores around 30 HP,10,6,Field shop
+31,Lovewater,recovery,Restores around 70 HP,80,60,Field shop
+32,Antidote,recovery,Cures poison of one ally,10,8,Field shop
+33,Worldleaf,recovery,Revives one ally,1000,750,Field shop
+34,MoonHerb,recovery,Cures paralysis of one ally,30,23,Field shop
+35,AwakeSand,recovery,Wakes an ally from sleep,50,38,Field shop
+36,SkyBell,recovery,Cures confusion of one ally,50,38,Field shop
+37,Laurel,recovery,Breaks curse of one ally,80,60,Field shop
+38,LifeAcorn,seed,Increase max HP by 5,,20,found in field
+39,MysticNut,seed,Increase max MP by 5,,23,found in field
+40,ATKseed,seed,Increase ATK by 3,,17,found in field
+41,DEFseed,seed,Increase DEF by 3,,17,found in field
+42,AGLseed,seed,Increase AGL by 3,,14,found in field
+43,INTseed,seed,Increase INT by 3,,12,found in field
+44,Warpstaff,staff,Warp in front of the mystic hole to the next floor,100,10,found in field
+45,BadMeat,meat,Give to monster to tame during battle and poisons them. Reduce your own monster's WLD (wildness) by 5 and poisons them,,,found in field
+46,ElfWater,recovery,Completely restores MP of one ally,2000,1500,found in field
+47,Tiny medal,dungeon use,Collect and give to medal master for a prize,,,found in field

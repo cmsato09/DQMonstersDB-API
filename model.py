@@ -92,7 +92,7 @@ class Skill(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     category_type: str
     family_type: str
-    new_name: str
+    new_name: Optional[str] = Field(default=None)
     old_name: str
     description: str
     mp_cost: int
@@ -104,10 +104,12 @@ class Skill(SQLModel, table=True):
     required_speed: Optional[int] = None
     required_intelligence: Optional[int] = None
 
-    upgrade: Optional[int] = Field(  # works for now
+    upgrade_to: Optional[int] = Field(
         foreign_key='skill.id', default=None,
     )
-
+    upgrade_from: Optional[int] = Field(
+        foreign_key='skill.id', default=None,
+    )
     monsters: List[MonsterDetail] = Relationship(
         back_populates='skills', link_model=MonsterSkillLink
     )
