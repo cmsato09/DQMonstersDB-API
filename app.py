@@ -36,19 +36,14 @@ def create_skill_csv():
     session.commit()
 
 
-def create_skill_combo(skills):
-    # set up to show that in order to learn skills[3], monster needs to know
-    # skill[4] and skill[5]
+def create_skillcombo_csv():
+    session = Session(engine)
+    with open('csv_files/DQM1_skill_combo.csv') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for skillcombo_entry in reader:
+            session.add(SkillCombine(**skillcombo_entry))
 
-    combo_1 = SkillCombine(combo_skill=skills[3], needed_skill=skills[4])
-    combo_2 = SkillCombine(combo_skill=skills[3], needed_skill=skills[5])
-
-    combos = [combo_1, combo_2]
-
-    with Session(engine) as session:
-        for combo in combos:
-            session.add(combo)
-        session.commit()
+    session.commit()
 
 
 def create_monster_detail(skills):
@@ -109,9 +104,9 @@ def main():
     create_item_csv()
     create_monster_family_csv()
     create_skill_csv()
+    create_skillcombo_csv()
     # monsters = create_monster_detail(skills)
     # create_breeds(families, monsters)
-    # create_skill_combo(skills)
     # create_monster_detail(skills)
 
 

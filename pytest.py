@@ -122,5 +122,20 @@ def create_skill():
     return test_skills
 
 
+def create_skill_combo(skills):
+    # set up to show that in order to learn skills[3], monster needs to know
+    # skill[4] and skill[5]
+
+    combo_1 = SkillCombine(combo_skill=skills[3], needed_skill=skills[4])
+    combo_2 = SkillCombine(combo_skill=skills[3], needed_skill=skills[5])
+
+    combos = [combo_1, combo_2]
+
+    with Session(engine) as session:
+        for combo in combos:
+            session.add(combo)
+        session.commit()
+
+
 if __name__ == '__main__':
     unittest.main()
