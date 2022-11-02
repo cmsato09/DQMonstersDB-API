@@ -137,6 +137,33 @@ def create_skill_combo(skills):
         session.commit()
 
 
+def create_monster_detail(skills):
+    monster_1 = MonsterDetail(
+        new_name='Drake Slime', old_name='DrakSlime',
+        description='Moves and jumps with its tail and wings', family_id=1,
+        skills=skills[:3]
+    )
+    monster_2 = MonsterDetail(
+        new_name='Healslime', old_name='Healer',
+        description='Uses its powerful tentacles to move about', family_id=1,
+        skills=skills[1:]
+    )
+    monster_3 = MonsterDetail(
+        new_name='Cyber slime', old_name='SlimeBorg',
+        description='Oil flows through its body instead of blood', family_id=1,
+        skills=[skills[3], skills[1], skills[0]]
+    )
+
+    test_monsters = [monster_1, monster_2, monster_3]
+
+    with Session(engine) as session:
+        for monster in test_monsters:
+            session.add(monster)
+        session.commit()
+
+    return [monster_1, monster_2, monster_3]
+
+
 def create_breeds(families, monsters):
     with Session(engine) as session:
         for family, monster in zip(

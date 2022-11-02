@@ -46,31 +46,14 @@ def create_skillcombo_csv():
     session.commit()
 
 
-def create_monster_detail(skills):
-    monster_1 = MonsterDetail(
-        new_name='Drake Slime', old_name='DrakSlime',
-        description='Moves and jumps with its tail and wings', family_id=1,
-        skills=skills[:3]
-    )
-    monster_2 = MonsterDetail(
-        new_name='Healslime', old_name='Healer',
-        description='Uses its powerful tentacles to move about', family_id=1,
-        skills=skills[1:]
-    )
-    monster_3 = MonsterDetail(
-        new_name='Cyber slime', old_name='SlimeBorg',
-        description='Oil flows through its body instead of blood', family_id=1,
-        skills=[skills[3], skills[1], skills[0]]
-    )
+def create_monster_detail_csv():
+    session = Session(engine)
+    with open('csv_files/DQM1_monsterdetails.csv') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for monsterdetail_entry in reader:
+            session.add(MonsterDetail(**monsterdetail_entry))
 
-    test_monsters = [monster_1, monster_2, monster_3]
-
-    with Session(engine) as session:
-        for monster in test_monsters:
-            session.add(monster)
-        session.commit()
-
-    return [monster_1, monster_2, monster_3]
+    session.commit()
 
 
 def create_breed_combo():
@@ -83,15 +66,25 @@ def create_breed_combo():
     session.commit()
 
 
+def create_monster_skill_link():
+    session = Session(engine)
+    with open('csv_files/practice_monster_skill_link.csv') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for monsterskill_entry in reader:
+            session.add(MonsterSkillLink(**monsterskill_entry))
+
+    session.commit()
+
+
 def main():
     create_db_and_tables()
     create_item_csv()
     create_monster_family_csv()
     create_skill_csv()
     create_skillcombo_csv()
-    # monsters = create_monster_detail(skills)
+    create_monster_detail_csv()
     create_breed_combo()
-    # create_monster_detail(skills)
+    create_monster_skill_link()
 
 
 if __name__ == "__main__":
