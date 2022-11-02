@@ -16,24 +16,21 @@ def create_item_csv():
     session.commit()
 
 
-def create_monster_family_csv():
-    session = Session(engine)
-    with open('csv_files/DQM1_monster_family.csv') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for family_entry in reader:
-            session.add(MonsterFamily(**family_entry))
+def _insert_data(csv_file, Model):
+    with Session(engine) as session:
+        with open(csv_file) as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                session.add(Model(**row))
+        session.commit()
 
-    session.commit()
+
+def create_monster_family_csv():
+    _insert_data('csv_files/DQM1_monster_family.csv', MonsterFamily)
 
 
 def create_skill_csv():
-    session = Session(engine)
-    with open('csv_files/DQM1_skills.csv') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for skill_entry in reader:
-            session.add(Skill(**skill_entry))
-
-    session.commit()
+    _insert_data('csv_files/DQM1_skills.csv', Skill)
 
 
 def create_skillcombo_csv():
