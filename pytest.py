@@ -137,5 +137,31 @@ def create_skill_combo(skills):
         session.commit()
 
 
+def create_breeds(families, monsters):
+    with Session(engine) as session:
+        for family, monster in zip(
+            families,
+            reversed(monsters)
+        ):
+            breed_1 = MonsterBreedingLink(
+                child=monster,
+                pedigree=monster)
+            breed_2 = MonsterBreedingLink(
+                child=monster,
+                pedigree=monster,
+                parent2=monster,
+                pedigree_family=family)
+            breed_3 = MonsterBreedingLink(
+                child=monster,
+                pedigree=monster,
+                parent2=monster,
+                pedigree_family=family,
+                family2=family)
+            session.add(breed_1)
+            session.add(breed_2)
+            session.add(breed_3)
+            session.commit()
+
+
 if __name__ == '__main__':
     unittest.main()

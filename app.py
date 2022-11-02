@@ -73,30 +73,14 @@ def create_monster_detail(skills):
     return [monster_1, monster_2, monster_3]
 
 
-def create_breeds(families, monsters):
-    with Session(engine) as session:
-        for family, monster in zip(
-            families,
-            reversed(monsters)
-        ):
-            breed_1 = MonsterBreedingLink(
-                child=monster,
-                pedigree=monster)
-            breed_2 = MonsterBreedingLink(
-                child=monster,
-                pedigree=monster,
-                parent2=monster,
-                pedigree_family=family)
-            breed_3 = MonsterBreedingLink(
-                child=monster,
-                pedigree=monster,
-                parent2=monster,
-                pedigree_family=family,
-                family2=family)
-            session.add(breed_1)
-            session.add(breed_2)
-            session.add(breed_3)
-            session.commit()
+def create_breed_combo():
+    session = Session(engine)
+    with open('csv_files/DQM1_breeding_combo.csv') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for monstercombo_entry in reader:
+            session.add(MonsterBreedingLink(**monstercombo_entry))
+
+    session.commit()
 
 
 def main():
@@ -106,7 +90,7 @@ def main():
     create_skill_csv()
     create_skillcombo_csv()
     # monsters = create_monster_detail(skills)
-    # create_breeds(families, monsters)
+    create_breed_combo()
     # create_monster_detail(skills)
 
 
