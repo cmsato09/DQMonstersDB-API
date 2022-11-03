@@ -3,11 +3,12 @@ from sqlmodel import Field, Relationship, SQLModel
 
 
 class MonsterSkillLink(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
     monster_id: Optional[int] = Field(
-        foreign_key='monsterdetail.id', primary_key=True
+        default=None, foreign_key='monsterdetail.id',
     )
     skill_id: Optional[int] = Field(
-        default=None, foreign_key='skill.id', primary_key=True
+        default=None, foreign_key='skill.id',
     )
 
 
@@ -17,25 +18,55 @@ class MonsterBreedingLink(SQLModel, table=True):
     https://github.com/tiangolo/sqlmodel/issues/10#issuecomment-1002835506
     """
     id: Optional[int] = Field(default=None, primary_key=True)
-    child_id: Optional[int] = Field(default=None, foreign_key="monsterdetail.id")
+    child_id: Optional[int] = Field(
+        default=None, foreign_key="monsterdetail.id"
+    )
     child: "MonsterDetail" = Relationship(
-        sa_relationship_kwargs={"primaryjoin": "MonsterBreedingLink.child_id==MonsterDetail.id", "lazy": "joined"}
+        sa_relationship_kwargs={
+            "primaryjoin": "MonsterBreedingLink.child_id==MonsterDetail.id",
+            "lazy": "joined"
+        }
     )
-    pedigree_id: Optional[int] = Field(default=None, foreign_key="monsterdetail.id")
+
+    pedigree_id: Optional[int] = Field(
+        default=None, foreign_key="monsterdetail.id"
+    )
     pedigree: "MonsterDetail" = Relationship(
-        sa_relationship_kwargs={"primaryjoin": "MonsterBreedingLink.pedigree_id==MonsterDetail.id", "lazy": "joined"}
+        sa_relationship_kwargs={
+            "primaryjoin": "MonsterBreedingLink.pedigree_id==MonsterDetail.id",
+            "lazy": "joined"
+        }
     )
-    parent2_id: Optional[int] = Field(default=None, foreign_key="monsterdetail.id")
+
+    parent2_id: Optional[int] = Field(
+        default=None, foreign_key="monsterdetail.id"
+    )
     parent2: "MonsterDetail" = Relationship(
-        sa_relationship_kwargs={"primaryjoin": "MonsterBreedingLink.parent2_id==MonsterDetail.id", "lazy": "joined"}
+        sa_relationship_kwargs={
+            "primaryjoin": "MonsterBreedingLink.parent2_id==MonsterDetail.id",
+            "lazy": "joined"
+        }
     )
-    pedigree_family_id: Optional[int] = Field(default=None, foreign_key="monsterfamily.id")
+
+    pedigree_family_id: Optional[int] = Field(
+        default=None, foreign_key="monsterfamily.id"
+    )
     pedigree_family: "MonsterFamily" = Relationship(
-        sa_relationship_kwargs={"primaryjoin": "MonsterBreedingLink.pedigree_family_id==MonsterFamily.id", "lazy": "joined"}
+        sa_relationship_kwargs={
+            "primaryjoin": "MonsterBreedingLink.pedigree_family_id"
+                           "==MonsterFamily.id",
+            "lazy": "joined"
+        }
     )
-    family2_id: Optional[int] = Field(default=None, foreign_key="monsterfamily.id")
+
+    family2_id: Optional[int] = Field(
+        default=None, foreign_key="monsterfamily.id"
+    )
     family2: "MonsterFamily" = Relationship(
-        sa_relationship_kwargs={"primaryjoin": "MonsterBreedingLink.family2_id==MonsterFamily.id", "lazy": "joined"}
+        sa_relationship_kwargs={
+            "primaryjoin": "MonsterBreedingLink.family2_id==MonsterFamily.id",
+            "lazy": "joined"
+        }
     )
 
 
@@ -117,14 +148,25 @@ class Skill(SQLModel, table=True):
 
 class SkillCombine(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    combo_skill_id: Optional[int] = Field(default=None, foreign_key='skill.id')
+
+    combo_skill_id: Optional[int] = Field(
+        default=None, foreign_key='skill.id'
+    )
     combo_skill: Skill = Relationship(
-        sa_relationship_kwargs={'primaryjoin': 'SkillCombine.combo_skill_id==Skill.id', "lazy": 'joined'}
+        sa_relationship_kwargs={
+            'primaryjoin': 'SkillCombine.combo_skill_id==Skill.id',
+            "lazy": 'joined'
+        }
     )
 
-    needed_skill_id: Optional[int] = Field(default=None, foreign_key='skill.id')
+    needed_skill_id: Optional[int] = Field(
+        default=None, foreign_key='skill.id'
+    )
     needed_skill: Skill = Relationship(
-        sa_relationship_kwargs={'primaryjoin': 'SkillCombine.needed_skill_id==Skill.id', "lazy": 'joined'}
+        sa_relationship_kwargs={
+            'primaryjoin': 'SkillCombine.needed_skill_id==Skill.id',
+            "lazy": 'joined'
+        }
     )
 
 

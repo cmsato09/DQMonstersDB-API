@@ -1,4 +1,4 @@
-﻿ID,item_name,item_category,item_description,price,sell_price,sell_location
+﻿id,item_name,item_category,item_description,price,sell_price,sell_location
 1,Herb,recovery,Restores around 30 HP,10,6,Bazaar shop 1
 2,Lovewater,recovery,Restores around 70 HP,80,60,Bazaar shop 1
 3,Antidote,recovery,Cures poison of one ally,10,8,Bazaar shop 1
