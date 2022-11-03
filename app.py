@@ -43,7 +43,7 @@ def create_breed_combo():
 
 
 def create_monster_skill_link():
-    _insert_data('csv_files/DQM1_monster_family.csv', MonsterSkillLink)
+    _insert_data('csv_files/DQM1_monster_skill_link.csv', MonsterSkillLink)
 
 
 def main():
