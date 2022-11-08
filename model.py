@@ -70,8 +70,7 @@ class MonsterBreedingLink(SQLModel, table=True):
     )
 
 
-class MonsterDetail(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+class MonsterDetailBase(SQLModel):
     new_name: str
     old_name: str
     description: str
@@ -79,9 +78,6 @@ class MonsterDetail(SQLModel, table=True):
     # one-to-many relation. monster in only one family category.
     # many monsters in a family category
     family_id: int = Field(foreign_key='monsterfamily.id')
-    skills: List['Skill'] = Relationship(
-        back_populates='monsters', link_model=MonsterSkillLink
-    )
 
     """
     children: List['MonsterFamily'] = Relationship(
@@ -99,8 +95,20 @@ class MonsterDetail(SQLModel, table=True):
     """
 
 
-class MonsterFamily(SQLModel, table=True):
+class MonsterDetail(MonsterDetailBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+
+    family: List['MonsterFamily'] = Relationship(back_populates='monsters')
+    skills: List['Skill'] = Relationship(
+        back_populates='monsters', link_model=MonsterSkillLink
+    )
+
+
+class MonsterDetailRead(MonsterDetailBase):
+    id: int
+
+
+class MonsterFamilyBase(SQLModel):
     family_eng: str
 
     """
@@ -117,6 +125,23 @@ class MonsterFamily(SQLModel, table=True):
         link_model=MonsterBreedingLink
     )
     """
+
+
+class MonsterFamily(MonsterFamilyBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    monsters: List[MonsterDetail] = Relationship(back_populates='family')
+
+
+class MonsterFamilyRead(MonsterFamilyBase):
+    id: int
+
+
+class MonsterDetailWithFamily(MonsterDetailRead):
+    family: Optional[MonsterFamilyRead]
+
+
+class MonsterFamilyReadWithMonsterDetail(MonsterFamilyRead):
+    monsters: List[MonsterDetailRead] = []
 
 
 class Skill(SQLModel, table=True):
