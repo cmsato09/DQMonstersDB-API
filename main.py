@@ -19,12 +19,11 @@ def get_session():  # place in database.py?
 def root():
     return {"message": "Hello World!!"}
 
-# for some reason, can't add "response_model=List[MonsterDetailRead]" to
-# decorator without getting an internal server error
-@app.get("/dqm1/monsters")
+
+@app.get("/dqm1/monsters", response_model=List[MonsterDetailWithFamily])
 def read_monsters(*, session: Session = Depends(get_session),
                   family: Union[int, None] = None):
-    monsters = select(MonsterDetail, MonsterFamily).join(MonsterFamily)
+    monsters = select(MonsterDetail)
     if family:
         monsters = monsters.where(MonsterDetail.family_id == family)
     monsters = session.exec(monsters).all()
