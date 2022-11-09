@@ -55,13 +55,12 @@ def read_skills(
         category: Union[SkillCategory, None] = None,
         skill_family: Union[SkillFamily, None] = None):
     skills = select(Skill)
-      if category:
-          skills = skills.where(Skill.category_type == category)
-      if skill_family:
-          skills = skills.where(Skill.family_type == skill_family)
-      skills = session.exec(skills).all()
+    if category:
+        skills = skills.where(Skill.category_type == category)
+    if skill_family:
+        skills = skills.where(Skill.family_type == skill_family)
+    skills = session.exec(skills).all()
     return skills
-
 
 
 @app.get("/dqm1/skills/{skill_id}")

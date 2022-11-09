@@ -284,4 +284,3 @@ class SkillFamily(str, Enum):
     status_recovery = "Status recovery"
     revive = "Revive"
     map = "Map"
-
