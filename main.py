@@ -1,11 +1,13 @@
+from database import engine
+from fastapi import Depends, FastAPI, HTTPException
+from sqlmodel import Session, select
 from typing import Optional, Union, List
 
-from fastapi import Depends, FastAPI, HTTPException
 from model import Item, MonsterDetail, MonsterBreedingLink, Skill, \
     MonsterFamily, MonsterDetailRead, MonsterDetailWithFamily, \
-    MonsterFamilyReadWithMonsterDetail
-from database import engine
-from sqlmodel import Session, select
+    MonsterFamilyReadWithMonsterDetail, SkillCategory, SkillFamily, \
+    ItemCategory, ItemSellLocation
+
 
 app = FastAPI()
 
@@ -48,9 +50,18 @@ def read_family(*, session: Session = Depends(get_session), family_id: int):
 
 
 @app.get("/dqm1/skills")
-def read_skills(*, session: Session = Depends(get_session)):
-    skills = session.exec(select(Skill)).all()
+def read_skills(
+        *, session: Session = Depends(get_session), 
+        category: Union[SkillCategory, None] = None,
+        skill_family: Union[SkillFamily, None] = None):
+    skills = select(Skill)
+      if category:
+          skills = skills.where(Skill.category_type == category)
+      if skill_family:
+          skills = skills.where(Skill.family_type == skill_family)
+      skills = session.exec(skills).all()
     return skills
+
 
 
 @app.get("/dqm1/skills/{skill_id}")
@@ -61,18 +72,22 @@ def read_skill(*, session: Session = Depends(get_session), skill_id: int):
     return skill
 
 
-# @app.get("/dqm1/items")
-# def read_items(category: Optional[?] = None):
-#     with Session(engine) as session:
-#         items = select(Item)
-#         if category:
-#             items = items.where(Item.item_category == category)
-#         items = session.exec(items).all()
-#         return items
+@app.get("/dqm1/items")
+def read_items(
+        category: Union[ItemCategory, None] = None,
+        selllocation: Union[ItemSellLocation, None] = None):
+    with Session(engine) as session:
+        items = select(Item)
+        if category:
+            items = items.where(Item.item_category == category)
+        if selllocation:
+            items = items.where(Item.sell_location == selllocation)
+        items = session.exec(items).all()
+        return items
 
 
 @app.get("/dqm1/items/{item_id}")
-def read_skill(*, session: Session = Depends(get_session), item_id: int):
+def read_item(*, session: Session = Depends(get_session), item_id: int):
     item = session.get(Item, item_id)
     if not item:
         raise HTTPException(status_code=404, detail="Item not found")
