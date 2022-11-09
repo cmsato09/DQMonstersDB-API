@@ -1,98 +1,14 @@
-from enum import Enum
 from typing import Optional, Union
 
 from fastapi import FastAPI, HTTPException
-from model import Item, MonsterDetail, Skill, MonsterFamily
+from model import Item, MonsterDetail, Skill, MonsterFamily, SkillCategory, \
+    SkillFamily, ItemCategory, ItemSellLocation
 from database import engine
 from sqlmodel import Session, select
 
 app = FastAPI()
 
 
-"""
-Start of ENUMERATE Class for Swagger UI dropdown menu
-https://fastapi.tiangolo.com/tutorial/path-params/#predefined-values
-Question for these enumerate class -- should these classes be in main.py, or 
-should it be a subclass in the Item class in model.py?
-"""
-class ItemCategory(str, Enum):
-    """
-    Create dropdown menu for read_items() in Swagger UI to filter by
-    item_category. Works for predefined choices in item_category.
-    For the Item class model
-    """
-    recovery = "recovery"
-    meat = "meat"
-    staff = "staff"
-    seed = "seed"
-    book = "book"
-    dungeon_use = "dungeon use"
-
-
-class ItemSellLocation(str, Enum):
-    """
-    Create dropdown menu for read_items() in Swagger UI to filter by
-    sell_location. For Item class model
-    """
-    bazzar_shop_1 = "Bazaar shop 1"
-    bazzar_shop_2 = "Bazaar shop 2"
-    bazzar_shop_3 = "Bazaar shop 3"
-    bazzar_shop_4 = "Bazaar shop 4"
-    field_shop = "Field shop"
-    found_in_field = "found in field"
-
-
-class SkillCategory(str, Enum):
-    """
-    Create dropdown menu for read_skill() in Swagger UI to filter by
-    category_type. Works for predefined choices in the Skill model class
-    """
-    attack = "Attack"
-    support = "Support"
-    recovery = "Recovery"
-
-
-class SkillFamily(str, Enum):
-    """
-    Create dropdown menu for read_skill() in Swagger UI to filter by
-    family_type. Works for predefined choices in the Skill model class
-    """
-    frizz = "Frizz"
-    sizz = "Sizz"
-    bang = "Bang"
-    woosh = "Woosh"
-    zap = "Zap"
-    crack = "Crack"
-    whack = "Whack"
-    kamikazee = "Kamikazee"
-    magic_burst = "Magic Burst"
-    help = "Help"
-    fire = "Fire"
-    ice = "Ice"
-    poison = "Poison"
-    paralyze = "Paralyze"
-    sleep = "Sleep"
-    gigaslash = "Gigaslash"
-    attack = "Attack"
-    dazzle = "Dazzle"
-    drain_magic = "Drain Magic"
-    fuddle = "Fuddle"
-    sap = "Sap"
-    curse = "Curse"
-    decelerate = "Decelerate"
-    ban_dance = "Ban Dance"
-    gobstop = "Gobstop"
-    lose_turn = "Lose a turn"
-    defense = "Defense"
-    status_support = "Status support"
-    summon = "Summon"
-    heal = "Heal"
-    status_recovery = "Status recovery"
-    revive = "Revive"
-    map = "Map"
-
-
-# Start of actual app pages
 @app.get("/")
 def root():
     return {"message": "Hello World!!"}
@@ -155,7 +71,7 @@ def read_items(
 
 
 @app.get("/dqm1/items/{item_id}")
-def read_skill(item_id: int):
+def read_item(item_id: int):
     with Session(engine) as session:
         item = session.get(Item, item_id)
         if not item:
