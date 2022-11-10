@@ -25,7 +25,8 @@ def create_monster_skill_table():
 
 def main(monster_skill_table, skill_to_id):
     """
-    Creates csv file with monster_id paired with skill_id
+    Creates csv file data with monster_id paired with skill_id for
+    MonsterSkillLink class model
     Data gathered from two different csv files where one file has a list of
     monster_id that knows a list of skills and a list of skill_id with
     corresponding skill names
