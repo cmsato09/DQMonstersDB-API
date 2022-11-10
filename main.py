@@ -6,8 +6,7 @@ from typing import Optional, Union, List
 from model import Item, MonsterDetail, MonsterBreedingLink, Skill, \
     MonsterFamily, MonsterDetailRead, MonsterDetailWithFamily, \
     MonsterFamilyReadWithMonsterDetail, SkillCategory, SkillFamily, \
-    ItemCategory, ItemSellLocation
-
+    ItemCategory, ItemSellLocation, SkillRead, MonsterDetailSkill
 
 app = FastAPI()
 
@@ -40,6 +39,14 @@ def read_monster(*, session: Session = Depends(get_session), monster_id: int):
     return monster
 
 
+@app.get("/dqm1/monstersandskill/{monster_id}", response_model=MonsterDetailSkill)
+def read_monster(*, session: Session = Depends(get_session), monster_id: int):
+    monster = session.get(MonsterDetail, monster_id)
+    if not monster:
+        raise HTTPException(status_code=404, detail="Monster not found")
+    return monster
+
+
 @app.get('/dqm1/family/{family_id}',
          response_model=MonsterFamilyReadWithMonsterDetail)
 def read_family(*, session: Session = Depends(get_session), family_id: int):
@@ -63,7 +70,7 @@ def read_skills(
     return skills
 
 
-@app.get("/dqm1/skills/{skill_id}")
+@app.get("/dqm1/skills/{skill_id}", response_model=SkillRead)
 def read_skill(*, session: Session = Depends(get_session), skill_id: int):
     skill = session.get(Skill, skill_id)
     if not skill:

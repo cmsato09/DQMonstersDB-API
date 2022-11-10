@@ -139,14 +139,15 @@ class MonsterFamilyRead(MonsterFamilyBase):
 
 class MonsterDetailWithFamily(MonsterDetailRead):
     family: Optional[MonsterFamilyRead]
+    # skills: Optional['SkillRead']
+
 
 
 class MonsterFamilyReadWithMonsterDetail(MonsterFamilyRead):
     monsters: List[MonsterDetailRead] = []
 
 
-class Skill(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+class SkillBase(SQLModel):
     category_type: str
     family_type: str
     new_name: Optional[str] = Field(default=None)
@@ -161,6 +162,10 @@ class Skill(SQLModel, table=True):
     required_speed: Optional[int] = None
     required_intelligence: Optional[int] = None
 
+
+class Skill(SkillBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+
     upgrade_to: Optional[int] = Field(
         foreign_key='skill.id', default=None,
     )
@@ -170,6 +175,19 @@ class Skill(SQLModel, table=True):
     monsters: List[MonsterDetail] = Relationship(
         back_populates='skills', link_model=MonsterSkillLink
     )
+
+
+class SkillRead(SkillBase):
+    id: int
+
+
+class SkillReadWithMonster(SkillRead):
+    monsters: Optional[MonsterDetailRead]
+
+
+class MonsterDetailSkill(MonsterDetailRead):
+    family: Optional[MonsterFamilyRead]
+    skills: List[SkillRead] = []
 
 
 class SkillCombine(SQLModel, table=True):
