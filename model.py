@@ -142,7 +142,6 @@ class MonsterDetailWithFamily(MonsterDetailRead):
     # skills: Optional['SkillRead']
 
 
-
 class MonsterFamilyReadWithMonsterDetail(MonsterFamilyRead):
     monsters: List[MonsterDetailRead] = []
 
@@ -166,12 +165,31 @@ class SkillBase(SQLModel):
 class Skill(SkillBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
 
-    upgrade_to: Optional[int] = Field(
+    upgrade_to_id: Optional[int] = Field(
+        foreign_key='skill.id',  # refers to database table name
+        default=None,
+    )
+    upgrade_to: Optional['Skill'] = Relationship(
+        back_populates='stronger_skill',
+        sa_relationship_kwargs=dict(
+            remote_side='Skill.id'  # refers to this Skill table class
+        )
+    )
+
+    upgrade_from_id: Optional[int] = Field(
         foreign_key='skill.id', default=None,
     )
-    upgrade_from: Optional[int] = Field(
-        foreign_key='skill.id', default=None,
-    )
+    # upgrade_from: Optional['Skill'] = Relationship(
+    #     back_populates='weaker_skill',
+    #     sa_relationship_kwargs=dict(
+    #         remote_side='Skill.id'  # refers to this Skill table class
+    #     )
+    # )
+
+    # self-referential backpopulates to variables
+    stronger_skill: List['Skill'] = Relationship(back_populates='upgrade_to')
+    # weaker_skill: List['Skill'] = Relationship(back_populates='upgrade_from')
+
     monsters: List[MonsterDetail] = Relationship(
         back_populates='skills', link_model=MonsterSkillLink
     )
