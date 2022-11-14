@@ -176,9 +176,9 @@ class Skill(SkillBase, table=True):
         )
     )
 
-    upgrade_from_id: Optional[int] = Field(
-        foreign_key='skill.id', default=None,
-    )
+    # upgrade_from_id: Optional[int] = Field(
+    #     foreign_key='skill.id', default=None,
+    # )
     # upgrade_from: Optional['Skill'] = Relationship(
     #     back_populates='weaker_skill',
     #     sa_relationship_kwargs=dict(
