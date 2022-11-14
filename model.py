@@ -197,10 +197,10 @@ class Skill(SkillBase, table=True):
 
 class SkillRead(SkillBase):
     id: int
+    upgrade_to: Optional[Skill]
 
-
-class SkillSelfRef(SkillRead):
-    upgrade_to: Optional[SkillRead]
+# class SkillSelfRef(SkillRead):
+#     upgrade_to: Optional[SkillRead]
 
 
 class SkillReadWithMonster(SkillRead):
