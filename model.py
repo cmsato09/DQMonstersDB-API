@@ -199,6 +199,10 @@ class SkillRead(SkillBase):
     id: int
 
 
+class SkillSelfRef(SkillRead):
+    upgrade_to: Optional[SkillRead]
+
+
 class SkillReadWithMonster(SkillRead):
     monsters: Optional[MonsterDetailRead]
 
