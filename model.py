@@ -180,19 +180,15 @@ class Skill(SkillBase, table=True):
     upgrade_to: Optional['Skill'] = Relationship(
         back_populates='stronger_skill',
         sa_relationship_kwargs=dict(
-            # foreign_keys=["Skill.upgrade_to_id"],
-            primaryjoin='Skill.upgrade_to_id==Skill.id',
-            secondaryjoin='Skill.upgrade_from_id==SKill.id',
-            # remote_side='Skill.id'  # refers to this Skill table class
+            # foreign_keys="[Skill.upgrade_to_id]",
+            remote_side='Skill.id'  # refers to this Skill table class
         )
     )
     upgrade_from: Optional['Skill'] = Relationship(
         back_populates='weaker_skill',
         sa_relationship_kwargs=dict(
-            # foreign_keys=["Skill.upgrade_from_id"],
-            primaryjoin='Skill.upgrade_from_id==Skill.id',
-            secondaryjoin='Skill.upgrade_to_id==SKill.id',
-            # remote_side='Skill.id'  # refers to this Skill table class
+            # foreign_keys="[Skill.upgrade_from_id]",
+            remote_side='Skill.id'  # refers to this Skill table class
         )
     )
     # self-referential backpopulates to variables
