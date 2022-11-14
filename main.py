@@ -6,7 +6,7 @@ from typing import Optional, Union, List
 from model import Item, MonsterDetail, MonsterBreedingLink, Skill, \
     MonsterFamily, MonsterDetailRead, MonsterDetailWithFamily, \
     MonsterFamilyReadWithMonsterDetail, SkillCategory, SkillFamily, \
-    ItemCategory, ItemSellLocation, SkillRead, MonsterDetailSkill
+    ItemCategory, ItemSellLocation, SkillReadWithUpgradeSkill, MonsterDetailSkill
 
 app = FastAPI()
 
@@ -58,7 +58,7 @@ def read_family(*, session: Session = Depends(get_session), family_id: int):
 
 @app.get("/dqm1/skills")
 def read_skills(
-        *, session: Session = Depends(get_session), 
+        *, session: Session = Depends(get_session),
         category: Union[SkillCategory, None] = None,
         skill_family: Union[SkillFamily, None] = None):
     skills = select(Skill)
@@ -70,7 +70,7 @@ def read_skills(
     return skills
 
 
-@app.get("/dqm1/skills/{skill_id}", response_model=SkillRead)
+@app.get("/dqm1/skills/{skill_id}", response_model=SkillReadWithUpgradeSkill)
 def read_skill(*, session: Session = Depends(get_session), skill_id: int):
     skill = session.get(Skill, skill_id)
     if not skill:
