@@ -210,7 +210,7 @@ class SkillRead(SkillBase):
 
 
 class SkillReadWithUpgradeSkill(SkillRead):
-    uprade_to: Optional[SkillRead]
+    upgrade_to: Optional[SkillRead]
 
 
 class SkillReadWithMonster(SkillRead):
