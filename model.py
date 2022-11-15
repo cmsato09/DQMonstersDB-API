@@ -170,25 +170,33 @@ class Skill(SkillBase, table=True):
         default=None,
     )
     upgrade_to: Optional['Skill'] = Relationship(
-        back_populates='stronger_skill',
+        # back_populates='stronger_skill',
         sa_relationship_kwargs=dict(
+            primaryjoin='Skill.upgrade_to_id==Skill.id',
+            lazy='joined',
             remote_side='Skill.id'  # refers to this Skill table class
         )
     )
 
-    # upgrade_from_id: Optional[int] = Field(
-    #     foreign_key='skill.id', default=None,
-    # )
-    # upgrade_from: Optional['Skill'] = Relationship(
-    #     back_populates='weaker_skill',
-    #     sa_relationship_kwargs=dict(
-    #         remote_side='Skill.id'  # refers to this Skill table class
-    #     )
-    # )
+    upgrade_from_id: Optional[int] = Field(
+        foreign_key='skill.id', default=None,
+    )
+    upgrade_from: Optional['Skill'] = Relationship(
+        # back_populates='weaker_skill',
+        sa_relationship_kwargs=dict(
+            primaryjoin='Skill.upgrade_from_id==Skill.id',
+            lazy='joined',
+            remote_side='Skill.id'  # refers to this Skill table class
+        )
+    )
 
     # self-referential backpopulates to variables
-    stronger_skill: List['Skill'] = Relationship(back_populates='upgrade_to')
-    # weaker_skill: List['Skill'] = Relationship(back_populates='upgrade_from')
+    # stronger_skill: List['Skill'] = Relationship(
+    #     back_populates='upgrade_to',
+    # )
+    # weaker_skill: List['Skill'] = Relationship(
+    #     back_populates='upgrade_from',
+    # )
 
     monsters: List[MonsterDetail] = Relationship(
         back_populates='skills', link_model=MonsterSkillLink
@@ -198,9 +206,7 @@ class Skill(SkillBase, table=True):
 class SkillRead(SkillBase):
     id: int
     upgrade_to: Optional[Skill]
-
-# class SkillSelfRef(SkillRead):
-#     upgrade_to: Optional[SkillRead]
+    upgrade_from: Optional[Skill]
 
 
 class SkillReadWithMonster(SkillRead):
