@@ -139,7 +139,6 @@ class MonsterFamilyRead(MonsterFamilyBase):
 
 class MonsterDetailWithFamily(MonsterDetailRead):
     family: Optional[MonsterFamilyRead]
-    # skills: Optional['SkillRead']
 
 
 class MonsterFamilyReadWithMonsterDetail(MonsterFamilyRead):
@@ -170,7 +169,6 @@ class Skill(SkillBase, table=True):
         default=None,
     )
     upgrade_to: Optional['Skill'] = Relationship(
-        # back_populates='stronger_skill',
         sa_relationship_kwargs=dict(
             primaryjoin='Skill.upgrade_to_id==Skill.id',
             lazy='joined',
@@ -182,21 +180,12 @@ class Skill(SkillBase, table=True):
         foreign_key='skill.id', default=None,
     )
     upgrade_from: Optional['Skill'] = Relationship(
-        # back_populates='weaker_skill',
         sa_relationship_kwargs=dict(
             primaryjoin='Skill.upgrade_from_id==Skill.id',
             lazy='joined',
             remote_side='Skill.id'  # refers to this Skill table class
         )
     )
-
-    # self-referential backpopulates to variables
-    # stronger_skill: List['Skill'] = Relationship(
-    #     back_populates='upgrade_to',
-    # )
-    # weaker_skill: List['Skill'] = Relationship(
-    #     back_populates='upgrade_from',
-    # )
 
     monsters: List[MonsterDetail] = Relationship(
         back_populates='skills', link_model=MonsterSkillLink
@@ -251,10 +240,13 @@ class Item(SQLModel, table=True):
     sell_price: Optional[int] = Field(default=None)
     sell_location: str
 
+
 """
 Start of ENUMERATE Class for Swagger UI dropdown menu
 https://fastapi.tiangolo.com/tutorial/path-params/#predefined-values
 """
+
+
 class ItemCategory(str, Enum):
     """
     Create dropdown menu for read_items() in Swagger UI to filter by
