@@ -5,11 +5,11 @@ from typing import Optional, Union, List
 
 from model import Item, MonsterDetail, MonsterBreedingLink, Skill, \
     MonsterFamily, MonsterDetailRead, MonsterDetailWithFamily, \
-    MonsterFamilyReadWithMonsterDetail, SkillCategory, SkillFamily, \
-    ItemCategory, ItemSellLocation, SkillRead, MonsterDetailSkill, \
+    MonsterFamilyReadWithMonsterDetail, SkillRead, MonsterDetailSkill, \
     MonsterBreedingLinkReadWithParentsAndFamilies, \
     SkillCombineRead, SkillCombine, SkillUpgradeRead
-
+from model_enum import SkillCategory, SkillFamily, ItemCategory, \
+    ItemSellLocation
 
 app = FastAPI()
 
