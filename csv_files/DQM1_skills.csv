@@ -1,4 +1,4 @@
-﻿ID,category_type,family_type,new_name,old_name,description,mp_cost,required_level,required_hp,required_mp,required_attack,required_defense,required_speed,required_intelligence,upgrade_to,upgrade_from
+﻿ID,category_type,family_type,new_name,old_name,description,mp_cost,required_level,required_hp,required_mp,required_attack,required_defense,required_speed,required_intelligence,upgrade_to_id,upgrade_from_id
 1,Attack,Frizz,Frizz,Blaze,Inflict damage with small fireball ,2,2,,7,,,,20,2,
 2,Attack,Frizz,Frizzle,Blazemore,Inflict damage with giant fireball,4,13,,46,,,,64,3,1
 3,Attack,Frizz,Kafrizzle,Blazemost,Inflicts damage with pillars of fire,10,28,,112,,,,146,,2

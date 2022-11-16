@@ -13,24 +13,36 @@ class MonsterSkillLink(SQLModel, table=True):
     )
 
 
-class MonsterBreedingLink(SQLModel, table=True):
+class MonsterBreedingLinkBase(SQLModel):
+    """TODO: move stuff from MonsterBreedingLink here"""
+    child_id: Optional[int] = Field(
+        default=None, foreign_key="monsterdetail.id"
+    )
+    pedigree_id: Optional[int] = Field(
+        default=None, foreign_key="monsterdetail.id"
+    )
+    parent2_id: Optional[int] = Field(
+        default=None, foreign_key="monsterdetail.id"
+    )
+    pedigree_family_id: Optional[int] = Field(
+        default=None, foreign_key="monsterfamily.id"
+    )
+    family2_id: Optional[int] = Field(
+        default=None, foreign_key="monsterfamily.id"
+    )
+
+
+class MonsterBreedingLink(MonsterBreedingLinkBase, table=True):
     """
     This helped:
     https://github.com/tiangolo/sqlmodel/issues/10#issuecomment-1002835506
     """
     id: Optional[int] = Field(default=None, primary_key=True)
-    child_id: Optional[int] = Field(
-        default=None, foreign_key="monsterdetail.id"
-    )
     child: "MonsterDetail" = Relationship(
         sa_relationship_kwargs={
             "primaryjoin": "MonsterBreedingLink.child_id==MonsterDetail.id",
             "lazy": "joined"
         }
-    )
-
-    pedigree_id: Optional[int] = Field(
-        default=None, foreign_key="monsterdetail.id"
     )
     pedigree: "MonsterDetail" = Relationship(
         sa_relationship_kwargs={
@@ -38,19 +50,11 @@ class MonsterBreedingLink(SQLModel, table=True):
             "lazy": "joined"
         }
     )
-
-    parent2_id: Optional[int] = Field(
-        default=None, foreign_key="monsterdetail.id"
-    )
     parent2: "MonsterDetail" = Relationship(
         sa_relationship_kwargs={
             "primaryjoin": "MonsterBreedingLink.parent2_id==MonsterDetail.id",
             "lazy": "joined"
         }
-    )
-
-    pedigree_family_id: Optional[int] = Field(
-        default=None, foreign_key="monsterfamily.id"
     )
     pedigree_family: "MonsterFamily" = Relationship(
         sa_relationship_kwargs={
@@ -59,16 +63,16 @@ class MonsterBreedingLink(SQLModel, table=True):
             "lazy": "joined"
         }
     )
-
-    family2_id: Optional[int] = Field(
-        default=None, foreign_key="monsterfamily.id"
-    )
     family2: "MonsterFamily" = Relationship(
         sa_relationship_kwargs={
             "primaryjoin": "MonsterBreedingLink.family2_id==MonsterFamily.id",
             "lazy": "joined"
         }
     )
+
+
+class MonsterBreedingLinkRead(MonsterBreedingLinkBase):
+    id: int
 
 
 class MonsterDetailBase(SQLModel):
@@ -140,13 +144,18 @@ class MonsterFamilyRead(MonsterFamilyBase):
 class MonsterDetailWithFamily(MonsterDetailRead):
     family: Optional[MonsterFamilyRead]
 
-
 class MonsterFamilyReadWithMonsterDetail(MonsterFamilyRead):
     monsters: List[MonsterDetailRead] = []
 
 
-class Skill(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+class MonsterBreedingLinkReadWithParentsAndFamilies(MonsterBreedingLinkRead):
+    pedigree: Optional[MonsterDetailRead]
+    parent2: Optional[MonsterDetailRead]
+    pedigree_family: Optional[MonsterFamilyRead]
+    family2: Optional[MonsterFamilyRead]
+
+
+class SkillBase(SQLModel):
     category_type: str
     family_type: str
     new_name: Optional[str] = Field(default=None)
@@ -161,23 +170,68 @@ class Skill(SQLModel, table=True):
     required_speed: Optional[int] = None
     required_intelligence: Optional[int] = None
 
-    upgrade_to: Optional[int] = Field(
+
+class Skill(SkillBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+
+    upgrade_to_id: Optional[int] = Field(
+        foreign_key='skill.id',  # refers to database table name
+        default=None,
+    )
+    upgrade_to: Optional['Skill'] = Relationship(
+        sa_relationship_kwargs=dict(
+            primaryjoin='Skill.upgrade_to_id==Skill.id',
+            lazy='joined',
+            remote_side='Skill.id'  # refers to this Skill table class
+        )
+    )
+
+    upgrade_from_id: Optional[int] = Field(
         foreign_key='skill.id', default=None,
     )
-    upgrade_from: Optional[int] = Field(
-        foreign_key='skill.id', default=None,
+    upgrade_from: Optional['Skill'] = Relationship(
+        sa_relationship_kwargs=dict(
+            primaryjoin='Skill.upgrade_from_id==Skill.id',
+            lazy='joined',
+            remote_side='Skill.id'  # refers to this Skill table class
+        )
     )
+
     monsters: List[MonsterDetail] = Relationship(
         back_populates='skills', link_model=MonsterSkillLink
     )
 
 
-class SkillCombine(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+class SkillRead(SkillBase):
+    id: int
 
+
+class SkillUpgradeRead(SkillRead):
+    upgrade_to: Optional[Skill]
+    upgrade_from: Optional[Skill]
+
+
+class SkillReadWithMonster(SkillRead):
+    monsters: Optional[MonsterDetailRead]
+
+
+class MonsterDetailSkill(MonsterDetailRead):
+    family: Optional[MonsterFamilyRead]
+    skills: List[SkillRead] = []
+
+
+class SkillCombineBase(SQLModel):
     combo_skill_id: Optional[int] = Field(
         default=None, foreign_key='skill.id'
     )
+    needed_skill_id: Optional[int] = Field(
+        default=None, foreign_key='skill.id'
+    )
+
+
+class SkillCombine(SkillCombineBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+
     combo_skill: Skill = Relationship(
         sa_relationship_kwargs={
             'primaryjoin': 'SkillCombine.combo_skill_id==Skill.id',
@@ -185,15 +239,17 @@ class SkillCombine(SQLModel, table=True):
         }
     )
 
-    needed_skill_id: Optional[int] = Field(
-        default=None, foreign_key='skill.id'
-    )
     needed_skill: Skill = Relationship(
         sa_relationship_kwargs={
             'primaryjoin': 'SkillCombine.needed_skill_id==Skill.id',
             "lazy": 'joined'
         }
     )
+
+
+class SkillCombineRead(SkillCombineBase):
+    id: int
+    needed_skill: Optional[SkillRead]
 
 
 class Item(SQLModel, table=True):
@@ -205,10 +261,13 @@ class Item(SQLModel, table=True):
     sell_price: Optional[int] = Field(default=None)
     sell_location: str
 
+
 """
 Start of ENUMERATE Class for Swagger UI dropdown menu
 https://fastapi.tiangolo.com/tutorial/path-params/#predefined-values
 """
+
+
 class ItemCategory(str, Enum):
     """
     Create dropdown menu for read_items() in Swagger UI to filter by
