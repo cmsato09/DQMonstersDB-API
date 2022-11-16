@@ -13,24 +13,36 @@ class MonsterSkillLink(SQLModel, table=True):
     )
 
 
-class MonsterBreedingLink(SQLModel, table=True):
+class MonsterBreedingLinkBase(SQLModel):
+    """TODO: move stuff from MonsterBreedingLink here"""
+    child_id: Optional[int] = Field(
+        default=None, foreign_key="monsterdetail.id"
+    )
+    pedigree_id: Optional[int] = Field(
+        default=None, foreign_key="monsterdetail.id"
+    )
+    parent2_id: Optional[int] = Field(
+        default=None, foreign_key="monsterdetail.id"
+    )
+    pedigree_family_id: Optional[int] = Field(
+        default=None, foreign_key="monsterfamily.id"
+    )
+    family2_id: Optional[int] = Field(
+        default=None, foreign_key="monsterfamily.id"
+    )
+
+
+class MonsterBreedingLink(MonsterBreedingLinkBase, table=True):
     """
     This helped:
     https://github.com/tiangolo/sqlmodel/issues/10#issuecomment-1002835506
     """
     id: Optional[int] = Field(default=None, primary_key=True)
-    child_id: Optional[int] = Field(
-        default=None, foreign_key="monsterdetail.id"
-    )
     child: "MonsterDetail" = Relationship(
         sa_relationship_kwargs={
             "primaryjoin": "MonsterBreedingLink.child_id==MonsterDetail.id",
             "lazy": "joined"
         }
-    )
-
-    pedigree_id: Optional[int] = Field(
-        default=None, foreign_key="monsterdetail.id"
     )
     pedigree: "MonsterDetail" = Relationship(
         sa_relationship_kwargs={
@@ -38,19 +50,11 @@ class MonsterBreedingLink(SQLModel, table=True):
             "lazy": "joined"
         }
     )
-
-    parent2_id: Optional[int] = Field(
-        default=None, foreign_key="monsterdetail.id"
-    )
     parent2: "MonsterDetail" = Relationship(
         sa_relationship_kwargs={
             "primaryjoin": "MonsterBreedingLink.parent2_id==MonsterDetail.id",
             "lazy": "joined"
         }
-    )
-
-    pedigree_family_id: Optional[int] = Field(
-        default=None, foreign_key="monsterfamily.id"
     )
     pedigree_family: "MonsterFamily" = Relationship(
         sa_relationship_kwargs={
@@ -59,16 +63,16 @@ class MonsterBreedingLink(SQLModel, table=True):
             "lazy": "joined"
         }
     )
-
-    family2_id: Optional[int] = Field(
-        default=None, foreign_key="monsterfamily.id"
-    )
     family2: "MonsterFamily" = Relationship(
         sa_relationship_kwargs={
             "primaryjoin": "MonsterBreedingLink.family2_id==MonsterFamily.id",
             "lazy": "joined"
         }
     )
+
+
+class MonsterBreedingLinkRead(MonsterBreedingLinkBase):
+    id: int
 
 
 class MonsterDetailBase(SQLModel):
@@ -140,9 +144,15 @@ class MonsterFamilyRead(MonsterFamilyBase):
 class MonsterDetailWithFamily(MonsterDetailRead):
     family: Optional[MonsterFamilyRead]
 
-
 class MonsterFamilyReadWithMonsterDetail(MonsterFamilyRead):
     monsters: List[MonsterDetailRead] = []
+
+
+class MonsterBreedingLinkReadWithParentsAndFamilies(MonsterBreedingLinkRead):
+    pedigree: Optional[MonsterDetailRead]
+    parent2: Optional[MonsterDetailRead]
+    pedigree_family: Optional[MonsterFamilyRead]
+    family2: Optional[MonsterFamilyRead]
 
 
 class SkillBase(SQLModel):
