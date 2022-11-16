@@ -84,21 +84,6 @@ class MonsterDetailBase(SQLModel):
     # many monsters in a family category
     family_id: int = Field(foreign_key='monsterfamily.id')
 
-    """
-    children: List['MonsterFamily'] = Relationship(
-        back_populates="families",
-        link_model=MonsterBreedingLink
-    )
-    pedigrees: List['MonsterFamily'] = Relationship(
-        back_populates="pedigree_families",
-        link_model=MonsterBreedingLink
-    )
-    monster_parents: List['MonsterFamily'] = Relationship(
-        back_populates="secondary_families",
-        link_model=MonsterBreedingLink
-    )
-    """
-
 
 class MonsterDetail(MonsterDetailBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -116,21 +101,6 @@ class MonsterDetailRead(MonsterDetailBase):
 class MonsterFamilyBase(SQLModel):
     family_eng: str
 
-    """
-    families: List[MonsterDetail] = Relationship(
-        back_populates="children",
-        link_model=MonsterBreedingLink
-    )
-    pedigree_families: List[MonsterDetail] = Relationship(
-        back_populates="pedigrees",
-        link_model=MonsterBreedingLink
-    )
-    secondary_families: List[MonsterDetail] = Relationship(
-        back_populates="monster_parents",
-        link_model=MonsterBreedingLink
-    )
-    """
-
 
 class MonsterFamily(MonsterFamilyBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -143,6 +113,7 @@ class MonsterFamilyRead(MonsterFamilyBase):
 
 class MonsterDetailWithFamily(MonsterDetailRead):
     family: Optional[MonsterFamilyRead]
+
 
 class MonsterFamilyReadWithMonsterDetail(MonsterFamilyRead):
     monsters: List[MonsterDetailRead] = []
