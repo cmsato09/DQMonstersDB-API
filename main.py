@@ -7,7 +7,9 @@ from model import Item, MonsterDetail, MonsterBreedingLink, Skill, \
     MonsterFamily, MonsterDetailRead, MonsterDetailWithFamily, \
     MonsterFamilyReadWithMonsterDetail, SkillCategory, SkillFamily, \
     ItemCategory, ItemSellLocation, SkillRead, MonsterDetailSkill, \
-    MonsterBreedingLinkReadWithParentsAndFamilies
+    MonsterBreedingLinkReadWithParentsAndFamilies, \
+    SkillCombineRead, SkillCombine, SkillUpgradeRead
+
 
 app = FastAPI()
 
@@ -71,11 +73,18 @@ def read_skills(
     return skills
 
 
-@app.get("/dqm1/skills/{skill_id}", response_model=SkillRead)
+@app.get("/dqm1/skills/{skill_id}", response_model=SkillUpgradeRead)
 def read_skill(*, session: Session = Depends(get_session), skill_id: int):
     skill = session.get(Skill, skill_id)
     if not skill:
         raise HTTPException(status_code=404, detail="Skill not found")
+    return skill
+
+
+@app.get("/dqm1/skillcombine/{skill_id}", response_model=List[SkillCombineRead])
+def get_skill_combo(*, session: Session = Depends(get_session), skill_id: int):
+    query = select(SkillCombine).where(SkillCombine.combo_skill_id == skill_id)
+    skill = session.exec(query).all()
     return skill
 
 

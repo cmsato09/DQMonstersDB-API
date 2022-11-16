@@ -143,8 +143,6 @@ class MonsterFamilyRead(MonsterFamilyBase):
 
 class MonsterDetailWithFamily(MonsterDetailRead):
     family: Optional[MonsterFamilyRead]
-    # skills: Optional['SkillRead']
-
 
 class MonsterFamilyReadWithMonsterDetail(MonsterFamilyRead):
     monsters: List[MonsterDetailRead] = []
@@ -176,12 +174,29 @@ class SkillBase(SQLModel):
 class Skill(SkillBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
 
-    upgrade_to: Optional[int] = Field(
+    upgrade_to_id: Optional[int] = Field(
+        foreign_key='skill.id',  # refers to database table name
+        default=None,
+    )
+    upgrade_to: Optional['Skill'] = Relationship(
+        sa_relationship_kwargs=dict(
+            primaryjoin='Skill.upgrade_to_id==Skill.id',
+            lazy='joined',
+            remote_side='Skill.id'  # refers to this Skill table class
+        )
+    )
+
+    upgrade_from_id: Optional[int] = Field(
         foreign_key='skill.id', default=None,
     )
-    upgrade_from: Optional[int] = Field(
-        foreign_key='skill.id', default=None,
+    upgrade_from: Optional['Skill'] = Relationship(
+        sa_relationship_kwargs=dict(
+            primaryjoin='Skill.upgrade_from_id==Skill.id',
+            lazy='joined',
+            remote_side='Skill.id'  # refers to this Skill table class
+        )
     )
+
     monsters: List[MonsterDetail] = Relationship(
         back_populates='skills', link_model=MonsterSkillLink
     )
@@ -189,6 +204,11 @@ class Skill(SkillBase, table=True):
 
 class SkillRead(SkillBase):
     id: int
+
+
+class SkillUpgradeRead(SkillRead):
+    upgrade_to: Optional[Skill]
+    upgrade_from: Optional[Skill]
 
 
 class SkillReadWithMonster(SkillRead):
@@ -200,12 +220,18 @@ class MonsterDetailSkill(MonsterDetailRead):
     skills: List[SkillRead] = []
 
 
-class SkillCombine(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-
+class SkillCombineBase(SQLModel):
     combo_skill_id: Optional[int] = Field(
         default=None, foreign_key='skill.id'
     )
+    needed_skill_id: Optional[int] = Field(
+        default=None, foreign_key='skill.id'
+    )
+
+
+class SkillCombine(SkillCombineBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+
     combo_skill: Skill = Relationship(
         sa_relationship_kwargs={
             'primaryjoin': 'SkillCombine.combo_skill_id==Skill.id',
@@ -213,15 +239,17 @@ class SkillCombine(SQLModel, table=True):
         }
     )
 
-    needed_skill_id: Optional[int] = Field(
-        default=None, foreign_key='skill.id'
-    )
     needed_skill: Skill = Relationship(
         sa_relationship_kwargs={
             'primaryjoin': 'SkillCombine.needed_skill_id==Skill.id',
             "lazy": 'joined'
         }
     )
+
+
+class SkillCombineRead(SkillCombineBase):
+    id: int
+    needed_skill: Optional[SkillRead]
 
 
 class Item(SQLModel, table=True):
