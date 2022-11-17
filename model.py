@@ -38,10 +38,16 @@ class MonsterDetailRead(MonsterDetailBase):
 
 
 class MonsterFamilyBase(SQLModel):
+    """
+    There are 10 monster families in the game.
+    """
     family_eng: str
 
 
 class MonsterFamily(MonsterFamilyBase, table=True):
+    """
+    one-to-many relation between family and monsters.
+    """
     id: Optional[int] = Field(default=None, primary_key=True)
     monsters: List[MonsterDetail] = Relationship(back_populates='family')
 
@@ -59,7 +65,6 @@ class MonsterFamilyReadWithMonsterDetail(MonsterFamilyRead):
 
 
 class MonsterBreedingLinkBase(SQLModel):
-    """TODO: move stuff from MonsterBreedingLink here"""
     child_id: Optional[int] = Field(
         default=None, foreign_key='monsterdetail.id'
     )
@@ -79,8 +84,19 @@ class MonsterBreedingLinkBase(SQLModel):
 
 class MonsterBreedingLink(MonsterBreedingLinkBase, table=True):
     """
-    This helped:
-    https://github.com/tiangolo/sqlmodel/issues/10#issuecomment-1002835506
+    many-to-many association table between MonsterDetail and MonsterFamily
+    that represents breeding combinations.
+
+    child_id, pedigree, and parent_2 represent individual monster ids.
+    pedigree_family and family_2 represent family type.
+
+    In order to make new monster, two parents are required.
+
+    4 different combinations possible:
+    pedigree + parent_2  -- specific monster + specific monster
+    pedigree + family_2 -- specific monster + any monster from the family type
+    pedigree_family + parent_2 -- specific family type + specific monster
+    pedigree_family + family_2 -- family + different family type
     """
     id: Optional[int] = Field(default=None, primary_key=True)
     child: 'MonsterDetail' = Relationship(
@@ -120,7 +136,7 @@ class MonsterBreedingLinkRead(MonsterBreedingLinkBase):
     id: int
 
 
-class MonsterBreedingLinkReadWithParentsAndFamilies(MonsterBreedingLinkRead):
+class MonsterBreedingLinkReadWithInfo(MonsterBreedingLinkRead):
     pedigree: Optional[MonsterDetailRead]
     parent2: Optional[MonsterDetailRead]
     pedigree_family: Optional[MonsterFamilyRead]
@@ -178,17 +194,16 @@ class SkillRead(SkillBase):
     id: int
 
 
+class SkillReadWithMonster(SkillRead):
+    monsters: Optional[MonsterDetailRead]
+
+
 class SkillUpgradeRead(SkillRead):
     upgrade_to: Optional[Skill]
     upgrade_from: Optional[Skill]
 
 
-class SkillReadWithMonster(SkillRead):
-    monsters: Optional[MonsterDetailRead]
-
-
-class MonsterDetailSkill(MonsterDetailRead):
-    family: Optional[MonsterFamilyRead]
+class MonsterDetailSkill(MonsterDetailWithFamily):
     skills: List[SkillRead] = []
 
 
@@ -202,6 +217,10 @@ class SkillCombineBase(SQLModel):
 
 
 class SkillCombine(SkillCombineBase, table=True):
+    """
+    many-to-many association table showing certain needed skills combine to
+    learn new combo skill.
+    """
     id: Optional[int] = Field(default=None, primary_key=True)
 
     combo_skill: Skill = Relationship(
@@ -225,6 +244,9 @@ class SkillCombineRead(SkillCombineBase):
 
 
 class Item(SQLModel, table=True):
+    """
+    Lists all items sold in shops and found in the field
+    """
     id: Optional[int] = Field(default=None, primary_key=True)
     item_name: str
     item_category: str
