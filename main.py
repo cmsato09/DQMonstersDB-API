@@ -1,14 +1,20 @@
 from database import engine
 from fastapi import Depends, FastAPI, HTTPException
 from sqlmodel import Session, select
-from typing import Optional, Union, List
+from typing import Optional, List
 
-from model import Item, MonsterDetail, MonsterBreedingLink, Skill, \
-    MonsterFamily, MonsterDetailRead, MonsterDetailWithFamily, \
-    MonsterFamilyReadWithMonsterDetail, SkillCategory, SkillFamily, \
-    ItemCategory, ItemSellLocation, SkillRead, MonsterDetailSkill, \
-    MonsterBreedingLinkReadWithParentsAndFamilies, \
-    SkillCombineRead, SkillCombine, SkillUpgradeRead
+from models import (
+    MonsterBreedingLink, MonsterBreedingLinkReadWithInfo,
+    MonsterDetail, MonsterDetailWithFamily, MonsterDetailSkill,
+    MonsterFamily, MonsterFamilyReadWithMonsterDetail,
+    Skill, SkillUpgradeRead,
+    SkillCombine, SkillCombineRead,
+    Item
+)
+from model_enums import (
+    SkillCategory, SkillFamily,
+    ItemCategory, ItemSellLocation
+)
 
 
 app = FastAPI()
@@ -26,7 +32,7 @@ def root():
 
 @app.get("/dqm1/monsters", response_model=List[MonsterDetailWithFamily])
 def read_monsters(*, session: Session = Depends(get_session),
-                  family: Union[int, None] = None):
+                  family: Optional[int] = None):
     monsters = select(MonsterDetail)
     if family:
         monsters = monsters.where(MonsterDetail.family_id == family)
@@ -34,7 +40,8 @@ def read_monsters(*, session: Session = Depends(get_session),
     return monsters
 
 
-@app.get("/dqm1/monsters/{monster_id}", response_model=MonsterDetailWithFamily)
+@app.get("/dqm1/monsters/{monster_id}",
+         response_model=MonsterDetailWithFamily)
 def read_monster(*, session: Session = Depends(get_session), monster_id: int):
     monster = session.get(MonsterDetail, monster_id)
     if not monster:
@@ -42,7 +49,8 @@ def read_monster(*, session: Session = Depends(get_session), monster_id: int):
     return monster
 
 
-@app.get("/dqm1/monstersandskill/{monster_id}", response_model=MonsterDetailSkill)
+@app.get("/dqm1/monstersandskill/{monster_id}",
+         response_model=MonsterDetailSkill)
 def read_monster(*, session: Session = Depends(get_session), monster_id: int):
     monster = session.get(MonsterDetail, monster_id)
     if not monster:
@@ -62,8 +70,8 @@ def read_family(*, session: Session = Depends(get_session), family_id: int):
 @app.get("/dqm1/skills")
 def read_skills(
         *, session: Session = Depends(get_session),
-        category: Union[SkillCategory, None] = None,
-        skill_family: Union[SkillFamily, None] = None):
+        category: Optional[SkillCategory] = None,
+        skill_family: Optional[SkillFamily] = None):
     skills = select(Skill)
     if category:
         skills = skills.where(Skill.category_type == category)
@@ -81,7 +89,8 @@ def read_skill(*, session: Session = Depends(get_session), skill_id: int):
     return skill
 
 
-@app.get("/dqm1/skillcombine/{skill_id}", response_model=List[SkillCombineRead])
+@app.get("/dqm1/skillcombine/{skill_id}",
+         response_model=List[SkillCombineRead])
 def get_skill_combo(*, session: Session = Depends(get_session), skill_id: int):
     query = select(SkillCombine).where(SkillCombine.combo_skill_id == skill_id)
     skill = session.exec(query).all()
@@ -90,8 +99,8 @@ def get_skill_combo(*, session: Session = Depends(get_session), skill_id: int):
 
 @app.get("/dqm1/items")
 def read_items(
-        category: Union[ItemCategory, None] = None,
-        selllocation: Union[ItemSellLocation, None] = None):
+        category: Optional[ItemCategory] = None,
+        selllocation: Optional[ItemSellLocation] = None):
     with Session(engine) as session:
         items = select(Item)
         if category:
@@ -111,8 +120,9 @@ def read_item(*, session: Session = Depends(get_session), item_id: int):
 
 
 @app.get("/breeding/{child_id}",
-         response_model=List[MonsterBreedingLinkReadWithParentsAndFamilies])
-def get_parents_for_child(*, session: Session = Depends(get_session), child_id: int):
+         response_model=List[MonsterBreedingLinkReadWithInfo])
+def get_parents_for_child(
+        *, session: Session = Depends(get_session), child_id: int):
     query = select(MonsterBreedingLink).where(
         MonsterBreedingLink.child_id == child_id)
     parents = session.exec(query).all()
