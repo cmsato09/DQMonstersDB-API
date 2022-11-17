@@ -3,7 +3,7 @@ import unittest
 from database import create_db_and_tables, engine
 from sqlmodel import Session
 
-from model import Item, MonsterFamily, MonsterDetail, Skill, MonsterSkillLink,\
+from models import Item, MonsterFamily, MonsterDetail, Skill, MonsterSkillLink,\
     MonsterBreedingLink, SkillCombine
 
 
