@@ -1,7 +1,7 @@
 from database import engine
 from fastapi import Depends, FastAPI, HTTPException
 from sqlmodel import Session, select
-from typing import Optional, Union, List
+from typing import Optional, List
 
 from models import (
     MonsterBreedingLink, MonsterBreedingLinkReadWithInfo,
@@ -32,7 +32,7 @@ def root():
 
 @app.get("/dqm1/monsters", response_model=List[MonsterDetailWithFamily])
 def read_monsters(*, session: Session = Depends(get_session),
-                  family: Union[int, None] = None):
+                  family: Optional[int] = None):
     monsters = select(MonsterDetail)
     if family:
         monsters = monsters.where(MonsterDetail.family_id == family)
@@ -70,8 +70,8 @@ def read_family(*, session: Session = Depends(get_session), family_id: int):
 @app.get("/dqm1/skills")
 def read_skills(
         *, session: Session = Depends(get_session),
-        category: Union[SkillCategory, None] = None,
-        skill_family: Union[SkillFamily, None] = None):
+        category: Optional[SkillCategory] = None,
+        skill_family: Optional[SkillFamily] = None):
     skills = select(Skill)
     if category:
         skills = skills.where(Skill.category_type == category)
@@ -99,8 +99,8 @@ def get_skill_combo(*, session: Session = Depends(get_session), skill_id: int):
 
 @app.get("/dqm1/items")
 def read_items(
-        category: Union[ItemCategory, None] = None,
-        selllocation: Union[ItemSellLocation, None] = None):
+        category: Optional[ItemCategory] = None,
+        selllocation: Optional[ItemSellLocation] = None):
     with Session(engine) as session:
         items = select(Item)
         if category:
