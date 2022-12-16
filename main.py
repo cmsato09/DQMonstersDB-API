@@ -2,6 +2,7 @@ from database import engine
 from fastapi import Depends, FastAPI, HTTPException
 from sqlmodel import Session, select
 from typing import Optional, List
+from fastapi.staticfiles import StaticFiles
 
 from models import (
     MonsterBreedingLink, MonsterBreedingLinkReadWithInfo,
@@ -19,6 +20,7 @@ from model_enums import (
 
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 async def get_session():  # place in database.py?
