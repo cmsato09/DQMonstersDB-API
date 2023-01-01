@@ -164,7 +164,7 @@ async def read_item(*, session: Session = Depends(get_session), item_id: int):
     return item
 
 
-@app.get('/breeding/{child_id}',
+@app.get('/dqm1/breeding/{child_id}',
          response_model=List[MonsterBreedingLinkReadWithInfo],
          tags=["dqm1 monsters"])
 async def get_parents_for_child(
