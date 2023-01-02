@@ -164,13 +164,19 @@ async def read_item(*, session: Session = Depends(get_session), item_id: int):
     return item
 
 
-@app.get('/breeding/{child_id}',
+@app.get('/dqm1/breeding/{monster_id}',
          response_model=List[MonsterBreedingLinkReadWithInfo],
          tags=["dqm1 monsters"])
-async def get_parents_for_child(
-        *, session: Session = Depends(get_session), child_id: int):
-
+async def get_breeding_combos(
+        *, session: Session = Depends(get_session), monster_id: int):
+    """
+    Given a monster_id, finds all breeding combination that results in
+    the target monster or uses the target monster as a parent
+    """
     query = select(MonsterBreedingLink).where(
-        MonsterBreedingLink.child_id == child_id)
-    parents = session.exec(query).all()
-    return parents
+        (MonsterBreedingLink.child_id == monster_id)
+        | (MonsterBreedingLink.pedigree_id == monster_id)
+        | (MonsterBreedingLink.parent2_id == monster_id)
+    )
+    breeding_combos = session.exec(query).all()
+    return breeding_combos
