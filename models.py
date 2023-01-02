@@ -140,6 +140,7 @@ class MonsterBreedingLinkRead(MonsterBreedingLinkBase):
 
 
 class MonsterBreedingLinkReadWithInfo(MonsterBreedingLinkRead):
+    child: Optional[MonsterDetailRead]
     pedigree: Optional[MonsterDetailRead]
     parent2: Optional[MonsterDetailRead]
     pedigree_family: Optional[MonsterFamilyRead]
