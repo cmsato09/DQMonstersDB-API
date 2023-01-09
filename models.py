@@ -16,6 +16,9 @@ class MonsterSkillLink(SQLModel, table=True):
 
 
 class MonsterDetailBase(SQLModel):
+    """
+    Monster details from in-game bestiary. Shows name, family, and description.
+    """
     new_name: str
     old_name: str
     description: str
@@ -137,6 +140,7 @@ class MonsterBreedingLinkRead(MonsterBreedingLinkBase):
 
 
 class MonsterBreedingLinkReadWithInfo(MonsterBreedingLinkRead):
+    child: Optional[MonsterDetailRead]
     pedigree: Optional[MonsterDetailRead]
     parent2: Optional[MonsterDetailRead]
     pedigree_family: Optional[MonsterFamilyRead]
@@ -144,6 +148,10 @@ class MonsterBreedingLinkReadWithInfo(MonsterBreedingLinkRead):
 
 
 class SkillBase(SQLModel):
+    """
+    Shows description, MP cost, and required stats to learn skill.
+    Each monster naturally learns 3 skills.
+    """
     category_type: str
     family_type: str
     new_name: Optional[str] = Field(default=None)
