@@ -29,10 +29,10 @@ This project is made with FastAPI, a webframework for building APIs with
 Python.
 
 ## How to Use
-This repo is deployed on [Deta](https://www.deta.sh/), a free cloud platform 
+This repo is deployed on [Deta Space](https://www.deta.space/), a free cloud platform 
 recommended by FastAPI on their documentation. 
 
-Access the Swagger UI interface of this FastAPI at https://em4lp8.deta.dev/docs
+Access the Swagger UI interface of this FastAPI at https://dqmonstersdbapi-1-a1113227.deta.app/docs
 
 ![Swagger UI homepage](static/images/readme/FastAPI-readme-1.jpg)
 ![Trying out a endpoint](static/images/readme/FastAPI-readme-2.jpg)
