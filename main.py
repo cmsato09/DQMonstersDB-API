@@ -2,6 +2,7 @@ from database import engine
 from fastapi import Depends, FastAPI, HTTPException
 from sqlmodel import Session, select
 from typing import Optional, List
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from models import (
@@ -29,7 +30,7 @@ tags_metadata = [
     },
     {
         "name": "dqm1 items",
-        "description": "Useful items found in the game and their description",
+        "description": "Useful items found in the game and description",
     },
 ]
 
@@ -40,8 +41,20 @@ app = FastAPI(
     version="1.0.0",
     openapi_tags=tags_metadata
 )
-app.mount("/static", StaticFiles(directory="static"), name="static")
 
+origins = [
+    'http://localhost:3000'
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=['*'],
+    allow_headers=['*'],
+)
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 async def get_session():  # place in database.py?
     with Session(engine) as session:
