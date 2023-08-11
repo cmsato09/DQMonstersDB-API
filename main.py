@@ -123,7 +123,7 @@ async def read_monster(
 
 @app.get('/dqm1/monstersandskill/{monster_id}',
          response_model=MonsterDetailSkill,tags=["dqm1 monsters"])
-async def read_monster(
+async def read_monster_with_skill(
         *, session: Session = Depends(get_session), monster_id: int):
     """
     Endpoint returns detailed info of a specific monster based on unique ID.
@@ -307,7 +307,8 @@ async def get_breeding_combos(
     """
     Endpoint returns detailed breeding info of a specific monster based on 
     unique ID.
-    Finds all breeding combinations that results in the target monster or uses the target monster as a parent.
+    Finds all breeding combinations that results in the target monster or uses 
+    the target monster as a parent.
 
     Args:
         session (Session): The database session.
