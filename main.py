@@ -1,8 +1,9 @@
-from database import engine
-from fastapi import Depends, FastAPI, HTTPException
-from sqlmodel import Session, select
 from typing import Optional, List
+
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
+from sqlmodel import Session, select
+from database import engine
 
 from models import (
     MonsterBreedingLink, MonsterBreedingLinkReadWithInfo,
