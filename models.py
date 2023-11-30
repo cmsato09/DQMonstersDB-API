@@ -4,35 +4,47 @@ from sqlmodel import Field, Relationship, SQLModel
 
 class MonsterSkillLink(SQLModel, table=True):
     """
-    many-to-many association table linking a monster to three different skills.
+    Many-to-many association table linking a monster to 3 different skills.
+    
+    - Wild monsters on default can only learn 3 skills
     """
     id: Optional[int] = Field(default=None, primary_key=True)
     monster_id: Optional[int] = Field(
-        default=None, foreign_key='monsterdetail.id',
+        default=None, 
+        foreign_key='monsterdetail.id',
     )
     skill_id: Optional[int] = Field(
-        default=None, foreign_key='skill.id',
+        default=None, 
+        foreign_key='skill.id',
     )
 
 
 class MonsterDetailBase(SQLModel):
     """
-    Monster details from in-game bestiary. Shows name, family, and description.
+    Monster details from in-game bestiary.
+    
+    - Shows name, family, and description.
+    - One-to-many relation between MonsterFamily and MonsterDetail
     """
     new_name: str
     old_name: str
     description: str
-
-    # one-to-many relation where a family is linked to many monsters
     family_id: int = Field(foreign_key='monsterfamily.id')
 
 
 class MonsterDetail(MonsterDetailBase, table=True):
+    """
+    Data table creation of MonsterDetail
+
+    - One-to-many relation between MonsterFamily and MonsterDetail
+    - many-to-many relation between MonsterDetail and Skills
+    """
     id: Optional[int] = Field(default=None, primary_key=True)
 
     family: List['MonsterFamily'] = Relationship(back_populates='monsters')
     skills: List['Skill'] = Relationship(
-        back_populates='monsters', link_model=MonsterSkillLink
+        back_populates='monsters', 
+        link_model=MonsterSkillLink,
     )
 
 
@@ -49,7 +61,9 @@ class MonsterFamilyBase(SQLModel):
 
 class MonsterFamily(MonsterFamilyBase, table=True):
     """
-    one-to-many relation between family and monsters.
+    Data table creation of MonsterFamily
+
+    - one-to-many relation between family and monsters
     """
     id: Optional[int] = Field(default=None, primary_key=True)
     monsters: List[MonsterDetail] = Relationship(back_populates='family')
@@ -60,28 +74,39 @@ class MonsterFamilyRead(MonsterFamilyBase):
 
 
 class MonsterDetailWithFamily(MonsterDetailRead):
+    """
+    Includes monster family info in endpoint
+    """
     family: Optional[MonsterFamilyRead]
 
 
 class MonsterFamilyReadWithMonsterDetail(MonsterFamilyRead):
+    """
+    Includes monster detail info in endpoint
+    """
     monsters: List[MonsterDetailRead] = []
 
 
 class MonsterBreedingLinkBase(SQLModel):
     child_id: Optional[int] = Field(
-        default=None, foreign_key='monsterdetail.id'
+        default=None, 
+        foreign_key='monsterdetail.id'
     )
     pedigree_id: Optional[int] = Field(
-        default=None, foreign_key='monsterdetail.id'
+        default=None, 
+        foreign_key='monsterdetail.id'
     )
     parent2_id: Optional[int] = Field(
-        default=None, foreign_key='monsterdetail.id'
+        default=None, 
+        foreign_key='monsterdetail.id'
     )
     pedigree_family_id: Optional[int] = Field(
-        default=None, foreign_key='monsterfamily.id'
+        default=None, 
+        foreign_key='monsterfamily.id'
     )
     family2_id: Optional[int] = Field(
-        default=None, foreign_key='monsterfamily.id'
+        default=None, 
+        foreign_key='monsterfamily.id'
     )
 
 
@@ -100,6 +125,10 @@ class MonsterBreedingLink(MonsterBreedingLinkBase, table=True):
     pedigree + family_2 -- specific monster + any monster from the family type
     pedigree_family + parent_2 -- specific family type + specific monster
     pedigree_family + family_2 -- family + different family type
+
+    Solved AmbiguousForeignKeyError using "sa_relationship_kwargs" 
+    https://github.com/tiangolo/sqlmodel/issues/10#issuecomment-1002835506
+
     """
     id: Optional[int] = Field(default=None, primary_key=True)
     child: 'MonsterDetail' = Relationship(
@@ -140,6 +169,9 @@ class MonsterBreedingLinkRead(MonsterBreedingLinkBase):
 
 
 class MonsterBreedingLinkReadWithInfo(MonsterBreedingLinkRead):
+    """
+    Includes all monster detail info per each breeding combination
+    """
     child: Optional[MonsterDetailRead]
     pedigree: Optional[MonsterDetailRead]
     parent2: Optional[MonsterDetailRead]
@@ -149,8 +181,10 @@ class MonsterBreedingLinkReadWithInfo(MonsterBreedingLinkRead):
 
 class SkillBase(SQLModel):
     """
-    Shows description, MP cost, and required stats to learn skill.
-    Each monster naturally learns 3 skills.
+    Shows description, MP cost, and required stats to learn a skill.
+
+    - Each monster naturally learns 3 skills.
+    - Some skill require certain stats to exceed a certain threshold to learn.
     """
     category_type: str
     family_type: str
@@ -168,6 +202,9 @@ class SkillBase(SQLModel):
 
 
 class Skill(SkillBase, table=True):
+    """
+    Certain skills can upgrade to a more powerful version
+    """
     id: Optional[int] = Field(default=None, primary_key=True)
 
     upgrade_to_id: Optional[int] = Field(
@@ -217,17 +254,19 @@ class MonsterDetailSkill(MonsterDetailWithFamily):
 
 class SkillCombineBase(SQLModel):
     combo_skill_id: Optional[int] = Field(
-        default=None, foreign_key='skill.id'
+        default=None, 
+        foreign_key='skill.id'
     )
     needed_skill_id: Optional[int] = Field(
-        default=None, foreign_key='skill.id'
+        default=None, 
+        foreign_key='skill.id'
     )
 
 
 class SkillCombine(SkillCombineBase, table=True):
     """
     many-to-many association table showing certain needed skills combine to
-    learn new combo skill.
+    learn a new skill.
     """
     id: Optional[int] = Field(default=None, primary_key=True)
 
