@@ -1,17 +1,17 @@
-from database import engine
+from .database import engine
 from fastapi import Depends, FastAPI, HTTPException
 from sqlmodel import Session, select
 from typing import Optional, List
 from fastapi.staticfiles import StaticFiles
 
-from models import (
+from .models import (
     MonsterBreedingLink, MonsterBreedingLinkReadWithInfo,
     MonsterDetail, MonsterDetailWithFamily, MonsterDetailSkill,
     MonsterFamily, MonsterFamilyReadWithMonsterDetail,
     Skill, SkillUpgradeRead, SkillCombine, SkillCombineRead,
     Item,
 )
-from model_enums import (
+from .model_enums import (
     SkillCategory,
     SkillFamily,
     ItemCategory,
@@ -51,7 +51,7 @@ async def get_session():  # place in database.py?
 @app.get('/')
 def root():
     return {'message': 'Welcome to the DQMonsters API. Go to the Swagger UI'
-                       'interface'
+                       ' interface'
             }
 
 
