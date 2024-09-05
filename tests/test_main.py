@@ -15,14 +15,7 @@ def test_read_root():
     assert response.status_code == 200
     assert response.json() == {"message": "Welcome to the DQMonsters API. Go to the Swagger UI interface"}
 
-def test_create_monster(session: Session):
-
-    def get_session_override():
-        return session
-    
-    app.dependency_overrides[get_session] = get_session_override
-    
-    client = TestClient(app)
+def test_create_monster(client: TestClient, session: Session):
 
     session.add(MonsterDetail(new_name='Slime', old_name='Slime', description='The most abundant of this popular specie', family_id=1))
     session.commit()
@@ -43,4 +36,3 @@ def test_create_monster(session: Session):
     assert data_entry["description"] == object_comparison["description"]
     assert data_entry["family_id"] == object_comparison["family_id"]
     
-    app.dependency_overrides.clear()
