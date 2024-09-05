@@ -5,7 +5,6 @@ from sqlmodel.pool import StaticPool
 
 from app.main import app, get_session
 from app.models import MonsterDetail
-# from app.database 
 
 TEST_DATABASE_URL = "sqlite:///testing.db"
 
@@ -16,41 +15,32 @@ def test_read_root():
     assert response.status_code == 200
     assert response.json() == {"message": "Welcome to the DQMonsters API. Go to the Swagger UI interface"}
 
-def test_create_monster():
-    test_engine = create_engine(
-        "sqlite://",
-        connect_args={"check_same_thread": False},
-        poolclass=StaticPool,
-    )
-    SQLModel.metadata.create_all(test_engine)
+def test_create_monster(session: Session):
 
-    with Session(test_engine) as session:
+    def get_session_override():
+        return session
+    
+    app.dependency_overrides[get_session] = get_session_override
+    
+    client = TestClient(app)
 
-        def get_session_override():
-            return session
-        
-        app.dependency_overrides[get_session] = get_session_override
-        
-        client = TestClient(app)
+    session.add(MonsterDetail(new_name='Slime', old_name='Slime', description='The most abundant of this popular specie', family_id=1))
+    session.commit()
 
-        session.add(MonsterDetail(new_name='Slime', old_name='Slime', description='The most abundant of this popular specie', family_id=1))
-        session.commit()
-
-        response = client.get('/dqm1/monsters/1')
-        data_entry = response.json()
-        
-        object_comparison = {
-            "new_name" : "Slime",
-            "old_name" : "Slime",
-            "description" : "The most abundant of this popular specie",
-            "family_id" : 1,
-        }
-        
-        assert response.status_code == 200
-        assert data_entry["new_name"] == object_comparison["new_name"]
-        assert data_entry["old_name"] == object_comparison["old_name"]
-        assert data_entry["description"] == object_comparison["description"]
-        assert data_entry["family_id"] == object_comparison["family_id"]
+    response = client.get('/dqm1/monsters/1')
+    data_entry = response.json()
+    
+    object_comparison = {
+        "new_name" : "Slime",
+        "old_name" : "Slime",
+        "description" : "The most abundant of this popular specie",
+        "family_id" : 1,
+    }
+    
+    assert response.status_code == 200
+    assert data_entry["new_name"] == object_comparison["new_name"]
+    assert data_entry["old_name"] == object_comparison["old_name"]
+    assert data_entry["description"] == object_comparison["description"]
+    assert data_entry["family_id"] == object_comparison["family_id"]
     
     app.dependency_overrides.clear()
-    SQLModel.metadata.drop_all(test_engine)
