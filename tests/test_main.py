@@ -78,7 +78,86 @@ def test_insert_skill(client: TestClient, session: Session):
     """
     Tests individual insertion of skill data into skill datatable
     """
-    session.add(Skill)
+    session.add(Skill(
+        category_type='Attack',
+        family_type='Frizz',
+        new_name='Frizz',
+        old_name='Blaze',
+        description='Inflict damage with small fireball ',
+        mp_cost=2,
+        required_level=2,
+        required_mp=7,
+        required_intelligence=20,
+        upgrade_to_id=2,
+    ))
+    session.add(Skill(
+        category_type='Attack',
+        family_type='Frizz',
+        new_name='Frizzle',
+        old_name='Blazemore',
+        description='Inflict damage with giant fireball',
+        mp_cost=4,
+        required_level=13,
+        required_mp=46,
+        required_intelligence=64,
+        upgrade_to_id=3,
+        upgrade_from_id=1,
+    ))
+    session.add(Skill(
+        category_type='Attack',
+        family_type='Frizz',
+        new_name='Kafrizzle',
+        old_name='Blazemost',
+        description='Inflict damage with pillars of fire',
+        mp_cost=10,
+        required_level=28,
+        required_mp=112,
+        required_intelligence=146,
+        upgrade_from_id=2,
+    ))
+    session.commit()
+    
+    response = client.get('dqm1/skills/1')
+    skill_entry = response.json()
+
+    skill_comparison = {
+        "category_type": "Attack",
+        "family_type": "Frizz",
+        "new_name": "Frizz",
+        "old_name": "Blaze",
+        "description": "Inflict damage with small fireball ",
+        "mp_cost": 2,
+        "required_level": 2,
+        "required_hp": None,
+        "required_mp": 7,
+        "required_attack": None,
+        "required_defense": None,
+        "required_speed": None,
+        "required_intelligence": 20,
+        "id": 1,
+        "upgrade_to": {
+            "new_name": "Frizzle",
+            "required_hp": None,
+            "required_mp": 46,
+            "required_attack": None,
+            "required_defense": None,
+            "required_speed": None,
+            "required_intelligence": 64,
+            "id": 2,
+            "upgrade_to_id": 3,
+            "upgrade_from_id": 1,
+            "category_type": "Attack",
+            "family_type": "Frizz",
+            "old_name": "Blazemore",
+            "description": "Inflict damage with giant fireball",
+            "mp_cost": 4,
+            "required_level": 13,
+        },
+        "upgrade_from": None,
+    }
+        
+    assert response.status_code == 200
+    assert skill_entry == skill_comparison
 
 
 def test_insert_item(client: TestClient, session: Session):
