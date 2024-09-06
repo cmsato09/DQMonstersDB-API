@@ -4,7 +4,7 @@ from sqlmodel import SQLModel, create_engine, Session
 from sqlmodel.pool import StaticPool
 
 from app.main import app, get_session
-from app.models import MonsterDetail, MonsterFamily, Item
+from app.models import MonsterDetail, MonsterFamily, Item, Skill
 
 
 def test_read_root():
@@ -15,7 +15,8 @@ def test_read_root():
 
 def test_insert_monster(client: TestClient, session: Session):
     """
-    - Tests individual insertion of monster data entry into database (MonsterDetail data table)
+    - Tests individual insertion of monster data entry into monsterdetail 
+    datatable
     """ 
     session.add(MonsterDetail(
         new_name='Slime', 
@@ -44,9 +45,10 @@ def test_insert_monster(client: TestClient, session: Session):
     assert data_entry['family_id'] == monster_comparison['family_id']
     assert data_entry == monster_comparison
 
+
 def test_insert_monster_family(client: TestClient, session: Session):
     """
-    Test individual insertion of monster family data into MonsterFamilyBase Model
+    Test individual insertion of monster family data into monsterfamily table
     """
     family_list = [
         'SLIME',
@@ -72,10 +74,16 @@ def test_insert_monster_family(client: TestClient, session: Session):
         assert response.status_code == 200
         assert family_entry['family_eng'] == family_list[i-1]
 
+def test_insert_skill(client: TestClient, session: Session):
+    """
+    Tests individual insertion of skill data into skill datatable
+    """
+    session.add(Skill)
+
 
 def test_insert_item(client: TestClient, session: Session):
     """
-    Tests individual insertion of item data into Items table
+    Tests individual insertion of item data into items datatable
     """
     session.add(Item(
         item_name='Herb',
