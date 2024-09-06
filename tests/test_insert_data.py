@@ -77,6 +77,8 @@ def test_insert_monster_family(client: TestClient, session: Session):
 def test_insert_skill(client: TestClient, session: Session):
     """
     Tests individual insertion of skill data into skill datatable
+    Tests association between skills via upgrade_to and upgrade_from
+        - 'Blaze' upgrades to 'Blazemore', which upgrades to 'Blazemost'
     """
     session.add(Skill(
         category_type='Attack',
@@ -158,6 +160,11 @@ def test_insert_skill(client: TestClient, session: Session):
         
     assert response.status_code == 200
     assert skill_entry == skill_comparison
+    
+    skill_entry_2 = client.get('dqm1/skills/2').json()
+    assert response.status_code == 200
+    assert skill_entry_2['upgrade_from']['old_name'] == 'Blaze'
+    assert skill_entry_2['upgrade_to']['old_name'] == 'Blazemost'
 
 
 def test_insert_item(client: TestClient, session: Session):
