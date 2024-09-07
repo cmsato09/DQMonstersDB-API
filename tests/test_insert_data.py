@@ -4,7 +4,7 @@ from sqlmodel import SQLModel, create_engine, Session
 from sqlmodel.pool import StaticPool
 
 from app.main import app, get_session
-from app.models import MonsterDetail, MonsterFamily, Item, Skill
+from app.models import MonsterDetail, MonsterFamily, MonsterSkillLink, Item, Skill
 
 
 def test_read_root():
@@ -12,6 +12,7 @@ def test_read_root():
     response = client.get('/')
     assert response.status_code == 200
     assert response.json() == {"message": "Welcome to the DQMonsters API. Go to the Swagger UI interface"}
+
 
 def test_insert_monster(client: TestClient, session: Session):
     """
@@ -73,6 +74,7 @@ def test_insert_monster_family(client: TestClient, session: Session):
 
         assert response.status_code == 200
         assert family_entry['family_eng'] == family_list[i-1]
+
 
 def test_insert_skill(client: TestClient, session: Session):
     """
@@ -196,3 +198,73 @@ def test_insert_item(client: TestClient, session: Session):
     assert response.status_code == 200
     for key, value in item_comparison.items():
         assert item_entry[key] == value
+
+
+def test_monster_skill_link(client: TestClient, session: Session):
+    """
+    Tests monster datatable association with skill datatable 
+    """
+    session.add(MonsterDetail(
+        new_name='Slime', 
+        old_name='Slime', 
+        description='The most abundant of this popular specie', 
+        family_id=1
+    ))
+    session.add(Skill(
+        category_type='Attack',
+        family_type='Sizz',
+        new_name='Sizz',
+        old_name='Firebal',
+        description='Inflict damage to all enemies with a small blaze',
+        mp_cost=4,
+        required_level=3,
+        required_mp=11,
+        required_intelligence=23,
+    ))
+    session.add(Skill(
+        category_type='Attack',
+        family_type='Magic Burst',
+        new_name='Magic Burst',
+        old_name='MegaMagic',
+        description='The most powerful spell to affect all enemies',
+        mp_cost=999,
+        required_level=38,
+        required_mp=210,
+        required_attack=114,
+        required_speed=224,
+    ))
+    session.add(Skill(
+        category_type='Support',
+        family_type='Dazzle',
+        new_name='Dazzleflash',
+        old_name='Radiant',
+        description='Blinds all enemies with its bright light',
+        mp_cost=2,
+        required_level=12,
+        required_mp=42,
+        required_speed=72,
+        required_intelligence=72,
+    ))
+
+    session.add(MonsterSkillLink(
+        monster_id=1,
+        skill_id=1,
+    ))
+    session.add(MonsterSkillLink(
+        monster_id=1,
+        skill_id=2,
+    ))
+    session.add(MonsterSkillLink(
+        monster_id=1,
+        skill_id=3,
+    ))
+    session.commit()
+
+    response = client.get('dqm1/monstersandskill/1')
+    monster_entry = response.json()
+
+    assert response.status_code == 200
+    assert len(monster_entry['skills']) == 3
+    assert monster_entry['skills'][0]['old_name'] == 'Firebal'
+    assert monster_entry['skills'][1]['old_name'] == 'MegaMagic'
+    assert monster_entry['skills'][2]['old_name'] == 'Radiant'
