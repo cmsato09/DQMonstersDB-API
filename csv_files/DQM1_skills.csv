@@ -1,5 +1,5 @@
 ﻿ID,category_type,family_type,new_name,old_name,description,mp_cost,required_level,required_hp,required_mp,required_attack,required_defense,required_speed,required_intelligence,upgrade_to_id,upgrade_from_id
-1,Attack,Frizz,Frizz,Blaze,Inflict damage with small fireball ,2,2,,7,,,,20,2,
+1,Attack,Frizz,Frizz,Blaze,Inflict damage with small fireball,2,2,,7,,,,20,2,
 2,Attack,Frizz,Frizzle,Blazemore,Inflict damage with giant fireball,4,13,,46,,,,64,3,1
 3,Attack,Frizz,Kafrizzle,Blazemost,Inflicts damage with pillars of fire,10,28,,112,,,,146,,2
 4,Attack,Frizz,Flame Slash,FireSlash,Burning blade sword attack,3,11,77,34,66,,,42,,
@@ -14,7 +14,7 @@
 13,Attack,Woosh,Swoosh,Infermore,Influcts damage to all enemies with a tornado,4,11,,38,,,,56,14,12
 14,Attack,Woosh,Kaswoosh,Infermost,Inflicts damage to all enemies with a hurricane,8,27,,104,,,,134,,13
 15,Attack,Woosh,Wind Sickles,Windbeast,Attacks an enemy with a violent whirlwind,3,13,74,,60,,84,,16,
-16,Attack,Woosh,Thin Air,Vacuum,Attacks all enemies with a giant vaccum,6,19,112,,114,,132,,,15
+16,Attack,Woosh,Thin Air,Vacuum,Attacks all enemies with a giant vacuum,6,19,112,,114,,132,,,15
 17,Attack,Woosh,Gust Slash,VacuSlash,Whirling Vacuum sword attack,3,11,77,34,66,,,42,,
 18,Attack,Woosh,Pearly Gates,Multicut,Inflict damage to all enemies with many cuts,20,28,154,140,168,,168,148,,
 19,Attack,Zap,Zap,Bolt,Strikes all enemies with lightning,5,6,,20,,,,35,20,
