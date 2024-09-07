@@ -4,7 +4,7 @@ from sqlmodel import SQLModel, create_engine, Session
 from sqlmodel.pool import StaticPool
 
 from app.main import app, get_session
-from app.models import MonsterDetail, MonsterFamily, MonsterSkillLink, Item, Skill
+from app.models import MonsterDetail, MonsterFamily, MonsterSkillLink, Item, Skill, SkillCombine
 
 
 def test_read_root():
@@ -268,3 +268,99 @@ def test_monster_skill_link(client: TestClient, session: Session):
     assert monster_entry['skills'][0]['old_name'] == 'Firebal'
     assert monster_entry['skills'][1]['old_name'] == 'MegaMagic'
     assert monster_entry['skills'][2]['old_name'] == 'Radiant'
+
+
+def test_skill_combine(client: TestClient, session: Session):
+    """ 
+    Tests many-to-many connection between skills via SkillCombine Model
+    """
+    # Add skill to skills datatable.
+    session.add(Skill(
+        # id = 1
+        category_type='Attack',
+        family_type='Frizz',
+        new_name='Frizz',
+        old_name='Blaze',
+        description='Inflict damage with small fireball ',
+        mp_cost=2,
+        required_level=2,
+        required_mp=7,
+        required_intelligence=20,
+        upgrade_to_id=2,
+    ))
+    session.add(Skill(
+        # id = 2
+        category_type='Attack',
+        family_type='Frizz',
+        new_name='Frizzle',
+        old_name='Blazemore',
+        description='Inflict damage with giant fireball',
+        mp_cost=4,
+        required_level=13,
+        required_mp=46,
+        required_intelligence=64,
+        upgrade_to_id=3,
+        upgrade_from_id=1,
+    ))
+    session.add(Skill(
+        # id = 3
+        category_type='Attack',
+        family_type='Frizz',
+        new_name='Kafrizzle',
+        old_name='Blazemost',
+        description='Inflict damage with pillars of fire',
+        mp_cost=10,
+        required_level=28,
+        required_mp=112,
+        required_intelligence=146,
+        upgrade_from_id=2,
+    ))
+    session.add(Skill(
+        # id = 4
+        category_type='Attack',
+        family_type='Frizz',
+        new_name='Flame Slash',
+        old_name='FireSlash',
+        description='Burning blade sword attack',
+        mp_cost=3,
+        required_level=11,
+        required_hp=77,
+        required_mp=34,
+        required_attack=66,
+        required_intelligence=42,
+    ))
+    session.add(Skill(
+        # id = 5
+        category_type='Support',
+        family_type='Status support',
+        new_name='Muster Strength',
+        old_name='ChargeUP',
+        description='Additional Damage next turn',
+        mp_cost=0,
+        required_level=14,
+        required_hp=98,
+        required_defense=84,
+    ))
+
+    # Add SkillCombine connection
+    # 'FireSlash' can be learned if 'Blazemore' and 'ChargeUP' is known
+    session.add(SkillCombine(
+        combo_skill_id=4,
+        needed_skill_id=2,
+    ))
+    session.add(SkillCombine(
+        combo_skill_id=4,
+        needed_skill_id=5,
+    ))
+    session.commit()
+    
+    response = client.get('dqm1/skillcombine/4')
+    skill_combo = response.json()
+    
+    assert response.status_code == 200
+    
+    assert skill_combo[0]['needed_skill_id'] == 2
+    assert skill_combo[0]['needed_skill']['old_name'] == 'Blazemore'
+    
+    assert skill_combo[1]['needed_skill_id'] == 5
+    assert skill_combo[1]['needed_skill']['old_name'] == 'ChargeUP'
