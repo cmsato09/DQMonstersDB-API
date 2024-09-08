@@ -4,7 +4,7 @@ from sqlmodel import SQLModel, create_engine, Session
 from sqlmodel.pool import StaticPool
 
 from app.main import app, get_session
-from app.models import MonsterDetail, MonsterFamily, MonsterSkillLink, Item, Skill, SkillCombine
+from app.models import MonsterDetail, MonsterFamily, MonsterSkillLink, Item, Skill, SkillCombine, MonsterBreedingLink
 
 
 def test_read_root():
@@ -353,7 +353,7 @@ def test_skill_combine(client: TestClient, session: Session):
         needed_skill_id=5,
     ))
     session.commit()
-    
+
     response = client.get('dqm1/skillcombine/4')
     skill_combo = response.json()
     
@@ -364,3 +364,134 @@ def test_skill_combine(client: TestClient, session: Session):
     
     assert skill_combo[1]['needed_skill_id'] == 5
     assert skill_combo[1]['needed_skill']['old_name'] == 'ChargeUP'
+
+
+def test_monster_breeding_link(client: TestClient, session: Session):
+    """ 
+    Test breeding combo insertion. 
+    """
+    family_list = [
+        'SLIME', # family id = 1
+        'DRAGON', # family id = 2
+        'BEAST',
+        'BIRD',
+        'PLANT',
+        'BUG',
+        'DEVIL',
+        'UNDEAD',
+        'MATERIAL',
+        '???',
+    ]
+
+    for family in family_list:
+        session.add(MonsterFamily(family_eng=f'{family}'))
+
+    session.add(MonsterDetail(
+        # id = 1
+        new_name='Drake Slime', 
+        old_name='DrakSlime', 
+        description='Moves & jumps with its tail and wings', 
+        family_id=1
+    ))
+    session.add(MonsterDetail(
+        # id = 2
+        new_name='Wild slime', 
+        old_name='FangSlime', 
+        description='Has a red Mohawk and is very brave & proud', 
+        family_id=1
+    ))
+    session.add(MonsterDetail(
+        # id = 3
+        new_name='Spiked hare', 
+        old_name='Almiraj', 
+        description='When cornered, it charges with its sharp horns', 
+        family_id=3
+    ))
+
+    # tests pedigree_family + family2 connection
+    session.add(MonsterBreedingLink(
+        child_id=1,
+        pedigree_family_id=1,
+        family2_id=2,
+    ))
+    # tests pedigree_family + parent2 connection
+    session.add(MonsterBreedingLink(
+        child_id=2,
+        parent2_id=3,
+        pedigree_family_id=1,
+    ))
+    
+    session.commit()
+
+    response1 = client.get('dqm1/breeding/1')
+    breeding_query1 = response1.json()
+
+    entry_comparison1 = [
+        {
+            'id': 1,
+            'child_id': 1,
+            'pedigree_id': None,
+            'parent2_id': None,
+            'pedigree_family_id': 1,
+            'family2_id': 2,
+            'child': {
+                'id': 1,
+                'new_name':'Drake Slime', 
+                'old_name':'DrakSlime', 
+                'description':'Moves & jumps with its tail and wings', 
+                'family_id': 1,
+            },
+            'pedigree': None,
+            'parent2' : None,
+            'pedigree_family': {
+                'family_eng': 'SLIME',
+                'id': 1,
+            },
+            'family2': {
+                'family_eng': 'DRAGON',
+                'id': 2,
+            },
+        },
+    ]
+
+    assert response1.status_code == 200
+    assert breeding_query1[0]['child_id'] == 1
+    assert breeding_query1[0]['child']['old_name'] == 'DrakSlime'
+    assert breeding_query1 == entry_comparison1
+
+    response2 = client.get('dqm1/breeding/2')
+    breeding_query2 = response2.json()
+
+    entry_comparison2 = [
+        {
+            'id': 2,
+            'child_id': 2,
+            'pedigree_id': None,
+            'parent2_id': 3,
+            'pedigree_family_id': 1,
+            'family2_id': None,
+            'child': {
+                'id': 2,
+                'new_name':'Wild slime', 
+                'old_name':'FangSlime', 
+                'description':'Has a red Mohawk and is very brave & proud', 
+                'family_id': 1,
+            },
+            'pedigree': None,
+            'parent2' : {
+                'id': 3,
+                'new_name': 'Spiked hare', 
+                'old_name': 'Almiraj', 
+                'description': 'When cornered, it charges with its sharp horns', 
+                'family_id':3,
+            },
+            'pedigree_family': {
+                'family_eng': 'SLIME',
+                'id': 1,
+            },
+            'family2': None,
+        }
+    ]
+
+    assert response2.status_code == 200
+    assert breeding_query2 == entry_comparison2
