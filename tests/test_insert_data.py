@@ -7,8 +7,8 @@ from app.main import app, get_session
 from app.models import MonsterDetail, MonsterFamily, MonsterSkillLink, Item, Skill, SkillCombine, MonsterBreedingLink
 
 
-def test_read_root():
-    client = TestClient(app)
+def test_read_root(client: TestClient):
+    # client = TestClient(app)
     response = client.get('/')
     assert response.status_code == 200
     assert response.json() == {"message": "Welcome to the DQMonsters API. Go to the Swagger UI interface"}
