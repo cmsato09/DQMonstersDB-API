@@ -71,8 +71,11 @@ def load_csv_data(session_module: Session):
     }
 
     for csvfile, Model in csv_files:
-        with open(csvfile, encoding='utf-8-sig') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                session_module.add(Model(**row))
-    session_module.commit()
+        try:
+            with open(csvfile, encoding='utf-8-sig') as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    session_module.add(Model(**row))
+            session_module.commit()
+        except Exception as e:
+            print(f"Error loading {csvfile} : {e}")
