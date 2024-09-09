@@ -174,3 +174,49 @@ def test_read_family(client_module, load_all_csvdata):
     assert response.status_code == 200
     assert monster_entries == expected_data
 
+
+def test_read_skills(client_module, load_all_csvdata):
+    """
+    Tests read_skills endpoint.
+    """
+    response = client_module.get('dqm1/skills')
+    skill_entries = response.json()
+
+    test_data_file_path = os.path.join(os.path.dirname(__file__), 'test_json/test_read_skills.json')
+    with open(test_data_file_path, 'r') as json_file:
+        expected_data = json.load(json_file)
+    
+    assert response.status_code == 200
+    assert skill_entries == expected_data
+
+
+def test_read_skills_query_category(client_module, load_all_csvdata):
+    """
+    Tests read_skills endpoint with category query.
+    """
+    category = 'Recovery'
+    response = client_module.get(f'dqm1/skills?category={category}')
+    skill_entries = response.json()
+
+    test_data_file_path = os.path.join(os.path.dirname(__file__), 'test_json/test_read_skills_category_recovery.json')
+    with open(test_data_file_path, 'r') as json_file:
+        expected_data = json.load(json_file)
+    
+    assert response.status_code == 200
+    assert skill_entries == expected_data
+
+
+def test_read_skills_query_skillfamily(client_module, load_all_csvdata):
+    """
+    Tests read_skills endpoint with category query.
+    """
+    skillfamily = 'Zap'
+    response = client_module.get(f'dqm1/skills?skill_family={skillfamily}')
+    skill_entries = response.json()
+
+    test_data_file_path = os.path.join(os.path.dirname(__file__), 'test_json/test_read_skills_skillfamily_zap.json')
+    with open(test_data_file_path, 'r') as json_file:
+        expected_data = json.load(json_file)
+    
+    assert response.status_code == 200
+    assert skill_entries == expected_data
