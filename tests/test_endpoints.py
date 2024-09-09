@@ -175,6 +175,16 @@ def test_read_family(client_module, load_all_csvdata):
     assert monster_entries == expected_data
 
 
+def test_read_family_fail(client_module, load_all_csvdata):
+    """
+    Tests invalid family_id. Any family_id greater than 10 or less than 1 is invalid
+    """
+    familyID = 15
+    response = client_module.get(f'dqm1/family/{familyID}')
+
+    assert response.status_code == 404
+
+
 def test_read_skills(client_module, load_all_csvdata):
     """
     Tests read_skills endpoint.

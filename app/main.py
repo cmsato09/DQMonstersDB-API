@@ -147,7 +147,6 @@ async def read_items(
         *, session: Session = Depends(get_session),
         category: Optional[ItemCategory] = None,
         selllocation: Optional[ItemSellLocation] = None,):
-    # with Session(engine) as session:
     items = select(Item)
     if category:
         items = items.where(Item.item_category == category)
