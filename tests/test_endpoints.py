@@ -263,3 +263,17 @@ def test_read_skill_fail(client_module, load_all_csvdata):
     
     assert response.status_code == 404
 
+
+def test_read_items(client_module, load_all_csvdata):
+    """ 
+    Test read_items endpoint. Tests retrieving all item info from database.
+    """
+    response = client_module.get('dqm1/items')
+    item_entries = response.json()
+
+    test_data_file_path = os.path.join(os.path.dirname(__file__), 'test_json/test_read_items.json')
+    with open(test_data_file_path, 'r') as json_file:
+        expected_data = json.load(json_file)
+    
+    assert response.status_code == 200
+    assert item_entries == expected_data
