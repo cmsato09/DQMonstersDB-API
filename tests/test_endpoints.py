@@ -148,7 +148,7 @@ def test_read_monsterandskill(client_module, load_all_csvdata):
 
 def test_read_monsterandskill_fail(client_module, load_all_csvdata):
     """ 
-    Tests retrieving monster detail and skill info from database by monster_id.
+    Tests invalid monster_id for monsterandskill endpoint.
     monster_id greater than 215 or less than 1 is invalid.
     """
     monsterID = 999
@@ -156,3 +156,21 @@ def test_read_monsterandskill_fail(client_module, load_all_csvdata):
     monster_entry = response.json()
     
     assert response.status_code == 404
+
+
+def test_read_family(client_module, load_all_csvdata):
+    """
+    Tests family endpoint. Given family_id, returns all monster within family.
+    """
+    familyID = 4
+    response = client_module.get(f'dqm1/family/{familyID}')
+
+    monster_entries = response.json()
+    
+    test_data_file_path = os.path.join(os.path.dirname(__file__), 'test_json/test_family.json')
+    with open(test_data_file_path, 'r') as json_file:
+        expected_data = json.load(json_file)
+
+    assert response.status_code == 200
+    assert monster_entries == expected_data
+
