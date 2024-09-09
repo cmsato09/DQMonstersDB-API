@@ -8,7 +8,6 @@ from app.models import MonsterDetail, MonsterFamily, MonsterSkillLink, Item, Ski
 
 
 def test_read_root(client: TestClient):
-    # client = TestClient(app)
     response = client.get('/')
     assert response.status_code == 200
     assert response.json() == {"message": "Welcome to the DQMonsters API. Go to the Swagger UI interface"}
