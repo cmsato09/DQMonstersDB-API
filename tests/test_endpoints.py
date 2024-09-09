@@ -287,3 +287,164 @@ def test_read_items(client_module, load_all_csvdata):
     
     assert response.status_code == 200
     assert item_entries == expected_data
+
+
+def test_read_items_query_category(client_module, load_all_csvdata):
+    """ 
+    Test read_items endpoint. Tests retrieving all item info from database.
+    """
+    category = 'meat'
+    response = client_module.get(f'dqm1/items?category={category}')
+    item_entries = response.json()
+
+    items_comparison = [
+        {
+            "price": 20,
+            "item_category": "meat",
+            "sell_location": "Bazaar shop 1",
+            "id": 5,
+            "item_name": "BeefJerky",
+            "item_description": "Give to monster to tame during battle or reduce your own monster's WLD (wildness) by 5",
+            "sell_price": 15
+        },
+        {
+            "price": 80,
+            "item_category": "meat",
+            "sell_location": "Bazaar shop 1",
+            "id": 6,
+            "item_name": "Porkchop",
+            "item_description": "Give to monster to tame during battle or reduce your own monster's WLD (wildness) by 10",
+            "sell_price": 60
+        },
+        {
+            "price": 300,
+            "item_category": "meat",
+            "sell_location": "Bazaar shop 2",
+            "id": 15,
+            "item_name": "Rib",
+            "item_description": "Give to monster to tame during battle or reduce your own monster's WLD (wildness) by 20",
+            "sell_price": 225
+        },
+        {
+            "price": 1000,
+            "item_category": "meat",
+            "sell_location": "Bazaar shop 3",
+            "id": 17,
+            "item_name": "Sirloin",
+            "item_description": "Give to monster to tame during battle or reduce your own monster's WLD (wildness) by 100",
+            "sell_price": 750
+        },
+        {
+            "price": None,
+            "item_category": "meat",
+            "sell_location": "found in field",
+            "id": 45,
+            "item_name": "BadMeat",
+            "item_description": "Give to monster to tame during battle and poisons them. Reduce your own monster's WLD (wildness) by 5 and poisons them",
+            "sell_price": None
+        }
+    ]
+    
+    assert response.status_code == 200
+    assert item_entries == items_comparison
+
+
+def test_read_items_query_category(client_module, load_all_csvdata):
+    """ 
+    Test read_items endpoint. Tests retrieving all item info from database.
+    """
+    selllocation = 'Bazaar shop 4'
+    response = client_module.get(f'dqm1/items?selllocation={selllocation}')
+    item_entries = response.json()
+
+    items_comparison = [
+        {
+            "price": 5000,
+            "item_category": "book",
+            "sell_location": "Bazaar shop 4",
+            "id": 24,
+            "item_name": "QuestBK",
+            "item_description": "Makes monster brave. Use multiple times to change personality",
+            "sell_price": 3750
+        },
+        {
+            "price": 5000,
+            "item_category": "book",
+            "sell_location": "Bazaar shop 4",
+            "id": 25,
+            "item_name": "HorrorBK",
+            "item_description": "Makes monster cowardly. Use multiple times to change personality",
+            "sell_price": 3750
+        },
+        {
+            "price": 5000,
+            "item_category": "book",
+            "sell_location": "Bazaar shop 4",
+            "id": 26,
+            "item_name": "BeNiceBK",
+            "item_description": "Makes monster gentle. Use multiple times to change personality",
+            "sell_price": 3750
+        },
+        {
+            "price": 5000,
+            "item_category": "book",
+            "sell_location": "Bazaar shop 4",
+            "id": 27,
+            "item_name": "CheaterBK",
+            "item_description": "Makes monster cold. Use multiple times to change personality",
+            "sell_price": 3750
+        },
+        {
+            "price": 5000,
+            "item_category": "book",
+            "sell_location": "Bazaar shop 4",
+            "id": 28,
+            "item_name": "SmartBK",
+            "item_description": "Makes monster think hard. Use multiple times to change personality",
+            "sell_price": 3750
+        },
+        {
+            "price": 5000,
+            "item_category": "book",
+            "sell_location": "Bazaar shop 4",
+            "id": 29,
+            "item_name": "ComedyBK",
+            "item_description": "Makes monster goofy. Use multiple times to change personality",
+            "sell_price": 3750
+        }
+    ]
+    
+    assert response.status_code == 200
+    assert item_entries == items_comparison
+
+
+def test_read_item(client_module, load_all_csvdata):
+    """ 
+    Test reading individual item given item_id
+    """
+    itemID = 3
+    response = client_module.get(f'dqm1/items/{itemID}')
+    item_entry = response.json()
+    item_comparison = {
+        "price": 10,
+        "item_category": "recovery",
+        "sell_location": "Bazaar shop 1",
+        "item_description": "Cures poison of one ally",
+        "id": 3,
+        "item_name": "Antidote",
+        "sell_price": 8
+    }
+
+    assert response.status_code == 200
+    assert item_entry == item_comparison
+
+
+def test_read_item_fail(client_module, load_all_csvdata):
+    """ 
+    Test reading individual item fail given invalid item_id. Invalid id is
+    greater than 47 and less than 1. 
+    """
+    itemID = 50
+    response = client_module.get(f'dqm1/items/{itemID}')
+
+    assert response.status_code == 404
