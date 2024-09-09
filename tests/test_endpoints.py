@@ -220,3 +220,46 @@ def test_read_skills_query_skillfamily(client_module, load_all_csvdata):
     
     assert response.status_code == 200
     assert skill_entries == expected_data
+
+
+def test_read_skill(client_module, load_all_csvdata):
+    """
+    Tests read_skill endpoint. Given skill_id, return individaul skill info.
+    """
+    skillid = 50
+    response = client_module.get(f'dqm1/skills/{skillid}')
+    skill_entry = response.json()
+
+    skill_comparison = {
+        "id": 50,
+        "category_type": "Attack",
+        "family_type": "Gigaslash",
+        "new_name": "Gigaslash",
+        "old_name": "GigaSlash",
+        "description": "The most powerful of the sword attacks",
+        "mp_cost": 20,
+        "required_level": 33,
+        "required_hp": 231,
+        "required_mp": 164,
+        "required_attack": 164,
+        "required_defense": None,
+        "required_speed": 198,
+        "required_intelligence": 198,
+        "upgrade_to": None,
+        "upgrade_from": None
+        }
+
+    assert response.status_code == 200
+    assert skill_entry == skill_comparison
+
+
+def test_read_skill_fail(client_module, load_all_csvdata):
+    """
+    Tests read_skill endpoint given invalid skill_id.
+    Invalid skill_id is anything greater than 154 or less than 1.
+    """
+    skillid = 300
+    response = client_module.get(f'dqm1/skills/{skillid}')
+    
+    assert response.status_code == 404
+
