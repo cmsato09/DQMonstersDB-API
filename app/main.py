@@ -144,16 +144,17 @@ async def get_skill_combo(
 
 @app.get('/dqm1/items', tags=["dqm1 items"])
 async def read_items(
+        *, session: Session = Depends(get_session),
         category: Optional[ItemCategory] = None,
         selllocation: Optional[ItemSellLocation] = None,):
-    with Session(engine) as session:
-        items = select(Item)
-        if category:
-            items = items.where(Item.item_category == category)
-        if selllocation:
-            items = items.where(Item.sell_location == selllocation)
-        items = session.exec(items).all()
-        return items
+    # with Session(engine) as session:
+    items = select(Item)
+    if category:
+        items = items.where(Item.item_category == category)
+    if selllocation:
+        items = items.where(Item.sell_location == selllocation)
+    items = session.exec(items).all()
+    return items
 
 
 @app.get('/dqm1/items/{item_id}', tags=["dqm1 items"])
