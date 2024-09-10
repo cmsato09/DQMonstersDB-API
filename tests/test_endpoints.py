@@ -349,7 +349,7 @@ def test_read_items_query_category(client_module, load_all_csvdata):
     assert item_entries == items_comparison
 
 
-def test_read_items_query_category(client_module, load_all_csvdata):
+def test_read_items_query_selllocation(client_module, load_all_csvdata):
     """ 
     Test read_items endpoint. Tests retrieving all item info from database.
     """
