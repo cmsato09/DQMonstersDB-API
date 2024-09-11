@@ -198,6 +198,35 @@ def test_insert_item(client: TestClient, session: Session):
     for key, value in item_comparison.items():
         assert item_entry[key] == value
 
+def test_insert_item_with_none(client: TestClient, session: Session):
+    """
+    Tests individual insertion of item data into items datatable that has a price and sell_price of None
+    """
+    session.add(Item(
+        item_name='Tiny medal',
+        item_category='dungeon use',
+        item_description='Collect and give to medal master for a prize',
+        price=None,
+        sell_price=None,
+        sell_location='found in field',
+    ))
+    session.commit()
+
+    response = client.get('/dqm1/items/1')
+    item_entry = response.json()
+
+    item_comparison = {
+        'item_name': 'Tiny medal',
+        'item_category': 'dungeon use',
+        'item_description': 'Collect and give to medal master for a prize',
+        'price': None,
+        'sell_price': None,
+        'sell_location': 'found in field',
+    }
+
+    assert response.status_code == 200
+    for key, value in item_comparison.items():
+        assert item_entry[key] == value
 
 def test_monster_skill_link(client: TestClient, session: Session):
     """
