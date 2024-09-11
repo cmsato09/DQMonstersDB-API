@@ -191,7 +191,7 @@ def test_read_skills(client_module, load_all_csvdata):
     response = client_module.get('dqm1/skills')
     skill_entries = response.json()
 
-    test_data_file_path = Path(__file__).resolve().parent / 'test_json' /'test_read_skills.json'
+    test_data_file_path = Path(__file__).resolve().parent / 'test_json' / 'test_read_skills.json'
     with open(test_data_file_path, 'r') as json_file:
         expected_data = json.load(json_file)
     
