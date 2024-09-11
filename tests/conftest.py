@@ -75,6 +75,8 @@ def load_csv_data(session_module: Session):
             with open(csvfile, encoding='utf-8-sig') as file:
                 reader = csv.DictReader(file)
                 for row in reader:
+                    # replace empty string with None
+                    row = {k: (None if v == '' else v) for k, v in row.items()}
                     session_module.add(Model(**row))
             session_module.commit()
         except Exception as e:
