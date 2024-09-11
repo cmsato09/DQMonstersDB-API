@@ -17,6 +17,8 @@ def _insert_data(csv_file, Model):
         with open(csv_file, encoding="utf-8-sig") as f:
             reader = csv.DictReader(f)
             for row in reader:
+                # replace empty string with None
+                row = {k: (None if v == '' else v) for k, v in row.items()}
                 session.add(Model(**row))
         session.commit()
 
