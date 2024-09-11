@@ -1,5 +1,5 @@
+from pathlib import Path
 import json
-import os
 import pytest
 
 
@@ -11,7 +11,7 @@ def test_read_monsters(client_module, load_all_csvdata):
     response = client_module.get('dqm1/monsters')
     monster_data = response.json()
 
-    test_data_file_path = os.path.join(os.path.dirname(__file__), 'test_json/test_all_monsters.json')
+    test_data_file_path = Path(__file__).resolve().parent / 'test_json' /'test_all_monsters.json'
     with open(test_data_file_path, 'r') as json_file:
         expected_data = json.load(json_file)
 
@@ -29,7 +29,7 @@ def test_read_monsters_query_family(client_module, load_all_csvdata):
     response = client_module.get(f'dqm1/monsters?family={family_id}')
     monster_data = response.json()
 
-    test_data_file_path = os.path.join(os.path.dirname(__file__), 'test_json/test_monsters_query_family.json')
+    test_data_file_path = Path(__file__).resolve().parent / 'test_json' / 'test_monsters_query_family.json'
     with open(test_data_file_path, 'r') as json_file:
         expected_data = json.load(json_file)
 
@@ -79,7 +79,6 @@ def test_read_monsterandskill(client_module, load_all_csvdata):
     monsterID = 110
     response = client_module.get(f'dqm1/monstersandskill/{monsterID}')
     monster_entry = response.json()
-
     monster_comparison = {
         "new_name": "Watabou",
         "old_name": "Watabou",
@@ -167,7 +166,7 @@ def test_read_family(client_module, load_all_csvdata):
 
     monster_entries = response.json()
     
-    test_data_file_path = os.path.join(os.path.dirname(__file__), 'test_json/test_family.json')
+    test_data_file_path = Path(__file__).resolve().parent / 'test_json' / 'test_family.json'
     with open(test_data_file_path, 'r') as json_file:
         expected_data = json.load(json_file)
 
@@ -192,7 +191,7 @@ def test_read_skills(client_module, load_all_csvdata):
     response = client_module.get('dqm1/skills')
     skill_entries = response.json()
 
-    test_data_file_path = os.path.join(os.path.dirname(__file__), 'test_json/test_read_skills.json')
+    test_data_file_path = Path(__file__).resolve().parent / 'test_json' /'test_read_skills.json'
     with open(test_data_file_path, 'r') as json_file:
         expected_data = json.load(json_file)
     
@@ -208,7 +207,7 @@ def test_read_skills_query_category(client_module, load_all_csvdata):
     response = client_module.get(f'dqm1/skills?category={category}')
     skill_entries = response.json()
 
-    test_data_file_path = os.path.join(os.path.dirname(__file__), 'test_json/test_read_skills_category_recovery.json')
+    test_data_file_path = Path(__file__).resolve().parent / 'test_json' /'test_read_skills_category_recovery.json'
     with open(test_data_file_path, 'r') as json_file:
         expected_data = json.load(json_file)
     
@@ -224,7 +223,7 @@ def test_read_skills_query_skillfamily(client_module, load_all_csvdata):
     response = client_module.get(f'dqm1/skills?skill_family={skillfamily}')
     skill_entries = response.json()
 
-    test_data_file_path = os.path.join(os.path.dirname(__file__), 'test_json/test_read_skills_skillfamily_zap.json')
+    test_data_file_path = Path(__file__).resolve().parent / 'test_json' /'test_read_skills_skillfamily_zap.json'
     with open(test_data_file_path, 'r') as json_file:
         expected_data = json.load(json_file)
     
@@ -281,7 +280,7 @@ def test_read_items(client_module, load_all_csvdata):
     response = client_module.get('dqm1/items')
     item_entries = response.json()
 
-    test_data_file_path = os.path.join(os.path.dirname(__file__), 'test_json/test_read_items.json')
+    test_data_file_path = Path(__file__).resolve().parent / 'test_json' /'test_read_items.json'
     with open(test_data_file_path, 'r') as json_file:
         expected_data = json.load(json_file)
     
