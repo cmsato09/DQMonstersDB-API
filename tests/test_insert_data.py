@@ -1,9 +1,6 @@
-import pytest
 from fastapi.testclient import TestClient
-from sqlmodel import SQLModel, create_engine, Session
-from sqlmodel.pool import StaticPool
+from sqlmodel import Session
 
-from app.main import app, get_session
 from app.models import MonsterDetail, MonsterFamily, MonsterSkillLink, Item, Skill, SkillCombine, MonsterBreedingLink
 
 
