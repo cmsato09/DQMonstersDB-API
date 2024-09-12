@@ -38,15 +38,35 @@ Access the Swagger UI interface of this FastAPI at https://dqmonstersdbapi-1-a11
 ![Trying out a endpoint](static/images/readme/FastAPI-readme-2.jpg)
 
 ## How to Run Locally
-1. Clone this repo onto your local machine
-2. Install al dependencies onto virtual environment
-3. run `create_database.py` to make the sqlite database from the csv files. 
-database.db file should be generated. 
-4. Run `uvicorn main:app` in the terminal
-5. FastAPI should be running locally at http://127.0.0.1:8000 (this address 
-is equivalent to http://localhost:8000)
-6. Go to http://127.0.0.1:8000/docs to access the interactive API 
+1. Clone this repo onto your local machine.
+2. Install dependencies onto virtual environment.
+3. run `app/create_database.py` to make the sqlite database using the csv files. 
+database.db file should be generated in the project folder.
+4. Run `fastapi dev app/main.py` in the terminal
+5. Open http://127.0.0.1:8000 (or http://localhost:8000)
+6. Open http://127.0.0.1:8000/docs to access the interactive API 
 documentation using Swagger UI
+
+```bash
+# run commands from the project folder directory
+pip install -r requirements.txt
+
+python app/create_database.py
+
+fastapi dev app/main.py
+```
+
+## uv package manager
+If you are running things with the [uv package manager](https://docs.astral.sh/uv/)
+, use the following commands.
+
+```bash
+uv sync
+
+uv run python app/create_database.py
+
+uv fastapi dev app/main.py
+```
 
 ## Resources used to make project
 - FastAPI documentation <https://fastapi.tiangolo.com/>
