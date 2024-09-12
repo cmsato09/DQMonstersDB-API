@@ -1,6 +1,5 @@
 from pathlib import Path
 import json
-import pytest
 
 
 def test_read_monsters(client_module, load_all_csvdata):
@@ -152,7 +151,6 @@ def test_read_monsterandskill_fail(client_module, load_all_csvdata):
     """
     monsterID = 999
     response = client_module.get(f'dqm1/monstersandskill/{monsterID}')
-    monster_entry = response.json()
     
     assert response.status_code == 404
 
