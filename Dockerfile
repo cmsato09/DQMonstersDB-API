@@ -19,4 +19,4 @@ ENV PYTHONPATH=/code
 # Creates sqlite database and inserts all csv data during the build process
 RUN python app/create_database.py
 
-CMD ["fastapi", "run", "app/main.py"]
+CMD ["fastapi", "run", "app/main.py", "--port", "80"]
