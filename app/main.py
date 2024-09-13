@@ -3,8 +3,8 @@ from fastapi.staticfiles import StaticFiles
 from sqlmodel import select, Session
 from typing import List, Optional
 
-from .database import engine
-from .models import (
+from app.database import engine
+from app.models import (
     Item,
     MonsterBreedingLink,
     MonsterBreedingLinkReadWithInfo,
@@ -18,7 +18,7 @@ from .models import (
     SkillCombineRead,
     SkillUpgradeRead,
 )
-from .model_enums import (
+from app.model_enums import (
     SkillCategory,
     SkillFamily,
     ItemCategory,
