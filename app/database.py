@@ -1,5 +1,6 @@
-from sqlmodel import SQLModel, create_engine
 from pathlib import Path
+
+from sqlmodel import SQLModel, create_engine
 
 app_dir = Path(__file__).resolve().parent
 project_dir = app_dir.parent

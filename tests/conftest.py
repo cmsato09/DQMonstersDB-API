@@ -1,11 +1,21 @@
-import pytest
-from fastapi.testclient import TestClient
-from sqlmodel import Session, SQLModel, create_engine
-from sqlmodel.pool import StaticPool
 import csv
 
+import pytest
+from fastapi.testclient import TestClient
+from sqlmodel import create_engine, Session, SQLModel
+from sqlmodel.pool import StaticPool
+
 from app.main import app, get_session
-from app.models import MonsterDetail, MonsterFamily, MonsterSkillLink, Item, Skill, SkillCombine, MonsterBreedingLink
+from app.models import (
+    Item,
+    MonsterBreedingLink,
+    MonsterDetail,
+    MonsterFamily,
+    MonsterSkillLink,
+    Skill,
+    SkillCombine,
+)
+
 
 @pytest.fixture(name="session")
 def session_fixture():
@@ -20,19 +30,20 @@ def session_fixture():
 
     SQLModel.metadata.drop_all(test_engine)
 
+
 @pytest.fixture(name="client")
 def client_fixture(session: Session):
     def get_session_override():
         yield session
 
     app.dependency_overrides[get_session] = get_session_override
-    
+
     client = TestClient(app)
     yield client
     app.dependency_overrides.clear()
 
 
-@pytest.fixture(name='session_module', scope='module')
+@pytest.fixture(name="session_module", scope="module")
 def session_module():
     test_engine = create_engine(
         "sqlite://",
@@ -46,37 +57,37 @@ def session_module():
     SQLModel.metadata.drop_all(test_engine)
 
 
-@pytest.fixture(name='client_module', scope='module')
+@pytest.fixture(name="client_module", scope="module")
 def client_module(session_module: Session):
     def get_session_override():
         yield session_module
 
     app.dependency_overrides[get_session] = get_session_override
-    
+
     client = TestClient(app)
     yield client
     app.dependency_overrides.clear()
 
 
-@pytest.fixture(name='load_all_csvdata', scope='module')
+@pytest.fixture(name="load_all_csvdata", scope="module")
 def load_csv_data(session_module: Session):
     csv_files = {
-        ('csv_files/DQM1_items.csv', Item),
-        ('csv_files/DQM1_monster_family.csv', MonsterFamily),
-        ('csv_files/DQM1_skills.csv', Skill),
-        ('csv_files/DQM1_skill_combo.csv', SkillCombine),
-        ('csv_files/DQM1_monsterdetails.csv', MonsterDetail),
-        ('csv_files/DQM1_breeding_combo.csv', MonsterBreedingLink),
-        ('csv_files/DQM1_monster_skill_link.csv', MonsterSkillLink),
+        ("csv_files/DQM1_items.csv", Item),
+        ("csv_files/DQM1_monster_family.csv", MonsterFamily),
+        ("csv_files/DQM1_skills.csv", Skill),
+        ("csv_files/DQM1_skill_combo.csv", SkillCombine),
+        ("csv_files/DQM1_monsterdetails.csv", MonsterDetail),
+        ("csv_files/DQM1_breeding_combo.csv", MonsterBreedingLink),
+        ("csv_files/DQM1_monster_skill_link.csv", MonsterSkillLink),
     }
 
     for csvfile, Model in csv_files:
         try:
-            with open(csvfile, encoding='utf-8-sig') as file:
+            with open(csvfile, encoding="utf-8-sig") as file:
                 reader = csv.DictReader(file)
                 for row in reader:
                     # replace empty string with None
-                    row = {k: (None if v == '' else v) for k, v in row.items()}
+                    row = {k: (None if v == "" else v) for k, v in row.items()}
                     session_module.add(Model(**row))
             session_module.commit()
         except Exception as e:
