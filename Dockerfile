@@ -16,4 +16,7 @@ COPY ./csv_files /code/csv_files
 
 ENV PYTHONPATH=/code
 
-CMD ["fastapi", "run", "app/main.py", "--port", "80"]
+# Creates sqlite database and inserts all csv data during the build process
+RUN python app/create_database.py
+
+CMD ["fastapi", "run", "app/main.py"]
