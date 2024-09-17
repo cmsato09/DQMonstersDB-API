@@ -2,7 +2,7 @@ from sqlmodel import Field, Relationship, SQLModel
 from typing import List, Optional
 
 
-class MonsterSkillLink(SQLModel, table=True): # type: ignore
+class MonsterSkillLink(SQLModel, table=True):
     """
     many-to-many association table linking a monster to three different skills.
     """
@@ -31,7 +31,7 @@ class MonsterDetailBase(SQLModel):
     family_id: int = Field(foreign_key="monsterfamily.id")
 
 
-class MonsterDetail(MonsterDetailBase, table=True): # type: ignore
+class MonsterDetail(MonsterDetailBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
 
     family: List["MonsterFamily"] = Relationship(back_populates="monsters")
@@ -52,7 +52,7 @@ class MonsterFamilyBase(SQLModel):
     family_eng: str
 
 
-class MonsterFamily(MonsterFamilyBase, table=True): # type: ignore
+class MonsterFamily(MonsterFamilyBase, table=True):
     """
     one-to-many relation between family and monsters.
     """
@@ -91,7 +91,7 @@ class MonsterBreedingLinkBase(SQLModel):
     )
 
 
-class MonsterBreedingLink(MonsterBreedingLinkBase, table=True): # type: ignore
+class MonsterBreedingLink(MonsterBreedingLinkBase, table=True):
     """
     many-to-many association table between MonsterDetail and MonsterFamily
     that represents breeding combinations.
@@ -175,7 +175,7 @@ class SkillBase(SQLModel):
     required_intelligence: Optional[int] = None
 
 
-class Skill(SkillBase, table=True): # type: ignore
+class Skill(SkillBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
 
     upgrade_to_id: Optional[int] = Field(
@@ -229,7 +229,7 @@ class SkillCombineBase(SQLModel):
     needed_skill_id: Optional[int] = Field(default=None, foreign_key="skill.id")
 
 
-class SkillCombine(SkillCombineBase, table=True): # type: ignore
+class SkillCombine(SkillCombineBase, table=True):
     """
     many-to-many association table showing certain needed skills combine to
     learn new combo skill.
@@ -257,7 +257,7 @@ class SkillCombineRead(SkillCombineBase):
     needed_skill: Optional[SkillRead]
 
 
-class Item(SQLModel, table=True): # type: ignore
+class Item(SQLModel, table=True):
     """
     Lists all items sold in shops and found in the field
     """
