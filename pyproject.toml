@@ -14,3 +14,8 @@ dev-dependencies = [
     "coverage>=7.6.1",
     "pytest>=8.3.3",
 ]
+
+[tool.mypy]
+ignore_missing_imports = true 
+disallow_untyped_calls = true
+untyped_calls_exclude = ["sqlmodel"]
