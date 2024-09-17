@@ -16,7 +16,9 @@ def test_read_root(client: TestClient):
     response = client.get("/")
     assert response.status_code == 200
     assert response.json() == {
-        "message": "Welcome to the DQMonsters API. Go to the Swagger UI interface"
+        "message": (
+            "Welcome to the DQMonsters API. Go to the Swagger UI interface"
+        )
     }
 
 
@@ -218,7 +220,8 @@ def test_insert_item(client: TestClient, session: Session):
 
 def test_insert_item_with_none(client: TestClient, session: Session):
     """
-    Tests individual insertion of item data into items datatable that has a price and sell_price of None
+    Tests individual insertion of item data into items datatable that has a
+    price and sell_price of None
     """
     session.add(
         Item(
@@ -569,7 +572,9 @@ def test_monster_breeding_link(client: TestClient, session: Session):
                 "id": 3,
                 "new_name": "Spiked hare",
                 "old_name": "Almiraj",
-                "description": "When cornered, it charges with its sharp horns",
+                "description": (
+                    "When cornered, it charges with its sharp horns"
+                ),
                 "family_id": 3,
             },
             "pedigree_family": {
