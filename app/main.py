@@ -58,7 +58,10 @@ async def get_session():  # place in database.py?
 @app.get("/")
 def root():
     return {
-        "message": ("Welcome to the DQMonsters API. Go to the Swagger UI interface")
+        "message": (
+            "Welcome to the DQMonsters API. "
+            "Go to the Swagger UI interface"
+        )
     }
 
 
@@ -143,11 +146,13 @@ async def read_skills(
 
 
 @app.get(
-    "/dqm1/skills/{skill_id}", 
-    response_model=SkillUpgradeRead, 
+    "/dqm1/skills/{skill_id}",
+    response_model=SkillUpgradeRead,
     tags=["dqm1 skills"]
 )
-async def read_skill(*, session: Session = Depends(get_session), skill_id: int):
+async def read_skill(
+    *, session: Session = Depends(get_session), skill_id: int
+):
     skill = session.get(Skill, skill_id)
     if not skill:
         raise HTTPException(status_code=404, detail="Skill not found")
