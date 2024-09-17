@@ -11,8 +11,8 @@ def test_read_monsters(client_module, load_all_csvdata):
     monster_data = response.json()
 
     test_data_file_path = (
-        Path(__file__).resolve().parent 
-        / "test_json" 
+        Path(__file__).resolve().parent
+        / "test_json"
         / "test_all_monsters.json"
     )
     with open(test_data_file_path, "r") as json_file:
@@ -182,7 +182,7 @@ def test_read_family(client_module, load_all_csvdata):
 
 def test_read_family_fail(client_module, load_all_csvdata):
     """
-    Tests invalid family_id. Any family_id greater than 10 or less than 1 is 
+    Tests invalid family_id. Any family_id greater than 10 or less than 1 is
     invalid
     """
     familyID = 15
