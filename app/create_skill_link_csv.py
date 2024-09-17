@@ -2,10 +2,13 @@ import csv
 
 from typing import Dict, List
 
+
 def create_skill_dictionary() -> Dict[str, int]:
     with open("csv_files/practice_skill.csv", encoding="utf-8-sig") as csvfile:
         reader = csv.DictReader(csvfile)
-        skill_to_id = {row["skill_name"].lower(): int(row["skill_id"]) for row in reader}
+        skill_to_id = {
+            row["skill_name"].lower(): int(row["skill_id"]) for row in reader
+        }
     return skill_to_id
 
 
@@ -25,7 +28,10 @@ def create_monster_skill_table() -> Dict[int, List[str]]:
     return monster_skill_table
 
 
-def main(monster_skill_table: Dict[str, int], skill_to_id: Dict[int, List[str]]) -> None:
+def main(
+    monster_skill_table: Dict[str, int],
+    skill_to_id: Dict[int, List[str]]
+) -> None:
     """
     Creates csv file data with monster_id paired with skill_id for
     MonsterSkillLink class model
@@ -39,7 +45,7 @@ def main(monster_skill_table: Dict[str, int], skill_to_id: Dict[int, List[str]])
         writer = csv.writer(target_file, delimiter=",")
         writer.writerow(["monster_id", "skill_id"])
         for monster_id, skills in monster_skill_table.items():
-            for skill in skills: # type: ignore
+            for skill in skills:  # type: ignore
                 writer.writerow([monster_id, skill_to_id[skill]])
 
 
