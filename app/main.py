@@ -80,8 +80,8 @@ async def read_monsters(
     monsters = select(MonsterDetail)
     if family:
         monsters = monsters.where(MonsterDetail.family_id == family)
-    monsters = session.exec(monsters).all()
-    return monsters
+    monsters_result = session.exec(monsters).all()
+    return monsters_result
 
 
 @app.get(
@@ -138,8 +138,8 @@ async def read_skills(
         skills = skills.where(Skill.category_type == category)
     if skill_family:
         skills = skills.where(Skill.family_type == skill_family)
-    skills = session.exec(skills).all()
-    return skills
+    skills_result = session.exec(skills).all()
+    return skills_result
 
 
 @app.get(
@@ -179,8 +179,8 @@ async def read_items(
         items = items.where(Item.item_category == category)
     if selllocation:
         items = items.where(Item.sell_location == selllocation)
-    items = session.exec(items).all()
-    return items
+    items_result = session.exec(items).all()
+    return items_result
 
 
 @app.get("/dqm1/items/{item_id}", tags=["dqm1 items"])
