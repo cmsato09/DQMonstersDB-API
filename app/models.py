@@ -1,5 +1,6 @@
-from sqlmodel import Field, Relationship, SQLModel
 from typing import List, Optional
+
+from sqlmodel import Field, Relationship, SQLModel
 
 
 class MonsterSkillLink(SQLModel, table=True):
