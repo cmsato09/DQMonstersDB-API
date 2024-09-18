@@ -1,28 +1,29 @@
-from fastapi import Depends, FastAPI, HTTPException
-from fastapi.staticfiles import StaticFiles
-from sqlmodel import select, Session
 from typing import List, Optional
 
+from fastapi import Depends, FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
+from sqlmodel import Session, select
+
 from app.database import engine
+from app.model_enums import (
+    ItemCategory,
+    ItemSellLocation,
+    SkillCategory,
+    SkillFamily,
+)
 from app.models import (
     Item,
     MonsterBreedingLink,
     MonsterBreedingLinkReadWithInfo,
     MonsterDetail,
-    MonsterDetailWithFamily,
     MonsterDetailSkill,
+    MonsterDetailWithFamily,
     MonsterFamily,
     MonsterFamilyReadWithMonsterDetail,
     Skill,
     SkillCombine,
     SkillCombineRead,
     SkillUpgradeRead,
-)
-from app.model_enums import (
-    SkillCategory,
-    SkillFamily,
-    ItemCategory,
-    ItemSellLocation,
 )
 
 tags_metadata = [
@@ -58,7 +59,10 @@ async def get_session():  # place in database.py?
 @app.get("/")
 def root():
     return {
-        "message": ("Welcome to the DQMonsters API. Go to the Swagger UI interface")
+        "message": (
+            "Welcome to the DQMonsters API. "
+            "Go to the Swagger UI interface"
+        )
     }
 
 
@@ -80,8 +84,8 @@ async def read_monsters(
     monsters = select(MonsterDetail)
     if family:
         monsters = monsters.where(MonsterDetail.family_id == family)
-    monsters = session.exec(monsters).all()
-    return monsters
+    monsters_result = session.exec(monsters).all()
+    return monsters_result
 
 
 @app.get(
@@ -138,16 +142,18 @@ async def read_skills(
         skills = skills.where(Skill.category_type == category)
     if skill_family:
         skills = skills.where(Skill.family_type == skill_family)
-    skills = session.exec(skills).all()
-    return skills
+    skills_result = session.exec(skills).all()
+    return skills_result
 
 
 @app.get(
-    "/dqm1/skills/{skill_id}", 
-    response_model=SkillUpgradeRead, 
+    "/dqm1/skills/{skill_id}",
+    response_model=SkillUpgradeRead,
     tags=["dqm1 skills"]
 )
-async def read_skill(*, session: Session = Depends(get_session), skill_id: int):
+async def read_skill(
+    *, session: Session = Depends(get_session), skill_id: int
+):
     skill = session.get(Skill, skill_id)
     if not skill:
         raise HTTPException(status_code=404, detail="Skill not found")
@@ -179,8 +185,8 @@ async def read_items(
         items = items.where(Item.item_category == category)
     if selllocation:
         items = items.where(Item.sell_location == selllocation)
-    items = session.exec(items).all()
-    return items
+    items_result = session.exec(items).all()
+    return items_result
 
 
 @app.get("/dqm1/items/{item_id}", tags=["dqm1 items"])

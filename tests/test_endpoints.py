@@ -11,7 +11,9 @@ def test_read_monsters(client_module, load_all_csvdata):
     monster_data = response.json()
 
     test_data_file_path = (
-        Path(__file__).resolve().parent / "test_json" / "test_all_monsters.json"
+        Path(__file__).resolve().parent
+        / "test_json"
+        / "test_all_monsters.json"
     )
     with open(test_data_file_path, "r") as json_file:
         expected_data = json.load(json_file)
@@ -110,7 +112,9 @@ def test_read_monsterandskill(client_module, load_all_csvdata):
                 "family_type": "Map",
                 "new_name": "Whistle",
                 "old_name": "Whistle",
-                "description": "Summons monsters inside the dungeon to fight you",
+                "description": (
+                    "Summons monsters inside the dungeon to fight you"
+                ),
                 "mp_cost": 0,
                 "required_level": 4,
                 "required_hp": None,
@@ -126,7 +130,9 @@ def test_read_monsterandskill(client_module, load_all_csvdata):
                 "family_type": "Status support",
                 "new_name": "Follow Suit",
                 "old_name": "Imitate",
-                "description": "Copy and return every skill cast on Caster for 1 turn",
+                "description": (
+                    "Copy and return every skill cast on Caster for 1 turn"
+                ),
                 "mp_cost": 4,
                 "required_level": 21,
                 "required_hp": 147,
@@ -176,7 +182,8 @@ def test_read_family(client_module, load_all_csvdata):
 
 def test_read_family_fail(client_module, load_all_csvdata):
     """
-    Tests invalid family_id. Any family_id greater than 10 or less than 1 is invalid
+    Tests invalid family_id. Any family_id greater than 10 or less than 1 is
+    invalid
     """
     familyID = 15
     response = client_module.get(f"dqm1/family/{familyID}")
@@ -315,7 +322,10 @@ def test_read_items_query_category(client_module, load_all_csvdata):
             "sell_location": "Bazaar shop 1",
             "id": 5,
             "item_name": "BeefJerky",
-            "item_description": "Give to monster to tame during battle or reduce your own monster's WLD (wildness) by 5",
+            "item_description": (
+                "Give to monster to tame during battle or reduce your own "
+                "monster's WLD (wildness) by 5"
+            ),
             "sell_price": 15,
         },
         {
@@ -324,7 +334,10 @@ def test_read_items_query_category(client_module, load_all_csvdata):
             "sell_location": "Bazaar shop 1",
             "id": 6,
             "item_name": "Porkchop",
-            "item_description": "Give to monster to tame during battle or reduce your own monster's WLD (wildness) by 10",
+            "item_description": (
+                "Give to monster to tame during battle or reduce your own "
+                "monster's WLD (wildness) by 10"
+            ),
             "sell_price": 60,
         },
         {
@@ -333,7 +346,10 @@ def test_read_items_query_category(client_module, load_all_csvdata):
             "sell_location": "Bazaar shop 2",
             "id": 15,
             "item_name": "Rib",
-            "item_description": "Give to monster to tame during battle or reduce your own monster's WLD (wildness) by 20",
+            "item_description": (
+                "Give to monster to tame during battle or reduce your own "
+                "monster's WLD (wildness) by 20"
+            ),
             "sell_price": 225,
         },
         {
@@ -342,7 +358,10 @@ def test_read_items_query_category(client_module, load_all_csvdata):
             "sell_location": "Bazaar shop 3",
             "id": 17,
             "item_name": "Sirloin",
-            "item_description": "Give to monster to tame during battle or reduce your own monster's WLD (wildness) by 100",
+            "item_description": (
+                "Give to monster to tame during battle or reduce your own "
+                "monster's WLD (wildness) by 100"
+            ),
             "sell_price": 750,
         },
         {
@@ -351,7 +370,11 @@ def test_read_items_query_category(client_module, load_all_csvdata):
             "sell_location": "found in field",
             "id": 45,
             "item_name": "BadMeat",
-            "item_description": "Give to monster to tame during battle and poisons them. Reduce your own monster's WLD (wildness) by 5 and poisons them",
+            "item_description": (
+                "Give to monster to tame during battle and poisons them. "
+                "Reduce your own monster's WLD (wildness) by 5 and poisons "
+                "them"
+            ),
             "sell_price": None,
         },
     ]
@@ -375,7 +398,9 @@ def test_read_items_query_selllocation(client_module, load_all_csvdata):
             "sell_location": "Bazaar shop 4",
             "id": 24,
             "item_name": "QuestBK",
-            "item_description": "Makes monster brave. Use multiple times to change personality",
+            "item_description": (
+                "Makes monster brave. Use multiple times to change personality"
+            ),
             "sell_price": 3750,
         },
         {
@@ -384,7 +409,10 @@ def test_read_items_query_selllocation(client_module, load_all_csvdata):
             "sell_location": "Bazaar shop 4",
             "id": 25,
             "item_name": "HorrorBK",
-            "item_description": "Makes monster cowardly. Use multiple times to change personality",
+            "item_description": (
+                "Makes monster cowardly. Use multiple times to change "
+                "personality"
+            ),
             "sell_price": 3750,
         },
         {
@@ -393,7 +421,10 @@ def test_read_items_query_selllocation(client_module, load_all_csvdata):
             "sell_location": "Bazaar shop 4",
             "id": 26,
             "item_name": "BeNiceBK",
-            "item_description": "Makes monster gentle. Use multiple times to change personality",
+            "item_description": (
+                "Makes monster gentle. Use multiple times to change "
+                "personality"
+            ),
             "sell_price": 3750,
         },
         {
@@ -402,7 +433,9 @@ def test_read_items_query_selllocation(client_module, load_all_csvdata):
             "sell_location": "Bazaar shop 4",
             "id": 27,
             "item_name": "CheaterBK",
-            "item_description": "Makes monster cold. Use multiple times to change personality",
+            "item_description": (
+                "Makes monster cold. Use multiple times to change personality"
+            ),
             "sell_price": 3750,
         },
         {
@@ -411,7 +444,10 @@ def test_read_items_query_selllocation(client_module, load_all_csvdata):
             "sell_location": "Bazaar shop 4",
             "id": 28,
             "item_name": "SmartBK",
-            "item_description": "Makes monster think hard. Use multiple times to change personality",
+            "item_description": (
+                "Makes monster think hard. Use multiple times to change "
+                "personality"
+            ),
             "sell_price": 3750,
         },
         {
@@ -420,7 +456,9 @@ def test_read_items_query_selllocation(client_module, load_all_csvdata):
             "sell_location": "Bazaar shop 4",
             "id": 29,
             "item_name": "ComedyBK",
-            "item_description": "Makes monster goofy. Use multiple times to change personality",
+            "item_description": (
+                "Makes monster goofy. Use multiple times to change personality"
+            ),
             "sell_price": 3750,
         },
     ]
