@@ -59,10 +59,7 @@ async def get_session():  # place in database.py?
 @app.get("/")
 def root():
     return {
-        "message": (
-            "Welcome to the DQMonsters API. "
-            "Go to the Swagger UI interface"
-        )
+        "message": ("Welcome to the DQMonsters API. " "Go to the Swagger UI interface")
     }
 
 
@@ -93,9 +90,7 @@ async def read_monsters(
     response_model=MonsterDetailWithFamily,
     tags=["dqm1 monsters"],
 )
-async def read_monster(
-    *, session: Session = Depends(get_session), monster_id: int
-):
+async def read_monster(*, session: Session = Depends(get_session), monster_id: int):
     monster = session.get(MonsterDetail, monster_id)
     if not monster:
         raise HTTPException(status_code=404, detail="Monster not found")
@@ -121,9 +116,7 @@ async def read_monster_skill(
     response_model=MonsterFamilyReadWithMonsterDetail,
     tags=["dqm1 monsters"],
 )
-async def read_family(
-    *, session: Session = Depends(get_session), family_id: int
-):
+async def read_family(*, session: Session = Depends(get_session), family_id: int):
     family = session.get(MonsterFamily, family_id)
     if not family:
         raise HTTPException(status_code=404, detail="Family not found")
@@ -147,13 +140,9 @@ async def read_skills(
 
 
 @app.get(
-    "/dqm1/skills/{skill_id}",
-    response_model=SkillUpgradeRead,
-    tags=["dqm1 skills"]
+    "/dqm1/skills/{skill_id}", response_model=SkillUpgradeRead, tags=["dqm1 skills"]
 )
-async def read_skill(
-    *, session: Session = Depends(get_session), skill_id: int
-):
+async def read_skill(*, session: Session = Depends(get_session), skill_id: int):
     skill = session.get(Skill, skill_id)
     if not skill:
         raise HTTPException(status_code=404, detail="Skill not found")
@@ -165,9 +154,7 @@ async def read_skill(
     response_model=List[SkillCombineRead],
     tags=["dqm1 skills"],
 )
-async def get_skill_combo(
-    *, session: Session = Depends(get_session), skill_id: int
-):
+async def get_skill_combo(*, session: Session = Depends(get_session), skill_id: int):
     query = select(SkillCombine).where(SkillCombine.combo_skill_id == skill_id)
     skill = session.exec(query).all()
     return skill
