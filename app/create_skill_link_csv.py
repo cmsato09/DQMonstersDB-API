@@ -28,8 +28,7 @@ def create_monster_skill_table() -> Dict[int, List[str]]:
 
 
 def main(
-    monster_skill_table: Dict[str, int],
-    skill_to_id: Dict[int, List[str]]
+    monster_skill_table: Dict[str, int], skill_to_id: Dict[int, List[str]]
 ) -> None:
     """
     Creates csv file data with monster_id paired with skill_id for

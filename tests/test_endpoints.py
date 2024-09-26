@@ -11,9 +11,7 @@ def test_read_monsters(client_module, load_all_csvdata):
     monster_data = response.json()
 
     test_data_file_path = (
-        Path(__file__).resolve().parent
-        / "test_json"
-        / "test_all_monsters.json"
+        Path(__file__).resolve().parent / "test_json" / "test_all_monsters.json"
     )
     with open(test_data_file_path, "r") as json_file:
         expected_data = json.load(json_file)
@@ -112,9 +110,7 @@ def test_read_monsterandskill(client_module, load_all_csvdata):
                 "family_type": "Map",
                 "new_name": "Whistle",
                 "old_name": "Whistle",
-                "description": (
-                    "Summons monsters inside the dungeon to fight you"
-                ),
+                "description": ("Summons monsters inside the dungeon to fight you"),
                 "mp_cost": 0,
                 "required_level": 4,
                 "required_hp": None,
@@ -410,8 +406,7 @@ def test_read_items_query_selllocation(client_module, load_all_csvdata):
             "id": 25,
             "item_name": "HorrorBK",
             "item_description": (
-                "Makes monster cowardly. Use multiple times to change "
-                "personality"
+                "Makes monster cowardly. Use multiple times to change " "personality"
             ),
             "sell_price": 3750,
         },
@@ -422,8 +417,7 @@ def test_read_items_query_selllocation(client_module, load_all_csvdata):
             "id": 26,
             "item_name": "BeNiceBK",
             "item_description": (
-                "Makes monster gentle. Use multiple times to change "
-                "personality"
+                "Makes monster gentle. Use multiple times to change " "personality"
             ),
             "sell_price": 3750,
         },
@@ -445,8 +439,7 @@ def test_read_items_query_selllocation(client_module, load_all_csvdata):
             "id": 28,
             "item_name": "SmartBK",
             "item_description": (
-                "Makes monster think hard. Use multiple times to change "
-                "personality"
+                "Makes monster think hard. Use multiple times to change " "personality"
             ),
             "sell_price": 3750,
         },
