@@ -12,6 +12,7 @@ class ItemCategory(str, Enum):
     item_category. Works for predefined choices in item_category.
     For the Item class model
     """
+
     recovery = "recovery"
     meat = "meat"
     staff = "staff"
@@ -25,6 +26,7 @@ class ItemSellLocation(str, Enum):
     Creates dropdown menu for read_items() in Swagger UI to filter by
     sell_location. For Item class model
     """
+
     bazzar_shop_1 = "Bazaar shop 1"
     bazzar_shop_2 = "Bazaar shop 2"
     bazzar_shop_3 = "Bazaar shop 3"
@@ -38,6 +40,7 @@ class SkillCategory(str, Enum):
     Creates dropdown menu for read_skills() in Swagger UI to filter by
     category_type. Works for predefined choices in the Skill model class
     """
+
     attack = "Attack"
     support = "Support"
     recovery = "Recovery"
@@ -48,6 +51,7 @@ class SkillFamily(str, Enum):
     Creates dropdown menu for read_skills() in Swagger UI to filter by
     family_type. Works for predefined choices in the Skill model class
     """
+
     frizz = "Frizz"
     sizz = "Sizz"
     bang = "Bang"

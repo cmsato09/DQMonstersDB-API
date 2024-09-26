@@ -1,29 +1,35 @@
 import csv
+from typing import Dict, List
 
 
-def create_skill_dictionary():
-    with open('csv_files/practice_skill.csv', encoding="utf-8-sig") as csvfile:
+def create_skill_dictionary() -> Dict[str, int]:
+    with open("csv_files/practice_skill.csv", encoding="utf-8-sig") as csvfile:
         reader = csv.DictReader(csvfile)
         skill_to_id = {
-            row['skill_name'].lower(): row['skill_id'] for row in reader
+            row["skill_name"].lower(): int(row["skill_id"]) for row in reader
         }
     return skill_to_id
 
 
-def create_monster_skill_table():
-    with open('csv_files/practice_monster_skill_table.csv',
-              encoding="utf-8-sig") as csvfile:
+def create_monster_skill_table() -> Dict[int, List[str]]:
+    with open(
+        "csv_files/practice_monster_skill_table.csv", encoding="utf-8-sig"
+    ) as csvfile:
         reader = csv.DictReader(csvfile)
         monster_skill_table = {
-            int(row["id"]): [row["skill_1"].lower(),
-                             row["skill_2"].lower(),
-                             row["skill_3"].lower()]
+            int(row["id"]): [
+                row["skill_1"].lower(),
+                row["skill_2"].lower(),
+                row["skill_3"].lower(),
+            ]
             for row in reader
         }
     return monster_skill_table
 
 
-def main(monster_skill_table, skill_to_id):
+def main(
+    monster_skill_table: Dict[str, int], skill_to_id: Dict[int, List[str]]
+) -> None:
     """
     Creates csv file data with monster_id paired with skill_id for
     MonsterSkillLink class model
@@ -31,12 +37,13 @@ def main(monster_skill_table, skill_to_id):
     monster_id that knows a list of skills and a list of skill_id with
     corresponding skill names
     """
-    with open('csv_files/DQM1_monster_skill_link.csv', mode='w',
-              newline='') as target_file:
-        writer = csv.writer(target_file, delimiter=',')
-        writer.writerow(['monster_id', 'skill_id'])
+    with open(
+        "csv_files/DQM1_monster_skill_link.csv", mode="w", newline=""
+    ) as target_file:
+        writer = csv.writer(target_file, delimiter=",")
+        writer.writerow(["monster_id", "skill_id"])
         for monster_id, skills in monster_skill_table.items():
-            for skill in skills:
+            for skill in skills:  # type: ignore
                 writer.writerow([monster_id, skill_to_id[skill]])
 
 
