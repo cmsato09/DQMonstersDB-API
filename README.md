@@ -65,7 +65,7 @@ uv sync
 
 uv run python app/create_database.py
 
-uv fastapi dev app/main.py
+uv run fastapi dev app/main.py
 ```
 
 ## Docker
