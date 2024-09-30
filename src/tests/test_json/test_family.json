@@ -1,0 +1,146 @@
+{
+  "family_eng": "BIRD",
+  "id": 4,
+  "monsters": [
+    {
+      "new_name": "Bludgerigar",
+      "old_name": "Picky",
+      "description": "It's flightless but it can run quickly",
+      "family_id": 4,
+      "id": 71
+    },
+    {
+      "new_name": "Chimaera",
+      "old_name": "Wyvern",
+      "description": "It has an eagle's head & a body of a serpent",
+      "family_id": 4,
+      "id": 72
+    },
+    {
+      "new_name": "Bullfinch",
+      "old_name": "BullBird",
+      "description": "Sleeps right after it makes a kill",
+      "family_id": 4,
+      "id": 73
+    },
+    {
+      "new_name": "Kingfuchsia",
+      "old_name": "Florajay",
+      "description": "Its flower like face lures bugs to their doom",
+      "family_id": 4,
+      "id": 74
+    },
+    {
+      "new_name": "Quack up",
+      "old_name": "DuckKite",
+      "description": "Spreads its wings to make itself look bigger",
+      "family_id": 4,
+      "id": 75
+    },
+    {
+      "new_name": "Weaken beakon",
+      "old_name": "MadPecker",
+      "description": "Rips flesh from its prey with its strong beak",
+      "family_id": 4,
+      "id": 76
+    },
+    {
+      "new_name": "Stark raven",
+      "old_name": "MadRaven",
+      "description": "Attacks by dropping skulls from the air",
+      "family_id": 4,
+      "id": 77
+    },
+    {
+      "new_name": "Mistywing",
+      "old_name": "MistyWing",
+      "description": "Its mist like body glows pinkish in the dark",
+      "family_id": 4,
+      "id": 78
+    },
+    {
+      "new_name": "Dracky",
+      "old_name": "Dracky",
+      "description": "Prefers darkness and sucks blood with its fangs",
+      "family_id": 4,
+      "id": 79
+    },
+    {
+      "new_name": "Batanmaweight",
+      "old_name": "BigRoost",
+      "description": "Its firm flesh is good eating",
+      "family_id": 4,
+      "id": 80
+    },
+    {
+      "new_name": "Crested loon",
+      "old_name": "StubBird",
+      "description": "A very stubborn bird",
+      "family_id": 4,
+      "id": 81
+    },
+    {
+      "new_name": "Growlbear",
+      "old_name": "LandOwl",
+      "description": "A flightless owl with strong talons and sharp claws",
+      "family_id": 4,
+      "id": 82
+    },
+    {
+      "new_name": "Deadly dodo",
+      "old_name": "MadGoose",
+      "description": "A migratory bird that can be very violent",
+      "family_id": 4,
+      "id": 83
+    },
+    {
+      "new_name": "Hades condor",
+      "old_name": "MadCondor",
+      "description": "It has big wings, deadly sharp claws & a powerful beak",
+      "family_id": 4,
+      "id": 84
+    },
+    {
+      "new_name": "Snowbird",
+      "old_name": "Blizzardy",
+      "description": "Breathes out freezing air to defeat its prey",
+      "family_id": 4,
+      "id": 85
+    },
+    {
+      "new_name": "Firebird",
+      "old_name": "Phoenix",
+      "description": "Roasts its prey with its fiery breath",
+      "family_id": 4,
+      "id": 86
+    },
+    {
+      "new_name": "Thunderbird",
+      "old_name": "ZapBird",
+      "description": "Attacks with the thundercloud that covers its body",
+      "family_id": 4,
+      "id": 87
+    },
+    {
+      "new_name": "Whipbird",
+      "old_name": "WhipBird",
+      "description": "Attacks with its whip-like legs & knife-like claws",
+      "family_id": 4,
+      "id": 88
+    },
+    {
+      "new_name": "Funkybird",
+      "old_name": "FunkyBird",
+      "description": "Likes to dance & sing",
+      "family_id": 4,
+      "id": 89
+    },
+    {
+      "new_name": "Prism peacock",
+      "old_name": "RainHawk",
+      "description": "It has 4 strong legs & a pair of powerful wings",
+      "family_id": 4,
+      "id": 90
+    }
+  ]
+}
