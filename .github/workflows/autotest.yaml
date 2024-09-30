@@ -3,7 +3,7 @@ name: Auto-Test
 on:
   push:
     paths:
-      - "app/**"
+      # - "app/**"
     branches: [master, main, development, 2024-09-30-gh-actions]
   pull_request:
     branches: [master, main, development]
