@@ -1,6 +1,7 @@
 from typing import List, Optional
 
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlmodel import Session, select
 
@@ -49,6 +50,20 @@ app = FastAPI(
     openapi_tags=tags_metadata,
 )
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["GET"],
+    allow_headers=["*"],
+)
 
 
 async def get_session():  # place in database.py?
