@@ -49,7 +49,7 @@ app = FastAPI(
     version="1.0.0",
     openapi_tags=tags_metadata,
 )
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory="src/static"), name="static")
 
 origins = [
     "http://localhost",
