@@ -72,13 +72,13 @@ def client_module(session_module: Session):
 @pytest.fixture(name="load_all_csvdata", scope="module")
 def load_csv_data(session_module: Session):
     csv_files = {
-        ("csv_files/DQM1_items.csv", Item),
-        ("csv_files/DQM1_monster_family.csv", MonsterFamily),
-        ("csv_files/DQM1_skills.csv", Skill),
-        ("csv_files/DQM1_skill_combo.csv", SkillCombine),
-        ("csv_files/DQM1_monsterdetails.csv", MonsterDetail),
-        ("csv_files/DQM1_breeding_combo.csv", MonsterBreedingLink),
-        ("csv_files/DQM1_monster_skill_link.csv", MonsterSkillLink),
+        ("src/csv_files/DQM1_items.csv", Item),
+        ("src/csv_files/DQM1_monster_family.csv", MonsterFamily),
+        ("src/csv_files/DQM1_skills.csv", Skill),
+        ("src/csv_files/DQM1_skill_combo.csv", SkillCombine),
+        ("src/csv_files/DQM1_monsterdetails.csv", MonsterDetail),
+        ("src/csv_files/DQM1_breeding_combo.csv", MonsterBreedingLink),
+        ("src/csv_files/DQM1_monster_skill_link.csv", MonsterSkillLink),
     }
 
     for csvfile, Model in csv_files:
