@@ -1,4 +1,5 @@
 import csv
+from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
@@ -71,14 +72,16 @@ def client_module(session_module: Session):
 
 @pytest.fixture(name="load_all_csvdata", scope="module")
 def load_csv_data(session_module: Session):
+    CSV_FILES_PATH = Path(__file__).resolve().parent.parent / "csv_files"
+
     csv_files = {
-        ("src/csv_files/DQM1_items.csv", Item),
-        ("src/csv_files/DQM1_monster_family.csv", MonsterFamily),
-        ("src/csv_files/DQM1_skills.csv", Skill),
-        ("src/csv_files/DQM1_skill_combo.csv", SkillCombine),
-        ("src/csv_files/DQM1_monsterdetails.csv", MonsterDetail),
-        ("src/csv_files/DQM1_breeding_combo.csv", MonsterBreedingLink),
-        ("src/csv_files/DQM1_monster_skill_link.csv", MonsterSkillLink),
+        (CSV_FILES_PATH / "DQM1_items.csv", Item),
+        (CSV_FILES_PATH / "DQM1_monster_family.csv", MonsterFamily),
+        (CSV_FILES_PATH / "DQM1_skills.csv", Skill),
+        (CSV_FILES_PATH / "DQM1_skill_combo.csv", SkillCombine),
+        (CSV_FILES_PATH / "DQM1_monsterdetails.csv", MonsterDetail),
+        (CSV_FILES_PATH / "DQM1_breeding_combo.csv", MonsterBreedingLink),
+        (CSV_FILES_PATH / "DQM1_monster_skill_link.csv", MonsterSkillLink),
     }
 
     for csvfile, Model in csv_files:
