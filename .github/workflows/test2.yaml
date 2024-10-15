@@ -1,0 +1,35 @@
+name: test2
+
+on:
+  push:
+    paths:
+      - "app/**"
+    branches: [master, main, development, gh-action-test]
+  pull_request:
+    branches: [master, main, development]
+
+jobs:
+  run-tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version:
+          - "3.12"
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: python -m pip install pytest .
+
+      - name: Runtests
+        run: pytest
