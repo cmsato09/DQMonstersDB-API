@@ -3,7 +3,7 @@ name: test2
 on:
   push:
     paths:
-      - "app/**"
+      # - "app/**"
     branches: [master, main, development, gh-action-test]
   pull_request:
     branches: [master, main, development]
