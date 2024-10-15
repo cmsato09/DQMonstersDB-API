@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 from sqlmodel import Session
 
-from app.models import (
+from src.app.models import (
     Item,
     MonsterBreedingLink,
     MonsterDetail,

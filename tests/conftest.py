@@ -6,8 +6,8 @@ from fastapi.testclient import TestClient
 from sqlmodel import Session, SQLModel, create_engine
 from sqlmodel.pool import StaticPool
 
-from app.main import app, get_session
-from app.models import (
+from src.app.main import app, get_session
+from src.app.models import (
     Item,
     MonsterBreedingLink,
     MonsterDetail,
@@ -72,7 +72,7 @@ def client_module(session_module: Session):
 
 @pytest.fixture(name="load_all_csvdata", scope="module")
 def load_csv_data(session_module: Session):
-    CSV_FILES_PATH = Path(__file__).resolve().parent.parent / "csv_files"
+    CSV_FILES_PATH = Path(__file__).resolve().parent.parent / "src" / "csv_files"
 
     csv_files = {
         (CSV_FILES_PATH / "DQM1_items.csv", Item),
