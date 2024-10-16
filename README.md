@@ -68,18 +68,6 @@ uv run python src/app/create_database.py
 uv run fastapi dev src/app/main.py
 ```
 
-## Docker
-If you have docker installed, you can use the `compose.yaml` and `Dockerfile`
-to build a docker container with the `docker compose up` command.
-Sqlite database will be initialized and data will be added during the build
-process.
-
-```bash
-# builds image and creates container
-docker compose up
-```
-Go to http://localhost:8000/docs to access the Swagger UI
-
 ## Resources used to make project
 - FastAPI documentation <https://fastapi.tiangolo.com/>
 - SQLModel documentation <https://sqlmodel.tiangolo.com/>
