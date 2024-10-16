@@ -40,9 +40,9 @@ Access the Swagger UI interface of this FastAPI at https://dqmonstersdbapi-1-a11
 ## How to Run Locally
 1. Clone this repo onto your local machine.
 2. Install dependencies onto virtual environment.
-3. run `app/create_database.py` to make the sqlite database using the csv files.
+3. run `src/app/create_database.py` to make the sqlite database using the csv files.
 database.db file should be generated in the project folder.
-4. Run `fastapi dev app/main.py` in the terminal
+4. Run `fastapi dev src/app/main.py` in the terminal
 5. Open http://127.0.0.1:8000 (or http://localhost:8000)
 6. Open http://127.0.0.1:8000/docs to access the interactive API
 documentation using Swagger UI
@@ -51,9 +51,9 @@ documentation using Swagger UI
 # run commands from the project folder directory
 pip install -r requirements.txt
 
-python app/create_database.py
+python src/app/create_database.py
 
-fastapi dev app/main.py
+fastapi dev src/app/main.py
 ```
 
 ## uv package manager
@@ -63,22 +63,10 @@ If you are running things with the [uv package manager](https://docs.astral.sh/u
 ```bash
 uv sync
 
-uv run python app/create_database.py
+uv run python src/app/create_database.py
 
-uv run fastapi dev app/main.py
+uv run fastapi dev src/app/main.py
 ```
-
-## Docker
-If you have docker installed, you can use the `compose.yaml` and `Dockerfile`
-to build a docker container with the `docker compose up` command.
-Sqlite database will be initialized and data will be added during the build
-process.
-
-```bash
-# builds image and creates container
-docker compose up
-```
-Go to http://localhost:8000/docs to access the Swagger UI
 
 ## Resources used to make project
 - FastAPI documentation <https://fastapi.tiangolo.com/>

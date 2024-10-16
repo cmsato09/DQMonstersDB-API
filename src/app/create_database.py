@@ -3,8 +3,8 @@ from pathlib import Path
 
 from sqlmodel import Session
 
-from app.database import create_db_and_tables, engine
-from app.models import (
+from src.app.database import create_db_and_tables, engine
+from src.app.models import (
     Item,
     MonsterBreedingLink,
     MonsterDetail,

@@ -1,12 +1,13 @@
 import csv
+from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
 from sqlmodel import Session, SQLModel, create_engine
 from sqlmodel.pool import StaticPool
 
-from app.main import app, get_session
-from app.models import (
+from src.app.main import app, get_session
+from src.app.models import (
     Item,
     MonsterBreedingLink,
     MonsterDetail,
@@ -71,14 +72,16 @@ def client_module(session_module: Session):
 
 @pytest.fixture(name="load_all_csvdata", scope="module")
 def load_csv_data(session_module: Session):
+    CSV_FILES_PATH = Path(__file__).resolve().parent.parent / "src" / "csv_files"
+
     csv_files = {
-        ("csv_files/DQM1_items.csv", Item),
-        ("csv_files/DQM1_monster_family.csv", MonsterFamily),
-        ("csv_files/DQM1_skills.csv", Skill),
-        ("csv_files/DQM1_skill_combo.csv", SkillCombine),
-        ("csv_files/DQM1_monsterdetails.csv", MonsterDetail),
-        ("csv_files/DQM1_breeding_combo.csv", MonsterBreedingLink),
-        ("csv_files/DQM1_monster_skill_link.csv", MonsterSkillLink),
+        (CSV_FILES_PATH / "DQM1_items.csv", Item),
+        (CSV_FILES_PATH / "DQM1_monster_family.csv", MonsterFamily),
+        (CSV_FILES_PATH / "DQM1_skills.csv", Skill),
+        (CSV_FILES_PATH / "DQM1_skill_combo.csv", SkillCombine),
+        (CSV_FILES_PATH / "DQM1_monsterdetails.csv", MonsterDetail),
+        (CSV_FILES_PATH / "DQM1_breeding_combo.csv", MonsterBreedingLink),
+        (CSV_FILES_PATH / "DQM1_monster_skill_link.csv", MonsterSkillLink),
     }
 
     for csvfile, Model in csv_files:
