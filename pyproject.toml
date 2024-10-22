@@ -12,5 +12,34 @@ dependencies = [
 [tool.uv]
 dev-dependencies = [
     "coverage>=7.6.1",
+    "mypy>=1.11.2",
+    "pre-commit>=3.8.0",
     "pytest>=8.3.3",
 ]
+
+[tool.mypy]
+plugins = [
+    "pydantic.mypy"
+]
+
+follow_imports = "silent"
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_any_generics = true
+check_untyped_defs = true
+no_implicit_reexport = true
+
+# disallow_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = [
+    'fastapi',
+    'fastapi.staticfiles',
+    'sqlmodel',
+]
+ignore_missing_imports = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true

@@ -1,10 +1,11 @@
 import csv
 from pathlib import Path
 
-from sqlmodel import Session
+from sqlmodel import Session, select
+from sqlalchemy.exc import IntegrityError
 
-from app.database import create_db_and_tables, engine
-from app.models import (
+from src.app.database import create_db_and_tables, engine
+from src.app.models import (
     Item,
     MonsterBreedingLink,
     MonsterDetail,
@@ -29,7 +30,22 @@ def _insert_data(csv_file, Model):
             for row in reader:
                 # replace empty string with None
                 row = {k: (None if v == "" else v) for k, v in row.items()}
-                session.add(Model(**row))
+                if "id" in row:
+                    existing_entry = session.exec(
+                        select(Model).where(Model.id == row["id"])
+                    ).first()
+
+                    if existing_entry:
+                        print(
+                            f"Entry with id {row['id']} already exists. Skipping insertion."
+                        )
+                        continue
+                try:
+                    session.add(Model(**row))
+                except IntegrityError as e:
+                    session.rollback()
+                    print(f"IntegrityError has occurred: {e.orig}")
+
         session.commit()
 
 

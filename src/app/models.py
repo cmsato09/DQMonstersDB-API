@@ -1,5 +1,6 @@
-from sqlmodel import Field, Relationship, SQLModel
 from typing import List, Optional
+
+from sqlmodel import Field, Relationship, SQLModel
 
 
 class MonsterSkillLink(SQLModel, table=True):
@@ -74,21 +75,13 @@ class MonsterFamilyReadWithMonsterDetail(MonsterFamilyRead):
 
 
 class MonsterBreedingLinkBase(SQLModel):
-    child_id: Optional[int] = Field(
-        default=None, foreign_key="monsterdetail.id"
-    )
-    pedigree_id: Optional[int] = Field(
-        default=None, foreign_key="monsterdetail.id"
-    )
-    parent2_id: Optional[int] = Field(
-        default=None, foreign_key="monsterdetail.id"
-    )
+    child_id: Optional[int] = Field(default=None, foreign_key="monsterdetail.id")
+    pedigree_id: Optional[int] = Field(default=None, foreign_key="monsterdetail.id")
+    parent2_id: Optional[int] = Field(default=None, foreign_key="monsterdetail.id")
     pedigree_family_id: Optional[int] = Field(
         default=None, foreign_key="monsterfamily.id"
     )
-    family2_id: Optional[int] = Field(
-        default=None, foreign_key="monsterfamily.id"
-    )
+    family2_id: Optional[int] = Field(default=None, foreign_key="monsterfamily.id")
 
 
 class MonsterBreedingLink(MonsterBreedingLinkBase, table=True):

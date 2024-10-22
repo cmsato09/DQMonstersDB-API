@@ -135,3 +135,6 @@ dmypy.json
 # Deta
 .deta
 .space
+
+# ruff linter
+ruff.toml

@@ -1,22 +1,15 @@
-FROM python:3.9
+FROM python:3.11
 
+WORKDIR /project
 
-WORKDIR /code
+COPY requirements.txt .
 
+RUN pip install --no-cache-dir -r /project/requirements.txt
 
-COPY ./requirements.txt /code/requirements.txt
+COPY src /project/src
 
+ENV PYTHONPATH=/project
 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+RUN python src/app/create_database.py
 
-
-COPY ./app /code/app
-COPY ./static /code/static
-COPY ./csv_files /code/csv_files
-
-ENV PYTHONPATH=/code
-
-# Creates sqlite database and inserts all csv data during the build process
-RUN python app/create_database.py
-
-CMD ["fastapi", "run", "app/main.py", "--port", "80"]
+CMD ["uvicorn", "src.app.main:app", "--host", "0.0.0.0", "--proxy-headers", "--port", "80"]
