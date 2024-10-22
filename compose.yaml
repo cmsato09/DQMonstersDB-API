@@ -1,0 +1,7 @@
+services:
+  server:
+    build:
+      context: .
+    image: dqmonsters-api
+    ports:
+      - 8000:80
