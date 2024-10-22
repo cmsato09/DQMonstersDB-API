@@ -12,4 +12,4 @@ ENV PYTHONPATH=/project
 
 RUN python src/app/create_database.py
 
-CMD ["uvicorn", "src.app.main:app", "--host", "0.0.0.0", "--proxy-headers", "--port", "80"]
+CMD ["uvicorn", "src.app.main:app", "--host", "0.0.0.0", "--proxy-headers", "--port", "8080"]
