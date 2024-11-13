@@ -29,10 +29,9 @@ This project is made with FastAPI, a webframework for building APIs with
 Python.
 
 ## How to Use
-This repo is deployed on [Deta Space](https://www.deta.space/), a free cloud platform
-recommended by FastAPI on their documentation.
+This repo is deployed on [Google Cloud Run](hhttps://cloud.google.com/run/)
 
-Access the Swagger UI interface of this FastAPI at https://dqmonstersdbapi-1-a1113227.deta.app/docs
+Access the Swagger UI interface of this FastAPI at https://dqmonstersdb-api-743047725852.us-central1.run.app/docs
 
 ![Swagger UI homepage](static/images/readme/FastAPI-readme-1.jpg)
 ![Trying out a endpoint](static/images/readme/FastAPI-readme-2.jpg)
@@ -72,7 +71,6 @@ uv run fastapi dev src/app/main.py
 - FastAPI documentation <https://fastapi.tiangolo.com/>
 - SQLModel documentation <https://sqlmodel.tiangolo.com/>
 - various issues on the FastAPI github repo
-- Deta documentation <https://docs.deta.sh/docs/home>
 
 ## Credits
 This project is done with help and mentoring by [Bob Belderbos](https://github.com/bbelderbos)
