@@ -13,6 +13,7 @@ from src.app.model_enums import (
     SkillFamily,
 )
 from src.app.models import (
+    Dungeon,
     Item,
     MonsterBreedingLink,
     MonsterBreedingLinkReadWithInfo,
@@ -219,3 +220,9 @@ async def get_breeding_combos(
     )
     breeding_combos = session.exec(query).all()
     return breeding_combos
+
+
+@app.get("/dqm1/dungeons", response_model=List[Dungeon], tags=["dqm1 dungeons"])
+async def read_dungeons(*, session: Session = Depends(get_session)):
+    dungeon_list = session.exec(select(Dungeon)).all()
+    return dungeon_list
