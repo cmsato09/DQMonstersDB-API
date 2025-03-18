@@ -1,0 +1,32 @@
+id,gate_name_eng,gate_name_jp,floors
+1,Gate of Beginning,たびだちのとびら,5
+2,Gate of Villager,まちびとのとびら,5
+3,Gate of Talisman,まもりのとびら,6
+4,Gate of Memories,おもいでのとびら,5
+5,Gate of Bewilder,とまどいのとびら,6
+6,Gate of Peace,やすらぎのとびら,8
+7,Gate Bravery,ゆうきのとびら,9
+8,Gate of Strength,ちからのとびら,11
+9,Gate of Anger,いかりのとびら,11
+10,Gate of Joy,よろこびのとびら,14
+11,Gate of Wisdom,ちえのとびら,15
+12,Gate of Happiness,しあわせのとびら,18
+13,Gate of Temptation,さそいのとびら,20
+14,Gate of Labyrinth,まよいのとびら,23
+15,Gate of Judgement,さばきのとびら,25
+16,Gate of Reflection,かがみのとびら,29
+17,Gate of Ambition,やぼうのとびら,30
+18,Gate of Demolition,はかいのとびら,29
+19,Gate of Mastermind,あやつりのとびら,27
+20,Gate of Control,しはいのとびら,30
+21,Gate of Extinction,ねだやしのとびら,30
+22,Gate of Sleep,ねむりのとびら,30
+23,Bazaar Gate,バザーのとびら,9
+24,Well Gate,井戸のとびら,12
+25,Farm Gate,牧場のとびら,12
+26,Arena Left Gate,格闘場左のとびら,16
+27,Medal Gate,メダルのとびら,19
+28,Library Gate,図書館のとびら,25
+29,Bazaar Edge Gate,バザー端のとびら,30
+30,Arena Right Gate,格闘場右のとびら,27
+31,Old Man Gate,がんこじいさんのとびら,30
