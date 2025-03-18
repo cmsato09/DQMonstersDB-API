@@ -262,3 +262,14 @@ class Item(SQLModel, table=True):
     price: Optional[int] = Field(default=None)
     sell_price: Optional[int] = Field(default=None)
     sell_location: str
+
+
+class Dungeon(SQLModel, table=True):
+    """
+    Lists all dungeons in the game
+    """
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    gate_name_eng: str
+    gate_name_jp: str
+    floors: int
