@@ -6,6 +6,7 @@ from sqlalchemy.exc import IntegrityError
 
 from src.app.database import create_db_and_tables, engine
 from src.app.models import (
+    Dungeon,
     Item,
     MonsterBreedingLink,
     MonsterDetail,
@@ -77,6 +78,10 @@ def create_monster_skill_link():
     _insert_data(csv_dir / "DQM1_monster_skill_link.csv", MonsterSkillLink)
 
 
+def create_dungeon_csv():
+    _insert_data(csv_dir / "DQM1_dungeons.csv", Dungeon)
+
+
 def load_all_csv_data():
     create_db_and_tables()
     create_item_csv()
@@ -85,6 +90,7 @@ def load_all_csv_data():
     create_skillcombo_csv()
     create_monster_detail_csv()
     create_breed_combo()
+    create_dungeon_csv()
     create_monster_skill_link()
 
 
