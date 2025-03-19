@@ -2,6 +2,7 @@ from fastapi.testclient import TestClient
 from sqlmodel import Session
 
 from src.app.models import (
+    Dungeon,
     Item,
     MonsterBreedingLink,
     MonsterDetail,
@@ -583,3 +584,31 @@ def test_monster_breeding_link(client: TestClient, session: Session):
 
     assert response2.status_code == 200
     assert breeding_query2 == entry_comparison2
+
+
+def test_insert_dungeon(client: TestClient, session: Session):
+    """
+    Tests individual insertion of dungeon data into dungeon datatable
+    """
+    session.add(
+        Dungeon(
+            gate_name_eng="Gate of Beginning",
+            gate_name_jp="はじまりの扉",
+            floors=5,
+        )
+    )
+    session.commit()
+
+    response = client.get("/dqm1/dungeons")
+    dungeon_entry = response.json()
+
+    dungeon_comparison = {
+        "gate_name_eng": "Gate of Beginning",
+        "gate_name_jp": "はじまりの扉",
+        "floors": 5,
+    }
+
+    assert response.status_code == 200
+    assert len(dungeon_entry) == 1
+    for key, value in dungeon_comparison.items():
+        assert dungeon_entry[0][key] == value
