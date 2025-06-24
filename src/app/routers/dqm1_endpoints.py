@@ -15,6 +15,9 @@ from src.app.models import (
     MonsterFamily,
     MonsterFamilyReadWithMonsterDetail,
     Skill,
+    SkillCombine,
+    SkillCombineRead,
+    SkillUpgradeRead,
 )
 
 router = APIRouter(
@@ -97,7 +100,7 @@ async def read_family(*, session: Session = Depends(get_session), family_id: int
     return family
 
 
-@router.get("/dqm1/skills", tags=["dqm1 skills"])
+@router.get("/skills", tags=["dqm1 skills"])
 async def read_skills(
     *,
     session: Session = Depends(get_session),
@@ -111,3 +114,22 @@ async def read_skills(
         skills = skills.where(Skill.family_type == skill_family)
     skills_result = session.exec(skills).all()
     return skills_result
+
+
+@router.get("/skills/{skill_id}", response_model=SkillUpgradeRead, tags=["dqm1 skills"])
+async def read_skill(*, session: Session = Depends(get_session), skill_id: int):
+    skill = session.get(Skill, skill_id)
+    if not skill:
+        raise HTTPException(status_code=404, detail="Skill not found")
+    return skill
+
+
+@router.get(
+    "/skillcombine/{skill_id}",
+    response_model=List[SkillCombineRead],
+    tags=["dqm1 skills"],
+)
+async def get_skill_combo(*, session: Session = Depends(get_session), skill_id: int):
+    query = select(SkillCombine).where(SkillCombine.combo_skill_id == skill_id)
+    skill = session.exec(query).all()
+    return skill
