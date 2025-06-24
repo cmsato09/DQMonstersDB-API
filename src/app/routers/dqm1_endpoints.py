@@ -5,10 +5,13 @@ from sqlmodel import Session, select
 
 from src.app.database import get_session
 from src.app.model_enums import (
+    ItemCategory,
+    ItemSellLocation,
     SkillCategory,
     SkillFamily,
 )
 from src.app.models import (
+    Item,
     MonsterDetail,
     MonsterDetailWithFamily,
     MonsterDetailSkill,
@@ -133,3 +136,27 @@ async def get_skill_combo(*, session: Session = Depends(get_session), skill_id: 
     query = select(SkillCombine).where(SkillCombine.combo_skill_id == skill_id)
     skill = session.exec(query).all()
     return skill
+
+
+@router.get("/items", tags=["dqm1 items"])
+async def read_items(
+    *,
+    session: Session = Depends(get_session),
+    category: Optional[ItemCategory] = None,
+    selllocation: Optional[ItemSellLocation] = None,
+):
+    items = select(Item)
+    if category:
+        items = items.where(Item.item_category == category)
+    if selllocation:
+        items = items.where(Item.sell_location == selllocation)
+    items_result = session.exec(items).all()
+    return items_result
+
+
+@router.get("/items/{item_id}", tags=["dqm1 items"])
+async def read_item(*, session: Session = Depends(get_session), item_id: int):
+    item = session.get(Item, item_id)
+    if not item:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return item
