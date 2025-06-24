@@ -16,8 +16,6 @@ from src.app.models import (
     Item,
     MonsterBreedingLink,
     MonsterBreedingLinkReadWithInfo,
-    MonsterFamily,
-    MonsterFamilyReadWithMonsterDetail,
     Skill,
     SkillCombine,
     SkillCombineRead,
@@ -72,66 +70,6 @@ def root():
     return {
         "message": ("Welcome to the DQMonsters API. " "Go to the Swagger UI interface")
     }
-
-
-# @app.get(
-#     "/dqm1/monsters",
-#     response_model=List[MonsterDetailWithFamily],
-#     tags=["dqm1 monsters"],
-# )
-# async def read_monsters(
-#     *, session: Session = Depends(get_session), family: Optional[int] = None
-# ):
-#     """
-#     **Parameter Descriptions** <br>
-#     **new_name** : updated name used in later Dragon Quest games <br>
-#     **old_name** : name used in the game <br>
-#     **description** : in game beastiary description <br>
-#     **family** : a monster is part of one of 10 different monster families <br>
-#     """
-#     monsters = select(MonsterDetail)
-#     if family:
-#         monsters = monsters.where(MonsterDetail.family_id == family)
-#     monsters_result = session.exec(monsters).all()
-#     return monsters_result
-
-
-# @app.get(
-#     "/dqm1/monsters/{monster_id}",
-#     response_model=MonsterDetailWithFamily,
-#     tags=["dqm1 monsters"],
-# )
-# async def read_monster(*, session: Session = Depends(get_session), monster_id: int):
-#     monster = session.get(MonsterDetail, monster_id)
-#     if not monster:
-#         raise HTTPException(status_code=404, detail="Monster not found")
-#     return monster
-
-
-# @app.get(
-#     "/dqm1/monstersandskill/{monster_id}",
-#     response_model=MonsterDetailSkill,
-#     tags=["dqm1 monsters"],
-# )
-# async def read_monster_skill(
-#     *, session: Session = Depends(get_session), monster_id: int
-# ):
-#     monster = session.get(MonsterDetail, monster_id)
-#     if not monster:
-#         raise HTTPException(status_code=404, detail="Monster not found")
-#     return monster
-
-
-@app.get(
-    "/dqm1/family/{family_id}",
-    response_model=MonsterFamilyReadWithMonsterDetail,
-    tags=["dqm1 monsters"],
-)
-async def read_family(*, session: Session = Depends(get_session), family_id: int):
-    family = session.get(MonsterFamily, family_id)
-    if not family:
-        raise HTTPException(status_code=404, detail="Family not found")
-    return family
 
 
 @app.get("/dqm1/skills", tags=["dqm1 skills"])

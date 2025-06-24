@@ -8,6 +8,8 @@ from src.app.models import (
     MonsterDetail,
     MonsterDetailWithFamily,
     MonsterDetailSkill,
+    MonsterFamily,
+    MonsterFamilyReadWithMonsterDetail,
 )
 
 router = APIRouter(
@@ -76,3 +78,15 @@ async def read_monster_skill(
     if not monster:
         raise HTTPException(status_code=404, detail="Monster not found")
     return monster
+
+
+@router.get(
+    "/family/{family_id}",
+    response_model=MonsterFamilyReadWithMonsterDetail,
+    tags=["dqm1 monsters"],
+)
+async def read_family(*, session: Session = Depends(get_session), family_id: int):
+    family = session.get(MonsterFamily, family_id)
+    if not family:
+        raise HTTPException(status_code=404, detail="Family not found")
+    return family
