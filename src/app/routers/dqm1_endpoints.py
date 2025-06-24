@@ -12,6 +12,8 @@ from src.app.model_enums import (
 )
 from src.app.models import (
     Item,
+    MonsterBreedingLink,
+    MonsterBreedingLinkReadWithInfo,
     MonsterDetail,
     MonsterDetailWithFamily,
     MonsterDetailSkill,
@@ -160,3 +162,24 @@ async def read_item(*, session: Session = Depends(get_session), item_id: int):
     if not item:
         raise HTTPException(status_code=404, detail="Item not found")
     return item
+
+
+@router.get(
+    "/breeding/{monster_id}",
+    response_model=List[MonsterBreedingLinkReadWithInfo],
+    tags=["dqm1 monsters"],
+)
+async def get_breeding_combos(
+    *, session: Session = Depends(get_session), monster_id: int
+):
+    """
+    Given a monster_id, finds all breeding combination that results in
+    the target monster or uses the target monster as a parent
+    """
+    query = select(MonsterBreedingLink).where(
+        (MonsterBreedingLink.child_id == monster_id)
+        | (MonsterBreedingLink.pedigree_id == monster_id)
+        | (MonsterBreedingLink.parent2_id == monster_id)
+    )
+    breeding_combos = session.exec(query).all()
+    return breeding_combos
