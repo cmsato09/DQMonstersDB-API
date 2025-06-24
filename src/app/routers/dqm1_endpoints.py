@@ -29,21 +29,6 @@ router = APIRouter(
     prefix="/dqm1",
 )
 
-tags_metadata = [
-    {
-        "name": "dqm1 monsters",
-        "description": "Monster list",
-    },
-    {
-        "name": "dqm1 skills",
-        "description": "Skills that monsters learn and inherit",
-    },
-    {
-        "name": "dqm1 items",
-        "description": "Useful items found in the game and their description",
-    },
-]
-
 
 @router.get(
     "/monsters",
