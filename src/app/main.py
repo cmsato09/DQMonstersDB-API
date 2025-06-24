@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlmodel import Session, select
 
-from src.app.database import engine
+from src.app.database import get_session
 from src.app.model_enums import (
     ItemCategory,
     ItemSellLocation,
@@ -65,11 +65,6 @@ app.add_middleware(
     allow_methods=["GET"],
     allow_headers=["*"],
 )
-
-
-async def get_session():  # place in database.py?
-    with Session(engine) as session:
-        yield session
 
 
 @app.get("/")
