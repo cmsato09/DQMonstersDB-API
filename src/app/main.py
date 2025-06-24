@@ -9,17 +9,11 @@ from src.app.database import get_session
 from src.app.model_enums import (
     ItemCategory,
     ItemSellLocation,
-    SkillCategory,
-    SkillFamily,
 )
 from src.app.models import (
     Item,
     MonsterBreedingLink,
     MonsterBreedingLinkReadWithInfo,
-    Skill,
-    SkillCombine,
-    SkillCombineRead,
-    SkillUpgradeRead,
 )
 from src.app.routers import dqm1_endpoints
 
@@ -70,43 +64,6 @@ def root():
     return {
         "message": ("Welcome to the DQMonsters API. " "Go to the Swagger UI interface")
     }
-
-
-@app.get("/dqm1/skills", tags=["dqm1 skills"])
-async def read_skills(
-    *,
-    session: Session = Depends(get_session),
-    category: Optional[SkillCategory] = None,
-    skill_family: Optional[SkillFamily] = None,
-):
-    skills = select(Skill)
-    if category:
-        skills = skills.where(Skill.category_type == category)
-    if skill_family:
-        skills = skills.where(Skill.family_type == skill_family)
-    skills_result = session.exec(skills).all()
-    return skills_result
-
-
-@app.get(
-    "/dqm1/skills/{skill_id}", response_model=SkillUpgradeRead, tags=["dqm1 skills"]
-)
-async def read_skill(*, session: Session = Depends(get_session), skill_id: int):
-    skill = session.get(Skill, skill_id)
-    if not skill:
-        raise HTTPException(status_code=404, detail="Skill not found")
-    return skill
-
-
-@app.get(
-    "/dqm1/skillcombine/{skill_id}",
-    response_model=List[SkillCombineRead],
-    tags=["dqm1 skills"],
-)
-async def get_skill_combo(*, session: Session = Depends(get_session), skill_id: int):
-    query = select(SkillCombine).where(SkillCombine.combo_skill_id == skill_id)
-    skill = session.exec(query).all()
-    return skill
 
 
 @app.get("/dqm1/items", tags=["dqm1 items"])

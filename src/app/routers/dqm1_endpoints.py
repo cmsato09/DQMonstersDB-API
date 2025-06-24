@@ -4,12 +4,17 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 
 from src.app.database import get_session
+from src.app.model_enums import (
+    SkillCategory,
+    SkillFamily,
+)
 from src.app.models import (
     MonsterDetail,
     MonsterDetailWithFamily,
     MonsterDetailSkill,
     MonsterFamily,
     MonsterFamilyReadWithMonsterDetail,
+    Skill,
 )
 
 router = APIRouter(
@@ -90,3 +95,19 @@ async def read_family(*, session: Session = Depends(get_session), family_id: int
     if not family:
         raise HTTPException(status_code=404, detail="Family not found")
     return family
+
+
+@router.get("/dqm1/skills", tags=["dqm1 skills"])
+async def read_skills(
+    *,
+    session: Session = Depends(get_session),
+    category: Optional[SkillCategory] = None,
+    skill_family: Optional[SkillFamily] = None,
+):
+    skills = select(Skill)
+    if category:
+        skills = skills.where(Skill.category_type == category)
+    if skill_family:
+        skills = skills.where(Skill.family_type == skill_family)
+    skills_result = session.exec(skills).all()
+    return skills_result
