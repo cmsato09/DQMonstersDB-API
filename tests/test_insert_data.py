@@ -1,15 +1,14 @@
 from fastapi.testclient import TestClient
 from sqlmodel import Session
 
-from src.app.models import (
-    Item,
+from src.app.models.dqm1.item import Item
+from src.app.models.dqm1.monster import (
     MonsterBreedingLink,
     MonsterDetail,
     MonsterFamily,
     MonsterSkillLink,
-    Skill,
-    SkillCombine,
 )
+from src.app.models.dqm1.skill import Skill, SkillCombine
 
 
 def test_read_root(client: TestClient):
