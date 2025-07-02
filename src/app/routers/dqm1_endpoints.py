@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 
 from src.app.database import get_session
-from src.app.model_enums import (
+from src.app.models.dqm1.enums import (
     ItemCategory,
     ItemSellLocation,
     SkillCategory,
