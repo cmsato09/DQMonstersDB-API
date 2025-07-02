@@ -10,15 +10,17 @@ from src.app.model_enums import (
     SkillCategory,
     SkillFamily,
 )
-from src.app.models import (
-    Item,
+from src.app.models.dqm1.item import Item
+from src.app.models.dqm1.monster import (
     MonsterBreedingLink,
     MonsterBreedingLinkReadWithInfo,
     MonsterDetail,
     MonsterDetailWithFamily,
-    MonsterDetailSkill,
     MonsterFamily,
     MonsterFamilyReadWithMonsterDetail,
+)
+from src.app.models.dqm1.skill import (
+    MonsterDetailSkill,
     Skill,
     SkillCombine,
     SkillCombineRead,
