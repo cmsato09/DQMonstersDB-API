@@ -12,10 +12,7 @@ from src.app.models.dqm1.monster import (
     MonsterFamily,
     MonsterSkillLink,
 )
-from src.app.models.dqm1.skill import (
-    Skill,
-    SkillCombine,
-)
+from src.app.models.dqm1.skill import Skill, SkillCombine
 
 
 current_dir = Path(__file__).resolve().parent
