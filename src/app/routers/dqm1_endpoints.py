@@ -16,6 +16,8 @@ from src.app.models.dqm1.monster import (
     MonsterBreedingLinkReadWithInfo,
     MonsterDetail,
     MonsterDetailWithFamily,
+)
+from src.app.models.dqm1.monster_family import (
     MonsterFamily,
     MonsterFamilyReadWithMonsterDetail,
 )

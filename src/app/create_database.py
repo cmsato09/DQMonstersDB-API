@@ -9,9 +9,9 @@ from src.app.models.dqm1.item import Item
 from src.app.models.dqm1.monster import (
     MonsterBreedingLink,
     MonsterDetail,
-    MonsterFamily,
     MonsterSkillLink,
 )
+from src.app.models.dqm1.monster_family import MonsterFamily
 from src.app.models.dqm1.skill import Skill, SkillCombine
 
 
