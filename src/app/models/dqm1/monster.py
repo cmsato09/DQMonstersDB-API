@@ -4,6 +4,7 @@ from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
     from .skill import Skill
+    from .monster_family import MonsterFamily, MonsterFamilyRead
 
 
 class MonsterSkillLink(SQLModel, table=True):
@@ -48,33 +49,8 @@ class MonsterDetailRead(MonsterDetailBase):
     id: int
 
 
-class MonsterFamilyBase(SQLModel):
-    """
-    There are 10 monster families in the game.
-    """
-
-    family_eng: str
-
-
-class MonsterFamily(MonsterFamilyBase, table=True):
-    """
-    one-to-many relation between family and monsters.
-    """
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    monsters: List[MonsterDetail] = Relationship(back_populates="family")
-
-
-class MonsterFamilyRead(MonsterFamilyBase):
-    id: int
-
-
 class MonsterDetailWithFamily(MonsterDetailRead):
     family: Optional[MonsterFamilyRead]
-
-
-class MonsterFamilyReadWithMonsterDetail(MonsterFamilyRead):
-    monsters: List[MonsterDetailRead] = []
 
 
 class MonsterBreedingLinkBase(SQLModel):
