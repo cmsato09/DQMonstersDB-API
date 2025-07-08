@@ -33,8 +33,9 @@ This repo is deployed on [Google Cloud Run](hhttps://cloud.google.com/run/)
 
 Access the Swagger UI interface of this FastAPI at https://dqmonstersdb-api-743047725852.us-central1.run.app/docs
 
-![Swagger UI homepage](static/images/readme/FastAPI-readme-1.jpg)
-![Trying out a endpoint](static/images/readme/FastAPI-readme-2.jpg)
+![Swagger UI homepage](src/static/images/readme/FastAPI-screenshot-1.jpg)
+
+![Trying out a endpoint](src/static/images/readme/FastAPI-screenshot-2.jpg)
 
 ## How to Run Locally
 1. Clone this repo onto your local machine.
