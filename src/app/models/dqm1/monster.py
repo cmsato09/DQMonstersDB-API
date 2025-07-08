@@ -2,24 +2,11 @@ from typing import List, Optional, TYPE_CHECKING
 
 from sqlmodel import Field, Relationship, SQLModel
 
+from .associations import MonsterSkillLink
+
 if TYPE_CHECKING:
     from .skill import Skill
-
-
-class MonsterSkillLink(SQLModel, table=True):
-    """
-    many-to-many association table linking a monster to three different skills.
-    """
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    monster_id: Optional[int] = Field(
-        default=None,
-        foreign_key="monsterdetail.id",
-    )
-    skill_id: Optional[int] = Field(
-        default=None,
-        foreign_key="skill.id",
-    )
+    from .monster_family import MonsterFamily
 
 
 class MonsterDetailBase(SQLModel):
@@ -38,43 +25,10 @@ class MonsterDetailBase(SQLModel):
 class MonsterDetail(MonsterDetailBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
 
-    family: List["MonsterFamily"] = Relationship(back_populates="monsters")
+    family: Optional["MonsterFamily"] = Relationship(back_populates="monsters")
     skills: List["Skill"] = Relationship(
         back_populates="monsters", link_model=MonsterSkillLink
     )
-
-
-class MonsterDetailRead(MonsterDetailBase):
-    id: int
-
-
-class MonsterFamilyBase(SQLModel):
-    """
-    There are 10 monster families in the game.
-    """
-
-    family_eng: str
-
-
-class MonsterFamily(MonsterFamilyBase, table=True):
-    """
-    one-to-many relation between family and monsters.
-    """
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    monsters: List[MonsterDetail] = Relationship(back_populates="family")
-
-
-class MonsterFamilyRead(MonsterFamilyBase):
-    id: int
-
-
-class MonsterDetailWithFamily(MonsterDetailRead):
-    family: Optional[MonsterFamilyRead]
-
-
-class MonsterFamilyReadWithMonsterDetail(MonsterFamilyRead):
-    monsters: List[MonsterDetailRead] = []
 
 
 class MonsterBreedingLinkBase(SQLModel):
@@ -136,15 +90,3 @@ class MonsterBreedingLink(MonsterBreedingLinkBase, table=True):
             "lazy": "joined",
         }
     )
-
-
-class MonsterBreedingLinkRead(MonsterBreedingLinkBase):
-    id: int
-
-
-class MonsterBreedingLinkReadWithInfo(MonsterBreedingLinkRead):
-    child: Optional[MonsterDetailRead]
-    pedigree: Optional[MonsterDetailRead]
-    parent2: Optional[MonsterDetailRead]
-    pedigree_family: Optional[MonsterFamilyRead]
-    family2: Optional[MonsterFamilyRead]
