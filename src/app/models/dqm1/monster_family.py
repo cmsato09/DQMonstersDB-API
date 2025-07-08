@@ -3,7 +3,7 @@ from typing import List, Optional, TYPE_CHECKING
 from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
-    from .monster import MonsterDetail, MonsterDetailRead
+    from .monster import MonsterDetail
 
 
 class MonsterFamilyBase(SQLModel):
@@ -21,11 +21,3 @@ class MonsterFamily(MonsterFamilyBase, table=True):
 
     id: Optional[int] = Field(default=None, primary_key=True)
     monsters: List["MonsterDetail"] = Relationship(back_populates="family")
-
-
-class MonsterFamilyRead(MonsterFamilyBase):
-    id: int
-
-
-class MonsterFamilyReadWithMonsterDetail(MonsterFamilyRead):
-    monsters: List["MonsterDetailRead"] = []
