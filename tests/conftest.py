@@ -6,16 +6,16 @@ from fastapi.testclient import TestClient
 from sqlmodel import Session, SQLModel, create_engine
 from sqlmodel.pool import StaticPool
 
-from src.app.main import app, get_session
-from src.app.models import (
-    Item,
+from src.app.database import get_session
+from src.app.main import app
+from src.app.models.dqm1.item import Item
+from src.app.models.dqm1.associations import MonsterSkillLink
+from src.app.models.dqm1.monster import (
     MonsterBreedingLink,
     MonsterDetail,
-    MonsterFamily,
-    MonsterSkillLink,
-    Skill,
-    SkillCombine,
 )
+from src.app.models.dqm1.monster_family import MonsterFamily
+from src.app.models.dqm1.skill import Skill, SkillCombine
 
 
 @pytest.fixture(name="session")
