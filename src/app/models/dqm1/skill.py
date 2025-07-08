@@ -1,20 +1,11 @@
 from typing import List, Optional, TYPE_CHECKING
 
 from sqlmodel import Field, Relationship, SQLModel
-from .monster import (
-    MonsterDetail,
-    MonsterSkillLink,
-    MonsterDetailRead,
-    MonsterDetailWithFamily,
-)
+
+from .associations import MonsterSkillLink
 
 if TYPE_CHECKING:
-    from .monster import (
-        MonsterDetail,
-        MonsterSkillLink,
-        MonsterDetailRead,
-        MonsterDetailWithFamily,
-    )
+    from .monster import MonsterDetail
 
 
 class SkillBase(SQLModel):
@@ -70,23 +61,6 @@ class Skill(SkillBase, table=True):
     )
 
 
-class SkillRead(SkillBase):
-    id: int
-
-
-class SkillReadWithMonster(SkillRead):
-    monsters: Optional[MonsterDetailRead]
-
-
-class SkillUpgradeRead(SkillRead):
-    upgrade_to: Optional[Skill]
-    upgrade_from: Optional[Skill]
-
-
-class MonsterDetailSkill(MonsterDetailWithFamily):
-    skills: List[SkillRead] = []
-
-
 class SkillCombineBase(SQLModel):
     combo_skill_id: Optional[int] = Field(default=None, foreign_key="skill.id")
     needed_skill_id: Optional[int] = Field(default=None, foreign_key="skill.id")
@@ -113,8 +87,3 @@ class SkillCombine(SkillCombineBase, table=True):
             "lazy": "joined",
         }
     )
-
-
-class SkillCombineRead(SkillCombineBase):
-    id: int
-    needed_skill: Optional[SkillRead]
