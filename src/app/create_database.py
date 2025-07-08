@@ -1,19 +1,15 @@
 import csv
 from pathlib import Path
 
-from sqlmodel import Session, select
 from sqlalchemy.exc import IntegrityError
+from sqlmodel import Session, select
 
 from src.app.database import create_db_and_tables, engine
+from src.app.models.dqm1.associations import MonsterSkillLink
 from src.app.models.dqm1.item import Item
-from src.app.models.dqm1.monster import (
-    MonsterBreedingLink,
-    MonsterDetail,
-    MonsterSkillLink,
-)
+from src.app.models.dqm1.monster import MonsterBreedingLink, MonsterDetail
 from src.app.models.dqm1.monster_family import MonsterFamily
 from src.app.models.dqm1.skill import Skill, SkillCombine
-
 
 current_dir = Path(__file__).resolve().parent
 csv_dir = current_dir.parent / "csv_files"
