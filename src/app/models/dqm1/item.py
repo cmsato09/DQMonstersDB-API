@@ -33,4 +33,4 @@ class ItemJA(SQLModel, table=True):
     shop_ja: str
 
     item_id: Optional[int] = Field(default=None, foreign_key="item.id")
-    item: Optional[Item] = Relationship(back_popluates="ja_translation")
+    item: Optional[Item] = Relationship(back_populates="ja_translation")
